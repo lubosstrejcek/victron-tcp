@@ -2,24 +2,27 @@
 
 # Victron TCP — MCP Server
 
-An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects to Victron Energy GX devices via **Modbus TCP** on your local network. Get direct, low-latency access to real-time solar, battery, grid, and inverter data — no cloud required.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects to Victron Energy GX devices via **Modbus TCP** or **MQTT** on your local network. Get direct, low-latency access to real-time solar, battery, grid, and inverter data — no cloud required.
 
-Built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50, 900+ registers across 33 device categories).
+Built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50, 900+ registers across 33 device categories). Supports both Modbus TCP (direct register reads) and MQTT (Venus OS built-in broker) transports.
 
 ## Features
 
-- **27 specialized tools** for reading Victron device data
-- **860+ registers** from the complete Modbus TCP register map
+- **28 specialized tools** for reading Victron device data
+- **Dual transport** — Modbus TCP (port 502) or MQTT (port 1883), selectable per request or via environment variables
+- **900+ registers** from the complete Modbus TCP register map
 - **33 device categories** — system, battery, solar, inverter, grid, genset, alternator, charger, DC-DC, tank, temperature, GPS, meteo, and more
-- **Device discovery** — automatically find all connected devices and their unit IDs
+- **MQTT auto-discovery** — detect portal ID, list all services with device instances, and get ready-to-paste config
+- **Device discovery** — automatically find all connected devices and their unit IDs (Modbus) or service instances (MQTT)
 - **Generic category reader** — read any device category by service name, even those without a dedicated tool
 - **Raw register access** — read any register by address for advanced use
+- **Environment variable config** — set `VICTRON_HOST`, `VICTRON_TRANSPORT`, `VICTRON_PORTAL_ID` once, skip repetitive parameters
 - **Stateless connections** — connect-per-request, no persistent state to manage
 - **Read-only** — Phase 1 is read-only, all tools annotated with `readOnlyHint: true`
 
 ## Supported Devices
 
-Works with any Victron GX device running [Venus OS](https://github.com/victronenergy/venus) with Modbus TCP enabled:
+Works with any Victron GX device running [Venus OS](https://github.com/victronenergy/venus) with Modbus TCP or MQTT enabled:
 
 | Device | Description |
 |--------|-------------|
@@ -54,9 +57,9 @@ All accessory data flows through the GX device — you always connect to the GX 
 ## Prerequisites
 
 1. **A Victron GX device** on your local network
-2. **Modbus TCP enabled** on the GX device:
-   - Go to **Settings → Services → Modbus TCP** → Enable
-   - Or: **Settings → Integrations → Modbus TCP server** → Enable (Venus OS 3.x)
+2. **At least one transport enabled** on the GX device:
+   - **Modbus TCP**: Go to **Settings → Services → Modbus TCP** → Enable (or **Settings → Integrations → Modbus TCP server** on Venus OS 3.x)
+   - **MQTT**: Enabled by default on Venus OS. The built-in MQTT broker runs on port 1883 with no authentication.
 3. **Node.js 18+** installed
 
 ## Installation
@@ -92,6 +95,18 @@ Or if you built from source:
 claude mcp add --transport stdio victron-tcp -- node /absolute/path/to/victron-tcp/dist/index.js
 ```
 
+### Claude Code — with environment variables
+
+Pre-configure the host and transport so you don't have to pass them on every tool call:
+
+```bash
+claude mcp add --transport stdio \
+  -e VICTRON_HOST=192.168.1.50 \
+  -e VICTRON_TRANSPORT=mqtt \
+  -e VICTRON_PORTAL_ID=ca0f0e2e2261 \
+  victron-tcp -- npx victron-tcp
+```
+
 ### Claude Code — Project scope (share with your team)
 
 Add a `.mcp.json` file to your project root and commit it:
@@ -101,11 +116,18 @@ Add a `.mcp.json` file to your project root and commit it:
   "mcpServers": {
     "victron-tcp": {
       "command": "npx",
-      "args": ["victron-tcp"]
+      "args": ["victron-tcp"],
+      "env": {
+        "VICTRON_HOST": "192.168.1.50",
+        "VICTRON_TRANSPORT": "mqtt",
+        "VICTRON_PORTAL_ID": "your-portal-id"
+      }
     }
   }
 }
 ```
+
+Omit the `env` block to pass parameters per tool call instead.
 
 ### Claude Code — User scope (all your projects)
 
@@ -122,7 +144,12 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   "mcpServers": {
     "victron-tcp": {
       "command": "npx",
-      "args": ["-y", "victron-tcp"]
+      "args": ["-y", "victron-tcp"],
+      "env": {
+        "VICTRON_HOST": "192.168.1.50",
+        "VICTRON_TRANSPORT": "mqtt",
+        "VICTRON_PORTAL_ID": "your-portal-id"
+      }
     }
   }
 }
@@ -137,7 +164,10 @@ The server uses stdio transport. Add it to your MCP client's configuration:
   "mcpServers": {
     "victron-tcp": {
       "command": "npx",
-      "args": ["-y", "victron-tcp"]
+      "args": ["-y", "victron-tcp"],
+      "env": {
+        "VICTRON_HOST": "192.168.1.50"
+      }
     }
   }
 }
@@ -178,13 +208,14 @@ The server uses stdio transport. Add it to your MCP client's configuration:
 | `victron_meteo_status` | IMT Solar irradiance sensors: irradiance (W/m²), wind speed, cell/external temperatures | 100 |
 | `victron_generator_status` | GX generator auto start/stop: runtime, start condition, quiet hours, service countdown, alarms | 100 |
 
-### Utility Tools
+### Discovery & Utility Tools
 
 | Tool | Description |
 |------|-------------|
-| `victron_discover` | Scan unit IDs to find all connected devices and their types |
+| `victron_mqtt_discover` | Auto-discover portal ID, list all MQTT services and device instances, output ready-to-paste config |
+| `victron_discover` | Scan Modbus unit IDs to find all connected devices and their types |
 | `victron_read_category` | Read all registers for any device category by service name (partial match supported) |
-| `victron_read_register` | Read raw register(s) by address — advanced/debugging |
+| `victron_read_register` | Read raw register(s) by address — advanced/debugging (Modbus only) |
 | `victron_list_registers` | List all available registers for a device category |
 
 ### Tool Annotations
@@ -204,9 +235,31 @@ All monitoring tools accept:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `host` | string | (required) | GX device IP address or hostname |
+| `host` | string | required* | GX device IP address or hostname |
 | `port` | number | 502 | Modbus TCP port |
 | `unitId` | number | varies | Modbus unit ID (use `victron_discover` to find) |
+| `transport` | string | `"modbus"` | Transport protocol: `"modbus"` or `"mqtt"` |
+| `mqttHost` | string | same as `host` | MQTT broker hostname (if different from Modbus host) |
+| `mqttPort` | number | 1883 | MQTT broker port |
+| `portalId` | string | — | Venus OS portal ID for MQTT (use `victron_mqtt_discover` to find) |
+| `deviceInstance` | string/number | — | MQTT device instance (omit to auto-detect via wildcard) |
+
+*\*Can be set via `VICTRON_HOST` environment variable.*
+
+### Environment Variables
+
+Set these to avoid repeating parameters on every tool call:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VICTRON_HOST` | Default host for all connections | `192.168.1.50` |
+| `VICTRON_TRANSPORT` | Default transport (`modbus` or `mqtt`) | `mqtt` |
+| `VICTRON_MODBUS_PORT` | Default Modbus TCP port | `502` |
+| `VICTRON_MQTT_PORT` | Default MQTT broker port | `1883` |
+| `VICTRON_PORTAL_ID` | Default portal ID for MQTT | `ca0f0e2e2261` |
+| `VICTRON_UNIT_ID` | Default Modbus unit ID | `100` |
+
+Tool arguments always override environment variables.
 
 ## Usage Examples
 
@@ -370,6 +423,49 @@ Is it charging? How much power is it using? What's the session energy so far?
 
 ---
 
+### Example 12: Discover MQTT services
+
+**Prompt:**
+```
+Discover what services are available via MQTT on my GX at 192.168.1.50.
+```
+
+**What the AI will do:**
+1. Call `victron_mqtt_discover` with mqttHost `192.168.1.50`
+2. Auto-detect the portal ID from the MQTT broker
+3. List all available services (battery, solarcharger, vebus, grid, etc.) with their device instances
+4. Output a ready-to-paste MCP server config with the discovered portal ID and environment variables
+
+---
+
+### Example 13: Read data via MQTT
+
+**Prompt:**
+```
+Show me battery status via MQTT. GX at 192.168.1.50, portal ID ca0f0e2e2261.
+```
+
+**What the AI will do:**
+1. Call `victron_battery_status` with `transport: "mqtt"`, host `192.168.1.50`, portalId `ca0f0e2e2261`
+2. Subscribe to MQTT topics for battery data, collect pre-scaled values
+3. Return the same formatted output as the Modbus path — SOC, voltage, current, temperature, etc.
+
+---
+
+## Modbus TCP vs MQTT
+
+| | Modbus TCP | MQTT |
+|---|-----------|------|
+| **Port** | 502 | 1883 |
+| **Setup** | Must enable on GX | Enabled by default |
+| **Device addressing** | Unit ID (0–247) | Service type + device instance |
+| **Discovery** | `victron_discover` (scans unit IDs) | `victron_mqtt_discover` (instant) |
+| **Data format** | Raw registers with scale factors | Pre-scaled JSON values |
+| **Best for** | Direct register access, raw reads | Easy setup, no unit ID hunting |
+| **Limitations** | Must enable Modbus TCP on GX, unit IDs are dynamic | Requires portal ID (auto-discovered) |
+
+Both transports return identical output. You can switch between them by changing the `transport` parameter or the `VICTRON_TRANSPORT` environment variable.
+
 ## Finding Unit IDs
 
 Unit IDs identify specific devices on the Modbus bus. There are two ways to find them:
@@ -447,16 +543,22 @@ victron-tcp/
 ├── src/
 │   ├── index.ts              # Entry point (stdio transport)
 │   ├── server.ts             # MCP server setup
+│   ├── config.ts             # Environment variable config (VICTRON_HOST, VICTRON_TRANSPORT, etc.)
+│   ├── transport.ts          # Unified transport abstraction (Modbus or MQTT → same result)
 │   ├── modbus/
 │   │   ├── client.ts         # Modbus TCP client + withModbusClient() wrapper
 │   │   ├── decoders.ts       # Data decoding, batch grouping, error wrapping
 │   │   └── types.ts          # RegisterDefinition, RegisterCategory interfaces
+│   ├── mqtt/
+│   │   ├── client.ts         # VictronMqttClient + withMqttClient() wrapper
+│   │   └── decoders.ts       # MQTT topic building, payload parsing, value conversion
 │   ├── registers/
 │   │   ├── index.ts          # Named exports for all 33 categories
 │   │   └── loader.ts         # Loads JSON register databases at import time
 │   └── tools/                # MCP tool implementations (one file per device type)
-│       ├── index.ts          # registerAllTools() — wires all 27 tools
-│       ├── helpers.ts        # Shared schemas, formatResults(), errorResult()
+│       ├── index.ts          # registerAllTools() — wires all 28 tools
+│       ├── helpers.ts        # Shared schemas, transport params, formatResults(), errorResult()
+│       ├── mqtt-discover.ts  # victron_mqtt_discover
 │       ├── system.ts         # victron_system_overview
 │       ├── battery.ts        # victron_battery_status
 │       ├── solar.ts          # victron_solar_status
@@ -465,7 +567,7 @@ victron-tcp/
 │       ├── tanks.ts          # victron_tank_levels
 │       ├── temperature.ts    # victron_temperature
 │       ├── inverter.ts       # victron_inverter_status
-│       ├── evcs.ts           # victron_evcs_status
+│       ├── evcs.ts           # victron_evcs_status (Modbus only — direct EVCS connection)
 │       ├── multi.ts          # victron_multi_status
 │       ├── pvinverter.ts     # victron_pvinverter_status
 │       ├── genset.ts         # victron_genset_status
@@ -480,9 +582,9 @@ victron-tcp/
 │       ├── gps.ts            # victron_gps_status
 │       ├── meteo.ts          # victron_meteo_status
 │       ├── generator.ts      # victron_generator_status
-│       ├── discover.ts       # victron_discover
+│       ├── discover.ts       # victron_discover (Modbus only — scans unit IDs)
 │       ├── category.ts       # victron_read_category
-│       └── raw.ts            # victron_read_register + victron_list_registers
+│       └── raw.ts            # victron_read_register + victron_list_registers (Modbus only)
 ├── data/
 │   ├── ccgx-registers.json   # 859 registers across 32 CCGX categories
 │   ├── evcs-registers.json   # 42 EVCS direct connection registers
@@ -498,12 +600,23 @@ victron-tcp/
 
 ## How It Works
 
+### Modbus TCP transport (default)
+
 1. **Connection per request** — Each tool call opens a Modbus TCP connection, reads the requested registers, and closes the connection. Simple and stateless.
 2. **Batch reads** — Consecutive registers are read in a single Modbus request for efficiency.
 3. **Data decoding** — Raw register values are decoded according to their data type (uint16, int16, uint32, int32, uint64, string) and scale factor.
 4. **Enum mapping** — Numeric values are mapped to human-readable labels where applicable (e.g., battery state: 0 → "Idle", 1 → "Charging", 2 → "Discharging").
 5. **Disconnected detection** — Values like 0xFFFF (uint16) or 0x7FFF (int16) indicate a disconnected sensor and are shown as "Not available".
 6. **Error handling** — Modbus errors return `isError: true` with actionable messages, allowing the LLM to self-correct (e.g., suggest checking the unit ID).
+
+### MQTT transport
+
+1. **Connection per request** — Each tool call connects to the Venus OS MQTT broker, subscribes to topics, collects data, and disconnects.
+2. **Topic structure** — Data lives at `N/{portalId}/{serviceType}/{deviceInstance}/{dbusPath}`. The server subscribes to the relevant topics for each register.
+3. **Pre-scaled values** — Venus OS publishes already-scaled values via MQTT (JSON `{"value": ...}`), so no scale factor math is needed.
+4. **Keepalive** — The server publishes to `R/{portalId}/keepalive` to trigger data publication from the GX device.
+5. **Wildcard discovery** — When `deviceInstance` is omitted, the server uses MQTT wildcards (`+`) to find the first matching device automatically.
+6. **Same output** — Both transports produce identical `RegisterReadResult` arrays, so tools and formatting work unchanged.
 
 ## Troubleshooting
 
@@ -527,6 +640,22 @@ victron-tcp/
 - Modbus TCP must be enabled on the GX device
 - The scan range might not include your device's unit ID
 - Try specifying a narrower range if the scan is timing out
+
+### MQTT "Connection timeout"
+- Verify the GX device IP address is correct
+- Check that the MQTT broker is running: `mosquitto_sub -h 192.168.1.50 -t '#' -C 1`
+- The default MQTT port is 1883 (no authentication required)
+- Venus OS enables MQTT by default — if it's not working, the device may not be reachable
+
+### MQTT "Portal ID discovery timeout"
+- The GX device may need a moment to start publishing after boot
+- Try running `victron_mqtt_discover` again after a few seconds
+- Verify the MQTT broker has data: `mosquitto_sub -h 192.168.1.50 -t 'N/+/system/+/Serial' -C 1`
+
+### MQTT returns "Not available" for all registers
+- The portal ID may be incorrect — run `victron_mqtt_discover` to auto-detect it
+- The device instance may not match — omit `deviceInstance` to use wildcard auto-detection
+- Publish a keepalive to trigger data: the server does this automatically, but stale brokers may need a moment
 
 ### Debugging on the GX device
 - **Error log on the GX**: Go to **Settings → Services → Modbus TCP** — the last error is shown on this page
@@ -557,6 +686,24 @@ Check your router's DHCP client list, or look on the GX device itself under **Se
 <summary><strong>What are unit IDs and how do I find them?</strong></summary>
 
 Unit IDs are Modbus addresses that identify specific devices on the GX bus. Unit ID 100 is always the system overview. Other devices get dynamically assigned IDs. Use the `victron_discover` tool to scan all unit IDs, or check the GX device at **Settings → Services → Modbus TCP → Available services**.
+</details>
+
+<details>
+<summary><strong>Should I use Modbus TCP or MQTT?</strong></summary>
+
+Both transports return identical data. **MQTT** is easier to set up — it's enabled by default, doesn't require unit IDs, and auto-discovers devices. **Modbus TCP** gives you raw register access and works with the `victron_read_register` tool for advanced debugging. If you're unsure, start with MQTT and `victron_mqtt_discover`.
+</details>
+
+<details>
+<summary><strong>What is a portal ID and how do I find it?</strong></summary>
+
+The portal ID is a unique identifier for your Venus OS installation (e.g., `ca0f0e2e2261`). It's used as the root of all MQTT topics. Run `victron_mqtt_discover` to auto-detect it, or find it on the GX device under **Settings → VRM online portal → VRM Portal ID**.
+</details>
+
+<details>
+<summary><strong>Can I use MQTT without knowing device instance numbers?</strong></summary>
+
+Yes. When you omit the `deviceInstance` parameter, the server uses MQTT wildcard subscriptions (`+`) to automatically find the first matching device for each service type. This works for most setups. If you have multiple devices of the same type, specify the instance to target a specific one.
 </details>
 
 <details>
@@ -625,7 +772,10 @@ npx @anthropic-ai/mcpb pack
 - [Venus OS on GitHub](https://github.com/victronenergy/venus)
 - [MCP Protocol Specification](https://modelcontextprotocol.io)
 - [MCP Tools Specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools)
+- [Venus OS MQTT documentation](https://github.com/victronenergy/dbus-mqtt)
+- [venus-docker — Venus OS simulator](https://github.com/victronenergy/venus-docker)
 - [modbus-serial npm package](https://www.npmjs.com/package/modbus-serial)
+- [mqtt.js npm package](https://www.npmjs.com/package/mqtt)
 
 ## License
 

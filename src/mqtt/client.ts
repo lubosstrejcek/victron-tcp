@@ -82,8 +82,15 @@ export class VictronMqttClient {
         }
       };
 
+      const onError = (err: Error): void => {
+        clearTimeout(timer);
+        cleanup();
+        reject(err);
+      };
+
       const cleanup = (): void => {
         this.client.removeListener('message', onMessage);
+        this.client.removeListener('error', onError);
         for (const topic of topicToReg.keys()) {
           this.client.unsubscribe(topic);
         }
@@ -98,6 +105,7 @@ export class VictronMqttClient {
       };
 
       this.client.on('message', onMessage);
+      this.client.on('error', onError);
 
       for (const topic of topicToReg.keys()) {
         this.client.subscribe(topic);
@@ -144,8 +152,15 @@ export class VictronMqttClient {
         }
       };
 
+      const onError = (err: Error): void => {
+        clearTimeout(timer);
+        cleanup();
+        reject(err);
+      };
+
       const cleanup = (): void => {
         this.client.removeListener('message', onMessage);
+        this.client.removeListener('error', onError);
         this.client.unsubscribe(topicPattern);
       };
 
@@ -157,6 +172,7 @@ export class VictronMqttClient {
       };
 
       this.client.on('message', onMessage);
+      this.client.on('error', onError);
       this.client.subscribe(topicPattern);
       this.publishKeepalive();
     });
@@ -166,7 +182,7 @@ export class VictronMqttClient {
     const topicPattern = `N/${this.portalId}/+/+/#`;
     const services = new Map<string, Set<string>>();
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         cleanup();
         resolve(buildResult());
@@ -184,8 +200,15 @@ export class VictronMqttClient {
         services.get(serviceType)!.add(deviceInstance);
       };
 
+      const onError = (err: Error): void => {
+        clearTimeout(timer);
+        cleanup();
+        reject(err);
+      };
+
       const cleanup = (): void => {
         this.client.removeListener('message', onMessage);
+        this.client.removeListener('error', onError);
         this.client.unsubscribe(topicPattern);
       };
 
@@ -200,6 +223,7 @@ export class VictronMqttClient {
       };
 
       this.client.on('message', onMessage);
+      this.client.on('error', onError);
       this.client.subscribe(topicPattern);
       this.publishKeepalive();
     });
