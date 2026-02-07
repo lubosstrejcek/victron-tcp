@@ -693,7 +693,7 @@ victron-tcp/
 <details>
 <summary><strong>What hardware do I need?</strong></summary>
 
-Any Victron GX device (Ekrano, Cerbo, Venus GX, CCGX, etc.) with Modbus TCP enabled. The GX device must be on the same local network as the machine running this MCP server. No cloud account or VRM portal access is required.
+Any Victron GX device (Ekrano, Cerbo, Venus GX, CCGX, etc.) on the same local network. MQTT is enabled by default — no configuration needed. For Modbus TCP, enable it in the GX device settings. No cloud account or VRM portal access is required.
 </details>
 
 <details>
@@ -759,13 +759,31 @@ Yes, it's safe. Phase 1 is completely read-only. The server never writes to any 
 <details>
 <summary><strong>Does this work with Venus OS Large on a Raspberry Pi?</strong></summary>
 
-Yes. Any device running Venus OS with Modbus TCP enabled works — including Raspberry Pi installations running Venus OS Large.
+Yes. Any device running Venus OS works — including Raspberry Pi installations running Venus OS Large. Both Modbus TCP and MQTT transports are supported.
 </details>
 
 <details>
 <summary><strong>What MCP clients are supported?</strong></summary>
 
 Any MCP client that supports stdio transport: Claude Code, Claude Desktop, Cursor, Windsurf, Cline, and others. See the Quick Start section for setup instructions for each client.
+</details>
+
+<details>
+<summary><strong>Do I need to pass the host and transport on every tool call?</strong></summary>
+
+No. Set environment variables (`VICTRON_HOST`, `VICTRON_TRANSPORT`, `VICTRON_PORTAL_ID`) in your MCP client config and they'll be used as defaults. Tool arguments override env vars when provided. See the Environment Variables section for the full list.
+</details>
+
+<details>
+<summary><strong>What is MCP (Model Context Protocol)?</strong></summary>
+
+[MCP](https://modelcontextprotocol.io) is an open standard that lets AI assistants call external tools. This server exposes Victron device data as MCP tools — the AI decides which tool to call based on your question, reads the data, and presents it in a readable format. You don't need to know register addresses or device protocols.
+</details>
+
+<details>
+<summary><strong>Can I use this with Home Assistant or Node-RED?</strong></summary>
+
+This server is designed for AI assistants via MCP, not for general-purpose automation. For Home Assistant, use the [Victron integration](https://www.home-assistant.io/integrations/victron/) or direct Modbus TCP. For Node-RED, use the modbus or MQTT nodes directly. This server adds value when you want an AI to interpret and reason about the data.
 </details>
 
 ## Claude Desktop Extension
