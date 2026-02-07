@@ -155,9 +155,29 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
 }
 ```
 
-### Cursor / Windsurf / Other MCP Clients
+### Cursor
 
-The server uses stdio transport. Add it to your MCP client's configuration:
+Add to `.cursor/mcp.json` in your project root (or `~/.cursor/mcp.json` for all projects):
+
+```json
+{
+  "mcpServers": {
+    "victron-tcp": {
+      "command": "npx",
+      "args": ["-y", "victron-tcp"],
+      "env": {
+        "VICTRON_HOST": "192.168.1.50",
+        "VICTRON_TRANSPORT": "mqtt",
+        "VICTRON_PORTAL_ID": "your-portal-id"
+      }
+    }
+  }
+}
+```
+
+### Windsurf / Other MCP Clients
+
+The server uses stdio transport. Add to your MCP client's configuration (the format is the same):
 
 ```json
 {
