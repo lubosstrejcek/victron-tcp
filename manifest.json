@@ -1,5 +1,5 @@
 {
-  "mcpb_version": "0.1",
+  "manifest_version": "0.3",
   "name": "victron-tcp",
   "display_name": "Victron TCP",
   "version": "1.0.0",
@@ -29,7 +29,33 @@
     "entry_point": "dist/index.js",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/dist/index.js"]
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "VICTRON_HOST": "${user_config.host}",
+        "VICTRON_TRANSPORT": "${user_config.transport}",
+        "VICTRON_PORTAL_ID": "${user_config.portal_id}"
+      }
+    }
+  },
+  "user_config": {
+    "host": {
+      "type": "string",
+      "title": "GX Device Host",
+      "description": "IP address or hostname of your Victron GX device (e.g., 192.168.1.50)",
+      "required": true
+    },
+    "transport": {
+      "type": "string",
+      "title": "Transport",
+      "description": "Connection protocol: modbus (port 502) or mqtt (port 1883, enabled by default on Venus OS)",
+      "default": "mqtt",
+      "required": false
+    },
+    "portal_id": {
+      "type": "string",
+      "title": "Portal ID",
+      "description": "Venus OS portal ID for MQTT (run victron_mqtt_discover to find it). Not needed for Modbus.",
+      "required": false
     }
   },
   "tools": [

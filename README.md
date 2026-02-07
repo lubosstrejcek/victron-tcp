@@ -787,7 +787,7 @@ npx @anthropic-ai/mcpb pack
 
 - [ ] **Phase 2**: Write support — ESS mode control, grid setpoint, charge current limits, relay control (registers 2700–2709, Mode 2/3 setpoints)
 - [ ] **Phase 3**: Resources — real-time monitoring via MCP resources with SSE subscriptions
-- [ ] Claude Desktop Extension publishing
+- [x] Claude Desktop Extension packaging (`.mcpb`)
 - [ ] NPM package publishing
 
 ## References

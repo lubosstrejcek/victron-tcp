@@ -27,6 +27,7 @@
   "keywords": [
     "victron",
     "modbus",
+    "mqtt",
     "mcp",
     "model-context-protocol",
     "energy",
