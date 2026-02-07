@@ -175,9 +175,9 @@ Add to `.cursor/mcp.json` in your project root (or `~/.cursor/mcp.json` for all 
 }
 ```
 
-### Windsurf / Other MCP Clients
+### Windsurf
 
-The server uses stdio transport. Add to your MCP client's configuration (the format is the same):
+Add to `~/.codeium/windsurf/mcp_config.json`:
 
 ```json
 {
@@ -186,12 +186,18 @@ The server uses stdio transport. Add to your MCP client's configuration (the for
       "command": "npx",
       "args": ["-y", "victron-tcp"],
       "env": {
-        "VICTRON_HOST": "192.168.1.50"
+        "VICTRON_HOST": "192.168.1.50",
+        "VICTRON_TRANSPORT": "mqtt",
+        "VICTRON_PORTAL_ID": "your-portal-id"
       }
     }
   }
 }
 ```
+
+### Other MCP Clients
+
+The server uses stdio transport. The JSON format is the same — `mcpServers` → `command` + `args` + `env`. Add it to your client's MCP configuration file.
 
 ## Available Tools
 
