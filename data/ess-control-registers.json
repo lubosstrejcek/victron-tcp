@@ -1,0 +1,65 @@
+{
+  "_comment": "ESS (Energy Storage System) control registers — for Phase 2 write support. These registers control ESS behavior via the GX device's com.victronenergy.settings service.",
+  "source": "Victron ESS Design & Installation Manual + Modbus TCP FAQ",
+  "modes": {
+    "1": "Optimized (with BatteryLife)",
+    "2": "Optimized (without BatteryLife)",
+    "3": "Keep batteries charged",
+    "4": "External control"
+  },
+  "batteryLifeStates": {
+    "0": "Unused, BatteryLife disabled",
+    "1": "Restarting",
+    "2": "Self-consumption",
+    "3": "Self-consumption (discharged)",
+    "4": "Self-consumption",
+    "5": "Discharge disabled",
+    "6": "Force charge",
+    "7": "Sustain",
+    "8": "Low SOC recharge",
+    "9": "Keep charged",
+    "10": "BatteryLife disabled",
+    "11": "BatteryLife disabled (discharged)",
+    "12": "BatteryLife disabled (slow charge)"
+  },
+  "mode2Registers": {
+    "settingsService": {
+      "description": "Registers on com.victronenergy.settings (check unit ID via victron_discover)",
+      "registers": [
+        { "address": 2700, "name": "ESS BatteryLife State", "type": "uint16", "access": "R", "dbusPath": "/Settings/CGwacs/BatteryLife/State" },
+        { "address": 2701, "name": "ESS Minimum SOC (unless grid fails)", "type": "uint16", "access": "R/W", "unit": "%", "range": "0-100", "dbusPath": "/Settings/CGwacs/BatteryLife/MinimumSocLimit" },
+        { "address": 2702, "name": "ESS Mode", "type": "uint16", "access": "R/W", "dbusPath": "/Settings/CGwacs/Hub4Mode", "enum": { "1": "Optimized (with BatteryLife)", "2": "Optimized (without BatteryLife)", "3": "Keep batteries charged", "4": "External control" } },
+        { "address": 2703, "name": "ESS Active SOC Limit", "type": "uint16", "access": "R", "unit": "%", "dbusPath": "/Settings/CGwacs/BatteryLife/SocLimit" },
+        { "address": 2704, "name": "Max inverter power", "type": "int16", "access": "R/W", "unit": "W", "dbusPath": "/Settings/CGwacs/MaxDischargePower", "notes": "-1 = unlimited" },
+        { "address": 2705, "name": "Max charge current (DVCC)", "type": "int16", "access": "R/W", "unit": "A", "dbusPath": "/Settings/SystemSetup/MaxChargeCurrent", "notes": "-1 = unlimited" },
+        { "address": 2706, "name": "Max grid feed-in", "type": "int16", "access": "R/W", "unit": "W (x100)", "dbusPath": "/Settings/CGwacs/MaxFeedInPower", "notes": "-1 = unlimited, value in 100W units" },
+        { "address": 2707, "name": "DC-coupled PV feed excess to grid", "type": "uint16", "access": "R/W", "dbusPath": "/Settings/CGwacs/OvervoltageFeedIn", "enum": { "0": "Don't feed excess", "1": "Feed excess to grid" } },
+        { "address": 2708, "name": "AC-coupled PV prevent feedback", "type": "uint16", "access": "R/W", "dbusPath": "/Settings/CGwacs/PreventFeedback", "enum": { "0": "Feed excess to grid", "1": "Don't feed to grid" }, "notes": "Inverted logic: 1 = prevent" },
+        { "address": 2709, "name": "Grid power limiter active", "type": "uint16", "access": "R", "dbusPath": "/PvPowerLimiterActive", "enum": { "0": "Inactive", "1": "Active" } },
+        { "address": 2716, "name": "Grid setpoint (high word)", "type": "int16", "access": "R/W", "unit": "W", "dbusPath": "/Settings/CGwacs/AcPowerSetPoint" },
+        { "address": 2717, "name": "Grid setpoint (low word)", "type": "int16", "access": "R/W", "unit": "W", "notes": "Combined 32-bit: positive = draw from grid, negative = feed to grid. Default: 50W" }
+      ]
+    }
+  },
+  "mode3Registers": {
+    "description": "External control mode registers — on com.victronenergy.vebus service. Unit ID: 246 (CCGX) or 242 (Venus GX). Must be written every 60 seconds or system enters Passthru.",
+    "registers": [
+      { "address": 37, "name": "AC power setpoint L1", "type": "int16", "access": "R/W", "unit": "W", "dbusPath": "/Hub4/L1/AcPowerSetpoint", "notes": "Negative = take from grid, positive = feed to grid" },
+      { "address": 38, "name": "Disable charge", "type": "uint16", "access": "R/W", "dbusPath": "/Hub4/DisableCharge", "enum": { "0": "Charge enabled", "1": "Charge disabled (also disables feedback)" } },
+      { "address": 39, "name": "Disable feed-in", "type": "uint16", "access": "R/W", "dbusPath": "/Hub4/DisableFeedIn", "enum": { "0": "Feed-in enabled", "1": "Feed-in disabled" } },
+      { "address": 40, "name": "AC power setpoint L2", "type": "int16", "access": "R/W", "unit": "W", "dbusPath": "/Hub4/L2/AcPowerSetpoint" },
+      { "address": 41, "name": "AC power setpoint L3", "type": "int16", "access": "R/W", "unit": "W", "dbusPath": "/Hub4/L3/AcPowerSetpoint" },
+      { "address": 65, "name": "Disable overvoltage feed-in", "type": "uint16", "access": "R/W", "enum": { "0": "Feed excess DC-PV", "1": "Don't feed excess DC-PV" } },
+      { "address": 66, "name": "Overvoltage feed-in limit L1", "type": "uint16", "access": "R/W", "unit": "W" },
+      { "address": 67, "name": "Overvoltage feed-in limit L2", "type": "uint16", "access": "R/W", "unit": "W" },
+      { "address": 68, "name": "Overvoltage feed-in limit L3", "type": "uint16", "access": "R/W", "unit": "W" },
+      { "address": 71, "name": "Power setpoint as limit", "type": "uint16", "access": "R/W", "enum": { "0": "Setpoint is target", "1": "Setpoint is limit (only feed excess PV)" } },
+      { "address": 72, "name": "Overvoltage offset", "type": "uint16", "access": "R/W", "enum": { "0": "1V legacy offset", "1": "100mV offset (recommended)" } }
+    ],
+    "constraints": {
+      "rampRate": "400 W/second hard-coded limit",
+      "writeInterval": "Must write setpoints every 60 seconds or system enters Passthru",
+      "passthruTrigger": "Both charge and feed-in disabled, or no control received within 60s"
+    }
+  }
+}

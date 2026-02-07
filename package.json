@@ -1,0 +1,57 @@
+{
+  "name": "victron-tcp",
+  "version": "1.0.0",
+  "description": "MCP server for Victron Energy GX devices via Modbus TCP",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "victron-tcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "data",
+    "server.json",
+    "manifest.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "convert": "tsx scripts/convert-excel.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "victron",
+    "modbus",
+    "mcp",
+    "model-context-protocol",
+    "energy",
+    "solar",
+    "battery",
+    "inverter",
+    "venus-os"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lubosstrejcek/victron-tcp.git"
+  },
+  "homepage": "https://github.com/lubosstrejcek/victron-tcp",
+  "author": "Lubos Strejcek",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "modbus-serial": "^8.0.23",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0",
+    "xlsx": "^0.18.5"
+  }
+}

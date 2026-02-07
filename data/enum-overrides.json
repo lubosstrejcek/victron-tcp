@@ -1,0 +1,1671 @@
+{
+  "com.victronenergy.system:806": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.system:807": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.system:826": {
+    "0": "Unknown",
+    "1": "Grid",
+    "2": "Generator",
+    "3": "Shore power",
+    "240": "Not connected"
+  },
+  "com.victronenergy.system:844": {
+    "0": "idle",
+    "1": "charging",
+    "2": "discharging"
+  },
+  "com.victronenergy.system:5400": {
+    "0": "Off",
+    "1": "Active"
+  },
+  "com.victronenergy.system:5401": {
+    "0": "Not allowed",
+    "1": "Allowed"
+  },
+  "com.victronenergy.system:5402": {
+    "0": "System is not capable of doing DynamicEss",
+    "1": "System is capable of doing DynamicEss"
+  },
+  "com.victronenergy.system:5404": {
+    "0": "No error",
+    "1": "No ESS",
+    "2": "ESS mode",
+    "3": "No matching schedule",
+    "4": "SOC low",
+    "5": "Battery capacity not configured"
+  },
+  "com.victronenergy.system:5405": {
+    "0": "No restrictions between battery and the grid",
+    "1": "Grid to battery energy flow is restricted",
+    "2": "Battery to grid energy flow is restricted",
+    "3": "No energy flow between battery and grid"
+  },
+  "com.victronenergy.system:5406": {
+    "0": "Target SOC",
+    "1": "Self-consumption",
+    "2": "Pro battery",
+    "3": "Pro grid"
+  },
+  "com.victronenergy.battery:267": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:268": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:269": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:270": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:271": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:272": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:273": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:274": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:275": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:276": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:277": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:278": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:279": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:280": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.battery:320": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:321": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:322": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:323": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:324": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:325": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:326": {
+    "0": "No alarm",
+    "1": "Almost discharged",
+    "2": "Alarm"
+  },
+  "com.victronenergy.battery:327": {
+    "0": "Open",
+    "14": "Standby"
+  },
+  "com.victronenergy.battery:1282": {
+    "0": "Initializing (Wait start)",
+    "1": "Initializing (before boot)",
+    "2": "Initializing (Before boot delay)",
+    "3": "Initializing (Wait boot)",
+    "4": "Initializing",
+    "5": "Initializing (Measure battery voltage)",
+    "6": "Initializing (Calculate battery voltage)",
+    "7": "Initializing (Wait bus voltage)",
+    "8": "Initializing (Wait for lynx shunt)",
+    "9": "Running",
+    "10": "Error (10)",
+    "11": "Unused (11)",
+    "12": "Shutdown",
+    "13": "Slave updating",
+    "14": "Standby",
+    "15": "Going to run",
+    "16": "Pre-charging",
+    "17": "Contactor check"
+  },
+  "com.victronenergy.battery:1283": {
+    "0": "No error",
+    "1": "Battery initialization error",
+    "2": "No batteries connected",
+    "3": "Unknown battery connected",
+    "4": "Different battery type",
+    "5": "Number of batteries incorrect",
+    "6": "Lynx Shunt not found",
+    "7": "Battery measure error",
+    "8": "Internal calculation error",
+    "9": "Batteries in series not ok",
+    "10": "Number of batteries incorrect",
+    "11": "Hardware error",
+    "12": "Watchdog error",
+    "13": "Over voltage",
+    "14": "Under voltage",
+    "15": "Over temperature",
+    "16": "Under temperature",
+    "17": "Hardware fault",
+    "18": "Standby shutdown",
+    "19": "Pre-charge charge error",
+    "20": "Safety contactor check error",
+    "21": "Pre-charge discharge error",
+    "22": "ADC error",
+    "23": "Slave error",
+    "24": "Slave warning",
+    "25": "Pre-charge error",
+    "26": "Safety contactor error",
+    "27": "Over current",
+    "28": "Slave update failed",
+    "29": "Slave update unavailable",
+    "30": "Calibration data lost",
+    "31": "Settings invalid",
+    "32": "BMS cable",
+    "33": "Reference failure",
+    "34": "Wrong system voltage",
+    "35": "Pre-charge timeout"
+  },
+  "com.victronenergy.battery:1284": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "com.victronenergy.battery:1285": {
+    "0": "Inactive",
+    "1": "Active"
+  },
+  "com.victronenergy.battery:1293": {
+    "0": "No error",
+    "1": "Battery initialization error",
+    "2": "No batteries connected",
+    "3": "Unknown battery connected",
+    "4": "Different battery type",
+    "5": "Number of batteries incorrect",
+    "6": "Lynx Shunt not found",
+    "7": "Battery measure error",
+    "8": "Internal calculation error",
+    "9": "Batteries in series not ok",
+    "10": "Number of batteries incorrect",
+    "11": "Hardware error",
+    "12": "Watchdog error",
+    "13": "Over voltage",
+    "14": "Under voltage",
+    "15": "Over temperature",
+    "16": "Under temperature",
+    "17": "Hardware fault",
+    "18": "Standby shutdown",
+    "19": "Pre-charge charge error",
+    "20": "Safety contactor check error",
+    "21": "Pre-charge discharge error",
+    "22": "ADC error",
+    "23": "Slave error",
+    "24": "Slave warning",
+    "25": "Pre-charge error",
+    "26": "Safety contactor error",
+    "27": "Over current",
+    "28": "Slave update failed",
+    "29": "Slave update unavailable",
+    "30": "Calibration data lost",
+    "31": "Settings invalid",
+    "32": "BMS cable",
+    "33": "Reference failure",
+    "34": "Wrong system voltage",
+    "35": "Pre-charge timeout"
+  },
+  "com.victronenergy.battery:1294": {
+    "0": "No error",
+    "1": "Battery initialization error",
+    "2": "No batteries connected",
+    "3": "Unknown battery connected",
+    "4": "Different battery type",
+    "5": "Number of batteries incorrect",
+    "6": "Lynx Shunt not found",
+    "7": "Battery measure error",
+    "8": "Internal calculation error",
+    "9": "Batteries in series not ok",
+    "10": "Number of batteries incorrect",
+    "11": "Hardware error",
+    "12": "Watchdog error",
+    "13": "Over voltage",
+    "14": "Under voltage",
+    "15": "Over temperature",
+    "16": "Under temperature",
+    "17": "Hardware fault",
+    "18": "Standby shutdown",
+    "19": "Pre-charge charge error",
+    "20": "Safety contactor check error",
+    "21": "Pre-charge discharge error",
+    "22": "ADC error",
+    "23": "Slave error",
+    "24": "Slave warning",
+    "25": "Pre-charge error",
+    "26": "Safety contactor error",
+    "27": "Over current",
+    "28": "Slave update failed",
+    "29": "Slave update unavailable",
+    "30": "Calibration data lost",
+    "31": "Settings invalid",
+    "32": "BMS cable",
+    "33": "Reference failure",
+    "34": "Wrong system voltage",
+    "35": "Pre-charge timeout"
+  },
+  "com.victronenergy.battery:1295": {
+    "0": "No error",
+    "1": "Battery initialization error",
+    "2": "No batteries connected",
+    "3": "Unknown battery connected",
+    "4": "Different battery type",
+    "5": "Number of batteries incorrect",
+    "6": "Lynx Shunt not found",
+    "7": "Battery measure error",
+    "8": "Internal calculation error",
+    "9": "Batteries in series not ok",
+    "10": "Number of batteries incorrect",
+    "11": "Hardware error",
+    "12": "Watchdog error",
+    "13": "Over voltage",
+    "14": "Under voltage",
+    "15": "Over temperature",
+    "16": "Under temperature",
+    "17": "Hardware fault",
+    "18": "Standby shutdown",
+    "19": "Pre-charge charge error",
+    "20": "Safety contactor check error",
+    "21": "Pre-charge discharge error",
+    "22": "ADC error",
+    "23": "Slave error",
+    "24": "Slave warning",
+    "25": "Pre-charge error",
+    "26": "Safety contactor error",
+    "27": "Over current",
+    "28": "Slave update failed",
+    "29": "Slave update unavailable",
+    "30": "Calibration data lost",
+    "31": "Settings invalid",
+    "32": "BMS cable",
+    "33": "Reference failure",
+    "34": "Wrong system voltage",
+    "35": "Pre-charge timeout"
+  },
+  "com.victronenergy.battery:1296": {
+    "0": "No error",
+    "1": "Battery initialization error",
+    "2": "No batteries connected",
+    "3": "Unknown battery connected",
+    "4": "Different battery type",
+    "5": "Number of batteries incorrect",
+    "6": "Lynx Shunt not found",
+    "7": "Battery measure error",
+    "8": "Internal calculation error",
+    "9": "Batteries in series not ok",
+    "10": "Number of batteries incorrect",
+    "11": "Hardware error",
+    "12": "Watchdog error",
+    "13": "Over voltage",
+    "14": "Under voltage",
+    "15": "Over temperature",
+    "16": "Under temperature",
+    "17": "Hardware fault",
+    "18": "Standby shutdown",
+    "19": "Pre-charge charge error",
+    "20": "Safety contactor check error",
+    "21": "Pre-charge discharge error",
+    "22": "ADC error",
+    "23": "Slave error",
+    "24": "Slave warning",
+    "25": "Pre-charge error",
+    "26": "Safety contactor error",
+    "27": "Over current",
+    "28": "Slave update failed",
+    "29": "Slave update unavailable",
+    "30": "Calibration data lost",
+    "31": "Settings invalid",
+    "32": "BMS cable",
+    "33": "Reference failure",
+    "34": "Wrong system voltage",
+    "35": "Pre-charge timeout"
+  },
+  "com.victronenergy.battery:1297": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.battery:1298": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.battery:1299": {
+    "0": "Inactive",
+    "1": "Active"
+  },
+  "com.victronenergy.battery:1319": {
+    "3": "On",
+    "252": "Standby"
+  },
+  "com.victronenergy.battery:1320": {
+    "0": "Unknown",
+    "1": "Balanced",
+    "2": "Balancing",
+    "3": "Cell imbalance"
+  },
+  "com.victronenergy.solarcharger:774": {
+    "1": "On",
+    "4": "Off"
+  },
+  "com.victronenergy.solarcharger:775": {
+    "0": "Off",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "11": "Other (Hub-1)",
+    "252": "External control"
+  },
+  "com.victronenergy.solarcharger:778": {
+    "0": "No",
+    "1": "Yes",
+    "2": "Error",
+    "3": "Unavailable- Unknown"
+  },
+  "com.victronenergy.solarcharger:780": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.solarcharger:788": {
+    "0": "No error",
+    "1": "Battery temperature too high",
+    "2": "Battery voltage too high",
+    "3": "Battery temperature sensor miswired (+)",
+    "4": "Battery temperature sensor miswired (-)",
+    "5": "Battery temperature sensor disconnected",
+    "6": "Battery voltage sense miswired (+)",
+    "7": "Battery voltage sense miswired (-)",
+    "8": "Battery voltage sense disconnected",
+    "9": "Battery voltage wire losses too high",
+    "17": "Charger temperature too high",
+    "18": "Charger over-current",
+    "19": "Charger current polarity reversed",
+    "20": "Bulk time limit reached",
+    "22": "Charger temperature sensor miswired",
+    "23": "Charger temperature sensor disconnected",
+    "34": "Input current too high"
+  },
+  "com.victronenergy.solarcharger:791": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.solarcharger:3731": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.solarcharger:3732": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.solarcharger:3733": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.solarcharger:3734": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.vebus:29": {
+    "0": "AC Input 1",
+    "1": "AC Input 2",
+    "240": "Disconnected"
+  },
+  "com.victronenergy.vebus:31": {
+    "0": "Off",
+    "1": "Low Power",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "8": "Passthru",
+    "9": "Inverting",
+    "10": "Power assist",
+    "11": "Power supply",
+    "244": "Sustain",
+    "252": "External control"
+  },
+  "com.victronenergy.vebus:32": {
+    "0": "No error",
+    "1": "VE.Bus Error 1: Device is switched off because one of the other phases in the system has switched off",
+    "2": "VE.Bus Error 2: New and old types MK2 are mixed in the system",
+    "3": "VE.Bus Error 3: Not all- or more than- the expected devices were found in the system",
+    "4": "VE.Bus Error 4: No other device whatsoever detected",
+    "5": "VE.Bus Error 5: Overvoltage on AC-out",
+    "6": "VE.Bus Error 6: Error in DDC Program",
+    "7": "VE.Bus BMS connected- which requires an Assistant- but no assistant found",
+    "10": "VE.Bus Error 10: System time synchronisation problem occurred",
+    "14": "VE.Bus Error 14: Device cannot transmit data",
+    "16": "VE.Bus Error 16: Dongle missing",
+    "17": "VE.Bus Error 17: One of the devices assumed master status because the original master failed",
+    "18": "VE.Bus Error 18: AC Overvoltage on the output of a slave has occurred while already switched off",
+    "22": "VE.Bus Error 22: This device cannot function as slave",
+    "24": "VE.Bus Error 24: Switch-over system protection initiated",
+    "25": "VE.Bus Error 25: Firmware incompatibility. The firmware of one of the connected device is not sufficiently up to date to operate in conjunction with this device",
+    "26": "VE.Bus Error 26: Internal error"
+  },
+  "com.victronenergy.vebus:33": {
+    "1": "Charger Only",
+    "2": "Inverter Only",
+    "3": "On",
+    "4": "Off"
+  },
+  "com.victronenergy.vebus:34": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:35": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:36": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:38": {
+    "0": "Charge allowed",
+    "1": "Charge disabled"
+  },
+  "com.victronenergy.vebus:39": {
+    "0": "Feed in allowed",
+    "1": "Feed in disabled"
+  },
+  "com.victronenergy.vebus:42": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:43": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:44": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:45": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:46": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:47": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:48": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:49": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:50": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:51": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:52": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:53": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:54": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:55": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:56": {
+    "0": "PV enabled",
+    "1": "PV disabled"
+  },
+  "com.victronenergy.vebus:57": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.vebus:58": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.vebus:59": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.vebus:60": {
+    "0": "No",
+    "1": "Yes"
+  },
+  "com.victronenergy.vebus:62": {
+    "1": "VE.Bus reset"
+  },
+  "com.victronenergy.vebus:63": {
+    "0": "Ok",
+    "1": "Warning"
+  },
+  "com.victronenergy.vebus:64": {
+    "0": "Ok",
+    "2": "Alarm"
+  },
+  "com.victronenergy.vebus:65": {
+    "0": "Feed in overvoltage",
+    "1": "Do not feed in overvoltage"
+  },
+  "com.victronenergy.vebus:69": {
+    "0": "AC input not ignored",
+    "1": "AC input ignored"
+  },
+  "com.victronenergy.vebus:70": {
+    "0": "AC input not ignored",
+    "1": "AC input ignored"
+  },
+  "com.victronenergy.vebus:71": {
+    "0": "AcPowerSetpoint interpreted normally",
+    "1": "AcPowerSetpoint is OvervoltageFeedIn limit"
+  },
+  "com.victronenergy.vebus:72": {
+    "0": "OvervoltageFeedIn uses 1V offset",
+    "1": "OvervoltageFeedIn uses 0.1V offset"
+  },
+  "com.victronenergy.vebus:73": {
+    "0": "Sustain inactive",
+    "1": "Sustain active"
+  },
+  "com.victronenergy.vebus:94": {
+    "0": "OK",
+    "1": "Warning"
+  },
+  "com.victronenergy.vebus:95": {
+    "0": "Initialising",
+    "1": "Bulk",
+    "2": "Absorption",
+    "3": "Float",
+    "4": "Storage",
+    "5": "Absorb repeat",
+    "6": "Forced absorb",
+    "7": "Equalise",
+    "8": "Bulk stopped",
+    "9": "Unknown"
+  },
+  "com.victronenergy.vebus:102": {
+    "0": "Renewable energy not preferred",
+    "1": "Renewable energy preferred"
+  },
+  "com.victronenergy.vebus:103": {
+    "0": "Generator not selected",
+    "1": "Generator selected"
+  },
+  "com.victronenergy.vebus:104": {
+    "0": "Generator not selected",
+    "1": "Generator selected"
+  },
+  "com.victronenergy.vebus:105": {
+    "0": "No action",
+    "1": "Redetect system"
+  },
+  "com.victronenergy.vebus:108": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "com.victronenergy.vebus:109": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "com.victronenergy.tank:3003": {
+    "0": "Fuel",
+    "1": "Fresh water",
+    "2": "Waste water",
+    "3": "Live well",
+    "4": "Oil",
+    "5": "Black water (sewage)",
+    "6": "Gasoline",
+    "7": "Diesel",
+    "8": "LPG",
+    "9": "LNG",
+    "10": "Hydraulic oil",
+    "11": "Raw water"
+  },
+  "com.victronenergy.tank:3007": {
+    "0": "OK",
+    "1": "Open circuit",
+    "2": "Short circuited",
+    "3": "Reverse Polarity",
+    "4": "Unknown"
+  },
+  "com.victronenergy.temperature:3303": {
+    "0": "Battery",
+    "1": "Fridge",
+    "2": "Generic",
+    "3": "Room",
+    "4": "Outdoor",
+    "5": "WaterHeater",
+    "6": "Freezer"
+  },
+  "com.victronenergy.temperature:3305": {
+    "0": "OK",
+    "1": "Open circuit",
+    "2": "Short circuited",
+    "3": "Reverse Polarity",
+    "4": "Unknown"
+  },
+  "com.victronenergy.inverter:3110": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3111": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3112": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3113": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3114": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3115": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3116": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3117": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3126": {
+    "1": "Charger only,2=Inverter only",
+    "3": "On",
+    "4": "Off",
+    "5": "Low Power/Eco",
+    "251": "Passthrough",
+    "252": "Standby",
+    "253": "Hibernate"
+  },
+  "com.victronenergy.inverter:3128": {
+    "0": "Off",
+    "1": "Low power mode (search mode)",
+    "2": "Fault",
+    "9": "Inverting (on)"
+  },
+  "com.victronenergy.inverter:3168": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.inverter:3169": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.inverter:3170": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.inverter:3171": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.inverter:3172": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.pvinverter:1026": {
+    "0": "AC input 1",
+    "1": "AC output",
+    "2": "AC input 2"
+  },
+  "com.victronenergy.genset:3213": {
+    "0": "Standby",
+    "1": "Startup 1",
+    "2": "Startup 2",
+    "3": "Startup 3",
+    "4": "Startup 4",
+    "5": "Startup 5",
+    "6": "Startup 6",
+    "7": "Startup 7",
+    "8": "Running",
+    "9": "Stopping",
+    "10": "Error"
+  },
+  "com.victronenergy.genset:3214": {
+    "0": "No error",
+    "1": "AC voltage L1 too low",
+    "2": "AC frequency L1 too low",
+    "3": "AC current too low",
+    "4": "AC power too low",
+    "5": "Emergency stop",
+    "6": "Servo current too low",
+    "7": "Oil pressure too low",
+    "8": "Engine temperature too low",
+    "9": "Winding temperature too low",
+    "10": "Exhaust temperature too low",
+    "13": "Starter current too low",
+    "14": "Glow current too low",
+    "15": "Glow current too low",
+    "16": "Fuel holding magnet current too low",
+    "17": "Stop solenoid hold coil current too low",
+    "18": "Stop solenoid pull coil current too low",
+    "19": "Optional DC out current too low",
+    "20": "5V output voltage too low",
+    "21": "Boost output current too low",
+    "22": "Panel supply current too high",
+    "25": "Starter battery voltage too low",
+    "26": "Startup aborted (rotation too low)",
+    "28": "Rotation too low",
+    "29": "Power contactor current too low",
+    "30": "AC voltage L2 too low",
+    "31": "AC frequency L2 too low",
+    "32": "AC current L2 too low",
+    "33": "AC power L2 too low",
+    "34": "AC voltage L3 too low",
+    "35": "AC frequency L3 too low",
+    "36": "AC current L3 too low",
+    "37": "AC power L3 too low",
+    "62": "Fuel temperature too low",
+    "63": "Fuel level too low",
+    "65": "AC voltage L1 too high",
+    "66": "AC frequency too high",
+    "67": "AC current too high",
+    "68": "AC power too high",
+    "70": "Servo current too high",
+    "71": "Oil pressure too high",
+    "72": "Engine temperature too high",
+    "73": "Winding temperature too high",
+    "74": "Exhaust temperature too low",
+    "77": "Starter current too low",
+    "78": "Glow current too high",
+    "79": "Glow current too high",
+    "80": "Fuel holding magnet current too high",
+    "81": "Stop solenoid hold coil current too high",
+    "82": "Stop solenoid pull coil current too high",
+    "83": "Optional DC out current too high",
+    "84": "5V output voltage too high",
+    "85": "Boost output current too high",
+    "89": "Starter battery voltage too high",
+    "90": "Startup aborted (rotation too high)",
+    "92": "Rotation too high",
+    "93": "Power contactor current too high",
+    "94": "AC voltage L2 too high",
+    "95": "AC frequency L2 too high",
+    "96": "AC current L2 too high",
+    "97": "AC power L2 too high",
+    "98": "AC voltage L3 too high",
+    "99": "AC frequency L3 too high",
+    "100": "AC current L3 too high",
+    "101": "AC power L3 too high",
+    "126": "Fuel temperature too high",
+    "127": "Fuel level too high",
+    "130": "Lost control unit",
+    "131": "Lost panel",
+    "132": "Service needed",
+    "133": "Lost 3-phase module",
+    "134": "Lost AGT module",
+    "135": "Synchronization failure",
+    "137": "Intake airfilter",
+    "139": "Lost sync. module",
+    "140": "Load-balance failed",
+    "141": "Sync-mode deactivated",
+    "142": "Engine controller",
+    "148": "Rotating field wrong",
+    "149": "Fuel level sensor lost",
+    "150": "Init failed",
+    "151": "Watchdog",
+    "152": "Out: winding",
+    "153": "Out: exhaust",
+    "154": "Out: Cyl. head",
+    "155": "Inverter over temperature",
+    "156": "Inverter overload",
+    "157": "Inverter communication lost",
+    "158": "Inverter sync failed",
+    "159": "CAN communication lost",
+    "160": "L1 overload",
+    "161": "L2 overload",
+    "162": "L3 overload",
+    "163": "DC overload",
+    "164": "DC overvoltage",
+    "165": "Emergency stop",
+    "166": "No connection"
+  },
+  "com.victronenergy.genset:3215": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "com.victronenergy.genset:3223": {
+    "0": "Stop",
+    "1": "Start"
+  },
+  "com.victronenergy.settings:2707": {
+    "0": "Don’t feed excess DC-tied PV into grid",
+    "1": "Feed excess DC-tied PV into the grid"
+  },
+  "com.victronenergy.settings:2708": {
+    "0": "Feed excess AC-tied PV into grid",
+    "1": "Don’t feed excess AC-tied PV into the grid"
+  },
+  "com.victronenergy.settings:2711": {
+    "0": "Unused",
+    "1": "Grid",
+    "2": "Genset",
+    "3": "Shore"
+  },
+  "com.victronenergy.settings:2712": {
+    "0": "Unused",
+    "1": "Grid",
+    "2": "Genset",
+    "3": "Shore"
+  },
+  "com.victronenergy.settings:2715": {
+    "0": "Above minimum SOC only",
+    "1": "Always"
+  },
+  "com.victronenergy.settings:2717": {
+    "0": "External meter",
+    "1": "Inverter/Charger"
+  },
+  "com.victronenergy.settings:2900": {
+    "0": "Unused, BL disabled",
+    "1": "Restarting",
+    "2": "Self-consumption",
+    "3": "Self-consumption",
+    "4": "Self-consumption",
+    "5": "Discharge disabled",
+    "6": "Force charge",
+    "7": "Sustain",
+    "8": "Low Soc Recharge",
+    "9": "Keep batteries charged",
+    "10": "BL Disabled",
+    "11": "BL Disabled (Low SoC)",
+    "12": "BL Disabled (Low SOC recharge)"
+  },
+  "com.victronenergy.settings:2902": {
+    "1": "ESS with Phase Compensation",
+    "2": "ESS without phase compensation",
+    "3": "Disabled/External Control"
+  },
+  "com.victronenergy.settings:4701": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "com.victronenergy.settings:4702": {
+    "0": "Auto",
+    "1": "On",
+    "2": "Off"
+  },
+  "com.victronenergy.settings:5423": {
+    "0": "Off",
+    "1": "Auto",
+    "4": "Node-RED"
+  },
+  "com.victronenergy.settings:5424": {
+    "0": "Not allowed",
+    "1": "Allowed"
+  },
+  "com.victronenergy.settings:5426": {
+    "0": "No restrictions between battery and the grid",
+    "1": "Grid to battery energy flow is restricted",
+    "2": "Battery to grid energy flow is restricted",
+    "3": "No energy flow between battery and grid"
+  },
+  "com.victronenergy.settings:5429": {
+    "0": "Target SOC",
+    "1": "Self-consumption",
+    "2": "Pro battery",
+    "3": "Pro grid"
+  },
+  "com.victronenergy.charger:2317": {
+    "0": "Off",
+    "1": "On",
+    "2": "Error",
+    "3": "Unavailable- Unknown"
+  },
+  "com.victronenergy.charger:2318": {
+    "0": "Off",
+    "1": "Low Power Mode",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "8": "Passthru",
+    "9": "Inverting",
+    "10": "Power assist",
+    "11": "Power supply mode",
+    "252": "External control"
+  },
+  "com.victronenergy.charger:2319": {
+    "0": "No error",
+    "1": "Battery temperature too high",
+    "2": "Battery voltage too high",
+    "3": "Battery temperature sensor miswired (+)",
+    "4": "Battery temperature sensor miswired (-)",
+    "5": "Battery temperature sensor disconnected",
+    "6": "Battery voltage sense miswired (+)",
+    "7": "Battery voltage sense miswired (-)",
+    "8": "Battery voltage sense disconnected",
+    "9": "Battery voltage wire losses too high",
+    "17": "Charger temperature too high",
+    "18": "Charger over-current",
+    "19": "Charger current polarity reversed",
+    "20": "Bulk time limit reached",
+    "22": "Charger temperature sensor miswired",
+    "23": "Charger temperature sensor disconnected",
+    "34": "Input current too high"
+  },
+  "com.victronenergy.charger:2320": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.charger:2321": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.charger:2322": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.hub4:2709": {
+    "0": "Feed-in limiting is inactive",
+    "1": "Feed-in limiting is active"
+  },
+  "com.victronenergy.digitalinput:3422": {
+    "0": "Low",
+    "1": "High",
+    "2": "Off",
+    "3": "On",
+    "4": "No",
+    "5": "Yes",
+    "6": "Open",
+    "7": "Closed",
+    "8": "Alarm",
+    "9": "OK",
+    "10": "Running",
+    "11": "Stopped"
+  },
+  "com.victronenergy.digitalinput:3423": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.digitalinput:3424": {
+    "2": "Door",
+    "3": "Bilge pump",
+    "4": "Bilge alarm",
+    "5": "Burglar alarm",
+    "6": "Smoke alarm",
+    "7": "Fire alarm",
+    "8": "CO2 alarm",
+    "9": "Generator"
+  },
+  "com.victronenergy.generator:3500": {
+    "0": "Stop generator",
+    "1": "Start generator"
+  },
+  "com.victronenergy.generator:3501": {
+    "0": "Stopped",
+    "1": "Manual",
+    "2": "TestRun",
+    "3": "LossOfComms",
+    "4": "Soc",
+    "5": "AcLoad",
+    "6": "BatteryCurrent",
+    "7": "BatteryVoltage",
+    "8": "InverterTemperatur",
+    "9": "InverterOverload",
+    "10": "StopOnAc1"
+  },
+  "com.victronenergy.generator:3503": {
+    "0": "Quiet hours inactive",
+    "1": "Quiet hours active"
+  },
+  "com.victronenergy.generator:3506": {
+    "0": "Stopped",
+    "1": "Running",
+    "2": "Warm-up",
+    "3": "Cool-down",
+    "4": "Stopping",
+    "10": "Error"
+  },
+  "com.victronenergy.generator:3507": {
+    "0": "No Error",
+    "1": "Remote disabled",
+    "2": "Remote fault"
+  },
+  "com.victronenergy.generator:3508": {
+    "0": "No alarm",
+    "2": "Alarm"
+  },
+  "com.victronenergy.generator:3509": {
+    "0": "Autostart disabled",
+    "1": "Autostart enabled"
+  },
+  "com.victronenergy.generator:3512": {
+    "1": "Reset service counter"
+  },
+  "com.victronenergy.evcharger:3815": {
+    "0": "Manual",
+    "1": "Auto"
+  },
+  "com.victronenergy.evcharger:3824": {
+    "0": "Disconnected",
+    "1": "Connected",
+    "2": "Charging",
+    "3": "Charged",
+    "4": "Waiting for sun",
+    "5": "Waiting for RFID",
+    "6": "Waiting for start",
+    "7": "Low SOC",
+    "8": "Ground test error",
+    "9": "Welded contacts test error",
+    "10": "CP input test error (shorted)",
+    "11": "Residual current detected",
+    "12": "Undervoltage detected",
+    "13": "Overvoltage detected",
+    "14": "Overheating detected",
+    "15": "Reserved",
+    "16": "Reserved",
+    "17": "Reserved",
+    "18": "Reserved",
+    "19": "Reserved",
+    "20": "Charging limit",
+    "21": "Start charging",
+    "22": "Switching to 3 phase",
+    "23": "Switching to 1 phase",
+    "24": "Stop charging"
+  },
+  "com.victronenergy.evcharger:3826": {
+    "0": "Stop",
+    "1": "Start"
+  },
+  "com.victronenergy.evcharger:3827": {
+    "0": "AC input 1",
+    "1": "AC output",
+    "2": "AC input 2"
+  },
+  "com.victronenergy.fuelcell:4006": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.fuelcell:4007": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.fuelcell:4008": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.fuelcell:4009": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.fuelcell:4010": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.fuelcell:4011": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4106": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4107": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4108": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4109": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4110": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4111": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.alternator:4112": {
+    "0": "Off",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "11": "Power Supply",
+    "252": "External control"
+  },
+  "com.victronenergy.alternator:4113": {
+    "12": "High battery temperature",
+    "13": "High battery voltage",
+    "14": "Low battery voltage",
+    "15": "VBat exceeds $CPB",
+    "21": "High alternator temperature",
+    "22": "Alternator overspeed",
+    "24": "Internal error",
+    "41": "High field FET temperature",
+    "42": "Sensor missing",
+    "43": "Low VAlt",
+    "44": "High Voltage offset",
+    "45": "VAlt exceeds $CPB",
+    "53": "Battery instance out of range",
+    "54": "Too many BMSes",
+    "55": "AEBus fault",
+    "56": "Too many Victron devices",
+    "91": "BMS lost",
+    "92": "Forced idle",
+    "201": "DCDC converter fail"
+  },
+  "com.victronenergy.alternator:4119": {
+    "1": "On",
+    "4": "Off"
+  },
+  "com.victronenergy.dcsource:4206": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsource:4207": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsource:4208": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsource:4209": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsource:4210": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsource:4211": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4306": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4307": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4308": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4309": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4310": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcload:4311": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4408": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4409": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4410": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4411": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4412": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcsystem:4413": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4520": {
+    "0": "Unused",
+    "1": "Grid",
+    "2": "Genset",
+    "3": "Shore"
+  },
+  "com.victronenergy.multi:4521": {
+    "0": "Unused",
+    "1": "Grid",
+    "2": "Genset",
+    "3": "Shore"
+  },
+  "com.victronenergy.multi:4525": {
+    "0": "AC Input 1",
+    "1": "AC Input 2",
+    "240": "Disconnected"
+  },
+  "com.victronenergy.multi:4530": {
+    "0": "Off",
+    "1": "Low Power",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "8": "Passthru",
+    "9": "Inverting",
+    "10": "Power assist",
+    "11": "Power supply",
+    "252": "External control"
+  },
+  "com.victronenergy.multi:4531": {
+    "1": "Charger Only",
+    "2": "Inverter Only",
+    "3": "On",
+    "4": "Off"
+  },
+  "com.victronenergy.multi:4532": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4533": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4534": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4535": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4536": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4537": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4538": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4539": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4542": {
+    "0": "Open",
+    "1": "Closed"
+  },
+  "com.victronenergy.multi:4543": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.multi:4545": {
+    "0": "No error",
+    "1": "Battery temperature too high",
+    "2": "Battery voltage too high",
+    "3": "Battery temperature sensor miswired (+)",
+    "4": "Battery temperature sensor miswired (-)",
+    "5": "Battery temperature sensor disconnected",
+    "6": "Battery voltage sense miswired (+)",
+    "7": "Battery voltage sense miswired (-)",
+    "8": "Battery voltage sense disconnected",
+    "9": "Battery voltage wire losses too high",
+    "17": "Charger temperature too high",
+    "18": "Charger over-current",
+    "19": "Charger current polarity reversed",
+    "20": "Bulk time limit reached",
+    "22": "Charger temperature sensor miswired",
+    "23": "Charger temperature sensor disconnected",
+    "34": "Input current too high"
+  },
+  "com.victronenergy.multi:4602": {
+    "0": "No alarm",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.multi:4605": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.multi:4606": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.multi:4607": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.multi:4608": {
+    "0": "Off",
+    "1": "Voltage/current limited",
+    "2": "MPPT active",
+    "255": "Not available"
+  },
+  "com.victronenergy.multi:4609": {
+    "0": "self-consumption (battery-life)",
+    "1": "self-consumption",
+    "2": "Keep charged",
+    "3": "External control"
+  },
+  "com.victronenergy.multi:4612": {
+    "0": "Feed-in enabled",
+    "1": "Feed-in disabled"
+  },
+  "com.victronenergy.multi:4613": {
+    "0": "Charge enabled",
+    "1": "Charge disabled"
+  },
+  "com.victronenergy.multi:4615": {
+    "0": "Sustain inactive",
+    "1": "Sustain active"
+  },
+  "com.victronenergy.multi:4620": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.pump:4700": {
+    "0": "Stopped",
+    "1": "Running"
+  },
+  "com.victronenergy.dcdc:4803": {
+    "0": "No error",
+    "1": "Battery temperature too high",
+    "2": "Battery voltage too high",
+    "3": "Battery temperature sensor miswired (+)",
+    "4": "Battery temperature sensor miswired (-)",
+    "5": "Battery temperature sensor disconnected",
+    "6": "Battery voltage sense miswired (+)",
+    "7": "Battery voltage sense miswired (-)",
+    "8": "Battery voltage sense disconnected",
+    "9": "Battery voltage wire losses too high",
+    "17": "Charger temperature too high",
+    "18": "Charger over-current",
+    "19": "Charger current polarity reversed",
+    "20": "Bulk time limit reached",
+    "22": "Charger temperature sensor miswired",
+    "23": "Charger temperature sensor disconnected",
+    "34": "Input current too high"
+  },
+  "com.victronenergy.dcdc:4807": {
+    "1": "On",
+    "4": "Off"
+  },
+  "com.victronenergy.dcdc:4808": {
+    "0": "Off",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "11": "Power Supply"
+  },
+  "com.victronenergy.acsystem:4900": {
+    "0": "Off",
+    "1": "Low Power",
+    "2": "Fault",
+    "3": "Bulk",
+    "4": "Absorption",
+    "5": "Float",
+    "6": "Storage",
+    "7": "Equalize",
+    "8": "Passthru",
+    "9": "Inverting",
+    "10": "Power assist",
+    "11": "Power supply",
+    "252": "External control"
+  },
+  "com.victronenergy.acsystem:4921": {
+    "1": "ESS with Phase Compensation",
+    "2": "ESS without phase compensation",
+    "3": "Disabled/External Control"
+  },
+  "com.victronenergy.acsystem:4924": {
+    "0": "Feed-in enabled",
+    "1": "Feed-in disabled"
+  },
+  "com.victronenergy.acsystem:4930": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.acsystem:4931": {
+    "0": "Ok",
+    "1": "Warning",
+    "2": "Alarm"
+  },
+  "com.victronenergy.dcgenset:5204": {
+    "0": "Stop generator",
+    "1": "Start generator"
+  },
+  "com.victronenergy.heatpump:5501": {
+    "0": "Off",
+    "1": "Error",
+    "2": "Startup",
+    "3": "Heating",
+    "4": "Cooling"
+  },
+  "victron.evcs:5009": {
+    "0": "Manual",
+    "1": "Auto",
+    "2": "Scheduled"
+  },
+  "victron.evcs:5010": {
+    "0": "Stop",
+    "1": "Start"
+  },
+  "victron.evcs:5015": {
+    "0": "Disconnected",
+    "1": "Connected",
+    "2": "Charging",
+    "3": "Charged",
+    "4": "Waiting for sun",
+    "5": "Waiting for RFID",
+    "6": "Waiting for start",
+    "7": "Low SOC",
+    "8": "Ground test error",
+    "9": "Welded contacts test error",
+    "10": "CP input test error (shorted)",
+    "11": "Residual current detected",
+    "12": "Undervoltage detected",
+    "13": "Overvoltage detected",
+    "14": "Overheating detected",
+    "20": "Charging limit",
+    "21": "Start charging",
+    "22": "Switching to 3 phase",
+    "23": "Switching to 1 phase",
+    "24": "Stop charging"
+  },
+  "victron.evcs:5026": {
+    "0": "Inverter AC Out",
+    "1": "Inverter AC Input"
+  },
+  "victron.evcs:5049": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "victron.evcs:5055": {
+    "0": "3 Phase",
+    "1": "Single Phase"
+  },
+  "victron.evcs:5056": {
+    "0": "3 Phase",
+    "1": "Single Phase",
+    "2": "Single + 3 Phase"
+  },
+  "victron.evcs:5065": {
+    "0": "Feed in",
+    "1": "Battery powered"
+  },
+  "victron.evcs:5102": {
+    "0": "Disabled",
+    "1": "Enabled"
+  },
+  "victron.evcs:5104": {
+    "0": "Disabled",
+    "1": "Enabled"
+  }
+}

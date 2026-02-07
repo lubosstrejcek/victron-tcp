@@ -1,0 +1,84 @@
+{
+  "mcpb_version": "0.1",
+  "name": "victron-tcp",
+  "display_name": "Victron TCP",
+  "version": "1.0.0",
+  "description": "Connect to Victron Energy GX devices via Modbus TCP — read real-time solar, battery, grid, and inverter data from your local network.",
+  "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP. Get direct, low-latency access to 860+ registers across 32 device categories — no cloud required. Built from the official CCGX Modbus TCP register list (Rev 50).",
+  "author": {
+    "name": "Lubos Strejcek"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lubosstrejcek/victron-tcp.git"
+  },
+  "homepage": "https://github.com/lubosstrejcek/victron-tcp",
+  "license": "MIT",
+  "keywords": [
+    "victron",
+    "modbus",
+    "solar",
+    "battery",
+    "inverter",
+    "energy",
+    "venus-os"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"]
+    }
+  },
+  "tools": [
+    {
+      "name": "victron_system_overview",
+      "description": "Battery SOC, voltage, current, PV power, grid power, AC consumption, Dynamic ESS status"
+    },
+    {
+      "name": "victron_battery_status",
+      "description": "Detailed battery: SOC, voltage, current, power, temperature, cell data, time-to-go, history"
+    },
+    {
+      "name": "victron_solar_status",
+      "description": "PV voltage, current, power, yield today/yesterday/total, charger state, tracker data"
+    },
+    {
+      "name": "victron_grid_status",
+      "description": "Grid power per phase (L1/L2/L3), voltage, current, frequency, energy counters"
+    },
+    {
+      "name": "victron_vebus_status",
+      "description": "Multi/Quattro: AC in/out power, input current limit, mode, state, alarms, ESS settings"
+    },
+    {
+      "name": "victron_tank_levels",
+      "description": "Tank level, capacity, remaining, fluid type (fuel, fresh water, waste, etc.)"
+    },
+    {
+      "name": "victron_temperature",
+      "description": "Temperature readings with sensor type, humidity, pressure"
+    },
+    {
+      "name": "victron_inverter_status",
+      "description": "Standalone inverter: AC output, state, alarms (Phoenix, Inverter RS)"
+    },
+    {
+      "name": "victron_evcs_status",
+      "description": "EV Charging Station (direct connection): power, status, session energy, temperatures"
+    },
+    {
+      "name": "victron_discover",
+      "description": "Scan unit IDs to find all connected devices and their types"
+    },
+    {
+      "name": "victron_read_register",
+      "description": "Read raw register(s) by address — advanced/debugging"
+    },
+    {
+      "name": "victron_list_registers",
+      "description": "List all available registers for a device category"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://registry.modelcontextprotocol.io/schema/server.json",
+  "name": "io.github.lubosstrejcek/victron-tcp",
+  "title": "Victron TCP",
+  "description": "MCP server for Victron Energy GX devices via Modbus TCP — read real-time solar, battery, grid, and inverter data from your local network.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/lubosstrejcek/victron-tcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lubosstrejcek/victron-tcp.git"
+  },
+  "license": "MIT",
+  "runtime": "node",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "victron-tcp",
+      "runtime": "node",
+      "transportType": "stdio"
+    }
+  ]
+}

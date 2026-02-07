@@ -1,0 +1,494 @@
+{
+  "source": "EVCS-Modbus-TCP-register-list.xlsx",
+  "version": "1.0",
+  "categories": [
+    {
+      "service": "victron.evcs",
+      "description": "Victron EV Charging Station (direct connection)",
+      "defaultUnitId": 1,
+      "registers": [
+        {
+          "address": 5000,
+          "name": "productId",
+          "description": "Product ID",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/ProductId"
+        },
+        {
+          "address": 5001,
+          "name": "serial",
+          "description": "Serial ID",
+          "dataType": "string",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/Serial",
+          "words": 6
+        },
+        {
+          "address": 5007,
+          "name": "firmwareVersionH",
+          "description": "Firmware version (major)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/FirmwareVersion"
+        },
+        {
+          "address": 5008,
+          "name": "firmwareVersionL",
+          "description": "Firmware version (minor.revision)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/FirmwareVersionL"
+        },
+        {
+          "address": 5009,
+          "name": "chargeMode",
+          "description": "Charge mode",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/Mode",
+          "enumValues": {
+            "0": "Manual",
+            "1": "Auto",
+            "2": "Scheduled"
+          }
+        },
+        {
+          "address": 5010,
+          "name": "startStopCharging",
+          "description": "Start/stop charging",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/StartStop",
+          "enumValues": {
+            "0": "Stop",
+            "1": "Start"
+          }
+        },
+        {
+          "address": 5011,
+          "name": "l1Power",
+          "description": "L1 power used",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "W",
+          "writable": false,
+          "dbusPath": "/Ac/L1/Power"
+        },
+        {
+          "address": 5012,
+          "name": "l2Power",
+          "description": "L2 power used",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "W",
+          "writable": false,
+          "dbusPath": "/Ac/L2/Power"
+        },
+        {
+          "address": 5013,
+          "name": "l3Power",
+          "description": "L3 power used",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "W",
+          "writable": false,
+          "dbusPath": "/Ac/L3/Power"
+        },
+        {
+          "address": 5014,
+          "name": "totalPower",
+          "description": "Total power",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "W",
+          "writable": false,
+          "dbusPath": "/Ac/Power"
+        },
+        {
+          "address": 5015,
+          "name": "chargerStatus",
+          "description": "Charger status",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/Status",
+          "enumValues": {
+            "0": "Disconnected",
+            "1": "Connected",
+            "2": "Charging",
+            "3": "Charged",
+            "4": "Waiting for sun",
+            "5": "Waiting for RFID",
+            "6": "Waiting for start",
+            "7": "Low SOC",
+            "8": "Ground test error",
+            "9": "Welded contacts test error",
+            "10": "CP input test error (shorted)",
+            "11": "Residual current detected",
+            "12": "Undervoltage detected",
+            "13": "Overvoltage detected",
+            "14": "Overheating detected",
+            "20": "Charging limit",
+            "21": "Start charging",
+            "22": "Switching to 3 phase",
+            "23": "Switching to 1 phase",
+            "24": "Stop charging"
+          }
+        },
+        {
+          "address": 5016,
+          "name": "chargingCurrent",
+          "description": "Charging current (set, for manual mode)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "A",
+          "writable": true,
+          "dbusPath": "/SetCurrent"
+        },
+        {
+          "address": 5017,
+          "name": "maxCurrent",
+          "description": "Maximum charge current",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "A",
+          "writable": true,
+          "dbusPath": "/MaxCurrent"
+        },
+        {
+          "address": 5018,
+          "name": "chargingCurrentActual",
+          "description": "Actual charging current",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "A",
+          "writable": false,
+          "dbusPath": "/Current"
+        },
+        {
+          "address": 5019,
+          "name": "sessionChargingTimeH",
+          "description": "Session charging time (high word)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "s",
+          "writable": false,
+          "dbusPath": "/ChargingTime"
+        },
+        {
+          "address": 5020,
+          "name": "sessionChargingTimeL",
+          "description": "Session charging time (low word)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "s",
+          "writable": false,
+          "dbusPath": "/ChargingTimeL"
+        },
+        {
+          "address": 5021,
+          "name": "sessionEnergy",
+          "description": "Session energy",
+          "dataType": "uint16",
+          "scaleFactor": 100,
+          "unit": "kWh",
+          "writable": false,
+          "dbusPath": "/Ac/Energy/Session"
+        },
+        {
+          "address": 5023,
+          "name": "totalEnergyH",
+          "description": "Total energy (high word)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/Ac/Energy/Forward"
+        },
+        {
+          "address": 5024,
+          "name": "totalEnergyL",
+          "description": "Total energy (low word) — (H*65536+L)/100 = kWh",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/Ac/Energy/ForwardL"
+        },
+        {
+          "address": 5025,
+          "name": "cpVoltage",
+          "description": "CP (Control Pilot) voltage",
+          "dataType": "uint16",
+          "scaleFactor": 100,
+          "unit": "V",
+          "writable": false,
+          "dbusPath": "/CPVoltage"
+        },
+        {
+          "address": 5026,
+          "name": "chargerPosition",
+          "description": "Charger position",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/Position",
+          "enumValues": {
+            "0": "Inverter AC Out",
+            "1": "Inverter AC Input"
+          }
+        },
+        {
+          "address": 5049,
+          "name": "autostart",
+          "description": "Charger autostart",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/AutoStart",
+          "enumValues": {
+            "0": "Disabled",
+            "1": "Enabled"
+          }
+        },
+        {
+          "address": 5055,
+          "name": "manualModePhase",
+          "description": "Manual mode phase configuration",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/ManualPhase",
+          "enumValues": {
+            "0": "3 Phase",
+            "1": "Single Phase"
+          }
+        },
+        {
+          "address": 5056,
+          "name": "autoModePhase",
+          "description": "Auto mode phase configuration",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/AutoPhase",
+          "enumValues": {
+            "0": "3 Phase",
+            "1": "Single Phase",
+            "2": "Single + 3 Phase"
+          }
+        },
+        {
+          "address": 5062,
+          "name": "minCurrent",
+          "description": "Minimum charging current",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "A",
+          "writable": true,
+          "dbusPath": "/MinCurrent"
+        },
+        {
+          "address": 5065,
+          "name": "autoModeType",
+          "description": "Auto mode type",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/AutoModeType",
+          "enumValues": {
+            "0": "Feed in",
+            "1": "Battery powered"
+          }
+        },
+        {
+          "address": 5066,
+          "name": "backupBatterySOCStart",
+          "description": "Backup battery SOC for start charging (battery powered mode)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "%",
+          "writable": true,
+          "dbusPath": "/BackupBatterySocStart"
+        },
+        {
+          "address": 5067,
+          "name": "backupBatteryMinSOC",
+          "description": "Backup battery minimum SOC (off grid)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "%",
+          "writable": true,
+          "dbusPath": "/BackupBatteryMinSoc"
+        },
+        {
+          "address": 5094,
+          "name": "errorsL",
+          "description": "EVCS errors (low word bitmask)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/ErrorsL"
+        },
+        {
+          "address": 5095,
+          "name": "errorsH",
+          "description": "EVCS errors (high word bitmask)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/ErrorsH"
+        },
+        {
+          "address": 5096,
+          "name": "warningsL",
+          "description": "EVCS warnings (low word bitmask)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/WarningsL"
+        },
+        {
+          "address": 5097,
+          "name": "warningsH",
+          "description": "EVCS warnings (high word bitmask)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/WarningsH"
+        },
+        {
+          "address": 5102,
+          "name": "allowBatteryGridPower",
+          "description": "Allow battery/grid power for auto mode",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/AllowBatteryGridPower",
+          "enumValues": {
+            "0": "Disabled",
+            "1": "Enabled"
+          }
+        },
+        {
+          "address": 5104,
+          "name": "overloadProtection",
+          "description": "Overload protection",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": true,
+          "dbusPath": "/OverloadProtection",
+          "enumValues": {
+            "0": "Disabled",
+            "1": "Enabled"
+          }
+        },
+        {
+          "address": 5105,
+          "name": "inputCurrentLimit",
+          "description": "Input current limit (only if position = AC Input)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "A",
+          "writable": true,
+          "dbusPath": "/InputCurrentLimit"
+        },
+        {
+          "address": 5109,
+          "name": "detectedCarPhases",
+          "description": "Detected car phases (reset to 1 on disconnect)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/DetectedCarPhases"
+        },
+        {
+          "address": 5117,
+          "name": "relaysStatuses",
+          "description": "Relay statuses bitmask (Bit0=L1, Bit1=L2, Bit2=L3, Bit3=N)",
+          "dataType": "uint16",
+          "scaleFactor": 1,
+          "unit": "",
+          "writable": false,
+          "dbusPath": "/RelaysStatuses"
+        },
+        {
+          "address": 5121,
+          "name": "onboardHumidity",
+          "description": "Onboard humidity (v2 only)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "%",
+          "writable": false,
+          "dbusPath": "/Humidity"
+        },
+        {
+          "address": 5122,
+          "name": "onboardTemperature",
+          "description": "Onboard temperature (v2 only)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "C",
+          "writable": false,
+          "dbusPath": "/Temperature/Onboard"
+        },
+        {
+          "address": 5123,
+          "name": "displayTemperature",
+          "description": "Display temperature (v2 only)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "C",
+          "writable": false,
+          "dbusPath": "/Temperature/Display"
+        },
+        {
+          "address": 5124,
+          "name": "carConnectorTemperature",
+          "description": "Car connector temperature (v2 only)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "C",
+          "writable": false,
+          "dbusPath": "/Temperature/CarConnector"
+        },
+        {
+          "address": 5125,
+          "name": "powerMeterTemperature",
+          "description": "Power meter temperature (v2 only)",
+          "dataType": "uint16",
+          "scaleFactor": 10,
+          "unit": "C",
+          "writable": false,
+          "dbusPath": "/Temperature/PowerMeter"
+        }
+      ]
+    }
+  ]
+}
