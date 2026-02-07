@@ -1,18 +1,18 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { vebusRegisters } from '../registers/index.js';
+import { chargerRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import { hostSchema, portSchema, unitIdSchema, transportInputSchema, buildConnectionParams, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
 
-export function registerVebusTools(server: McpServer): void {
+export function registerChargerTools(server: McpServer): void {
   server.registerTool(
-    'victron_vebus_status',
+    'victron_charger_status',
     {
-      title: 'VE.Bus Inverter/Charger Status',
-      description: 'Get VE.Bus inverter/charger (Multi/Quattro) data: AC input/output voltage, current, power per phase, DC voltage, input current limit, mode, state, alarms, and ESS settings. Specify unitId for the VE.Bus device (check victron_discover to find it).',
+      title: 'AC Charger Status',
+      description: 'Get AC charger data (Skylla-i, Skylla-IP44, Smart IP43, Blue Smart IP22): output voltage/current/temperature for up to 3 outputs, AC current/power, charge state, error code, current limit, and alarms. Use victron_discover to find the unit ID.',
       inputSchema: {
         host: hostSchema,
         port: portSchema,
-        unitId: unitIdSchema.default(227).describe('Modbus unit ID for the VE.Bus device'),
+        unitId: unitIdSchema.default(100).describe('Modbus unit ID for the charger'),
         ...transportInputSchema,
       },
       annotations: READ_ONLY_ANNOTATIONS,
@@ -20,8 +20,8 @@ export function registerVebusTools(server: McpServer): void {
     async ({ host, port, unitId, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {
       try {
         const params = buildConnectionParams({ transport, host, port, unitId, mqttHost, mqttPort, portalId, deviceInstance });
-        const results = await readDeviceRegisters(params, vebusRegisters.service, vebusRegisters.registers);
-        return formatResults('VE.Bus Inverter/Charger Status', results);
+        const results = await readDeviceRegisters(params, chargerRegisters.service, chargerRegisters.registers);
+        return formatResults('AC Charger Status', results);
       } catch (error) {
         return errorResult(error);
       }

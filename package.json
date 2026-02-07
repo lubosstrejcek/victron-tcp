@@ -20,6 +20,8 @@
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "convert": "tsx scripts/convert-excel.ts",
+    "simulate": "tsx scripts/modbus-simulator.ts",
+    "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -46,12 +48,14 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.26.0",
     "modbus-serial": "^8.0.23",
+    "mqtt": "^5.15.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.7.0",
+    "vitest": "^4.0.18",
     "xlsx": "^0.18.5"
   }
 }

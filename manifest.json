@@ -4,7 +4,7 @@
   "display_name": "Victron TCP",
   "version": "1.0.0",
   "description": "Connect to Victron Energy GX devices via Modbus TCP — read real-time solar, battery, grid, and inverter data from your local network.",
-  "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP. Get direct, low-latency access to 860+ registers across 32 device categories — no cloud required. Built from the official CCGX Modbus TCP register list (Rev 50).",
+  "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP. Get direct, low-latency access to 900+ registers across 33 device categories — no cloud required. Built from the official CCGX Modbus TCP register list (Rev 50).",
   "author": {
     "name": "Lubos Strejcek"
   },
@@ -69,8 +69,68 @@
       "description": "EV Charging Station (direct connection): power, status, session energy, temperatures"
     },
     {
+      "name": "victron_multi_status",
+      "description": "Multi RS inverter/charger: AC in/out per phase, battery data, charge/inverter state, alarms"
+    },
+    {
+      "name": "victron_pvinverter_status",
+      "description": "AC-coupled PV inverters (Fronius, SolarEdge, ABB): power per phase, energy totals"
+    },
+    {
+      "name": "victron_genset_status",
+      "description": "AC genset controllers: 3-phase AC, engine data, oil/coolant/exhaust temperatures"
+    },
+    {
+      "name": "victron_dcgenset_status",
+      "description": "DC generators: DC voltage/current, engine data, temperatures, error codes"
+    },
+    {
+      "name": "victron_alternator_status",
+      "description": "NMEA 2000 alternators: voltage/current, RPM, field drive %, alarms"
+    },
+    {
+      "name": "victron_charger_status",
+      "description": "AC chargers (Skylla, Blue Smart): up to 3 outputs, charge state, alarms"
+    },
+    {
+      "name": "victron_dcdc_status",
+      "description": "Orion XS DC-DC converter: battery voltage/current/temperature, charge state"
+    },
+    {
+      "name": "victron_acload_status",
+      "description": "AC load / current sensors: per-phase power, voltage, current, energy totals"
+    },
+    {
+      "name": "victron_dcenergy_status",
+      "description": "DC energy meters (SmartShunts in DC meter mode): voltage, current, energy"
+    },
+    {
+      "name": "victron_gx_info",
+      "description": "GX device identity: serial number, relay states, system time"
+    },
+    {
+      "name": "victron_digital_inputs",
+      "description": "Digital input state, type (door, bilge, alarm, generator), pulse count"
+    },
+    {
+      "name": "victron_gps_status",
+      "description": "GPS position: latitude, longitude, altitude, course, speed, satellite count"
+    },
+    {
+      "name": "victron_meteo_status",
+      "description": "Meteo sensors: solar irradiance (W/m²), wind speed, temperatures"
+    },
+    {
+      "name": "victron_generator_status",
+      "description": "GX generator auto start/stop: runtime, start condition, quiet hours, alarms"
+    },
+    {
       "name": "victron_discover",
       "description": "Scan unit IDs to find all connected devices and their types"
+    },
+    {
+      "name": "victron_read_category",
+      "description": "Read all registers for any device category by service name"
     },
     {
       "name": "victron_read_register",

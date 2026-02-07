@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { VictronModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
-import { errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { hostSchema, portSchema, unitIdSchema, errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
 
 const PROBE_REGISTERS: Record<string, { address: number; words: number }> = {
   'com.victronenergy.system': { address: 800, words: 6 },
@@ -33,10 +33,10 @@ export function registerDiscoverTools(server: McpServer): void {
       title: 'Discover Devices',
       description: 'Discover connected Victron devices by probing unit IDs. Scans a range of unit IDs to find active devices and identify their service type. This is the first tool you should use to find what devices are available and their unit IDs.',
       inputSchema: {
-        host: z.string().describe('GX device IP address or hostname'),
-        port: z.number().default(502).describe('Modbus TCP port'),
-        startUnitId: z.number().default(0).describe('Start of unit ID range to scan (default: 0)'),
-        endUnitId: z.number().default(247).describe('End of unit ID range to scan (default: 247)'),
+        host: hostSchema,
+        port: portSchema,
+        startUnitId: unitIdSchema.default(0).describe('Start of unit ID range to scan (default: 0)'),
+        endUnitId: unitIdSchema.default(247).describe('End of unit ID range to scan (default: 247)'),
       },
       annotations: DISCOVERY_ANNOTATIONS,
     },
@@ -89,6 +89,7 @@ export function registerDiscoverTools(server: McpServer): void {
 
       lines.push('\nUse the unit ID with the corresponding tool to read device data.');
       lines.push('For example: `victron_battery_status` with the battery unit ID.');
+      lines.push('\nFor categories without a dedicated tool (digital inputs, genset, PV inverter, settings, GPS, etc.), use `victron_read_category` with the service name.');
 
       return { content: [{ type: 'text', text: lines.join('\n') }] };
     },

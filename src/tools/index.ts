@@ -10,6 +10,22 @@ import { registerInverterTools } from './inverter.js';
 import { registerEvcsTools } from './evcs.js';
 import { registerDiscoverTools } from './discover.js';
 import { registerRawTools } from './raw.js';
+import { registerCategoryTools } from './category.js';
+import { registerGxInfoTools } from './gx-info.js';
+import { registerDigitalInputTools } from './digital-inputs.js';
+import { registerPvinverterTools } from './pvinverter.js';
+import { registerAcloadTools } from './acload.js';
+import { registerGpsTools } from './gps.js';
+import { registerMeteoTools } from './meteo.js';
+import { registerAlternatorTools } from './alternator.js';
+import { registerChargerTools } from './charger.js';
+import { registerDcdcTools } from './dcdc.js';
+import { registerGensetTools } from './genset.js';
+import { registerGeneratorTools } from './generator.js';
+import { registerMultiTools } from './multi.js';
+import { registerDcenergyTools } from './dcenergy.js';
+import { registerDcgensetTools } from './dcgenset.js';
+import { registerMqttDiscoverTools } from './mqtt-discover.js';
 
 export function registerAllTools(server: McpServer): void {
   registerSystemTools(server);
@@ -23,4 +39,20 @@ export function registerAllTools(server: McpServer): void {
   registerEvcsTools(server);
   registerDiscoverTools(server);
   registerRawTools(server);
+  registerCategoryTools(server);
+  registerGxInfoTools(server);
+  registerDigitalInputTools(server);
+  registerPvinverterTools(server);
+  registerAcloadTools(server);
+  registerGpsTools(server);
+  registerMeteoTools(server);
+  registerAlternatorTools(server);
+  registerChargerTools(server);
+  registerDcdcTools(server);
+  registerGensetTools(server);
+  registerGeneratorTools(server);
+  registerMultiTools(server);
+  registerDcenergyTools(server);
+  registerDcgensetTools(server);
+  registerMqttDiscoverTools(server);
 }

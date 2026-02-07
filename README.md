@@ -4,14 +4,15 @@
 
 An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects to Victron Energy GX devices via **Modbus TCP** on your local network. Get direct, low-latency access to real-time solar, battery, grid, and inverter data — no cloud required.
 
-Built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50, 860+ registers across 32 device categories).
+Built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50, 900+ registers across 33 device categories).
 
 ## Features
 
-- **12 specialized tools** for reading Victron device data
+- **27 specialized tools** for reading Victron device data
 - **860+ registers** from the complete Modbus TCP register map
-- **32 device categories** — system, battery, solar, inverter, grid, tank, temperature, and more
+- **33 device categories** — system, battery, solar, inverter, grid, genset, alternator, charger, DC-DC, tank, temperature, GPS, meteo, and more
 - **Device discovery** — automatically find all connected devices and their unit IDs
+- **Generic category reader** — read any device category by service name, even those without a dedicated tool
 - **Raw register access** — read any register by address for advanced use
 - **Stateless connections** — connect-per-request, no persistent state to manage
 - **Read-only** — Phase 1 is read-only, all tools annotated with `readOnlyHint: true`
@@ -158,11 +159,31 @@ The server uses stdio transport. Add it to your MCP client's configuration:
 | `victron_inverter_status` | Standalone inverter: AC output, state, alarms (Phoenix, Inverter RS) | per device |
 | `victron_evcs_status` | EV Charging Station (direct connection): power, status, session energy, temperatures | 1 |
 
+### Extended Device Tools
+
+| Tool | Description | Default Unit ID |
+|------|-------------|-----------------|
+| `victron_multi_status` | Multi RS inverter/charger: AC in/out per phase, battery data, charge/inverter state, alarms | 100 |
+| `victron_pvinverter_status` | AC-coupled PV inverters (Fronius, SolarEdge, ABB): power per phase, energy totals, power limit | 31 |
+| `victron_genset_status` | AC genset controllers (Fischer Panda, ComAp, DSE, CRE, DEIF): 3-phase AC, engine data, oil/coolant/exhaust temps | 23 |
+| `victron_dcgenset_status` | DC generators (Fischer Panda, Hatz fiPMG): DC voltage/current, engine data, temperatures, error codes | 100 |
+| `victron_alternator_status` | NMEA 2000 alternators (Wakespeed WS500, Arco Zeus, Revatek Altion): voltage/current, RPM, field drive % | 100 |
+| `victron_charger_status` | AC chargers (Skylla-i, Skylla-IP44, Smart IP43, Blue Smart IP22): up to 3 outputs, charge state, alarms | 100 |
+| `victron_dcdc_status` | Orion XS DC-DC converter: battery voltage/current/temperature, input power, charge state | 100 |
+| `victron_acload_status` | AC load / current sensors: per-phase power, voltage, current, energy totals, frequency | 100 |
+| `victron_dcenergy_status` | DC energy meters (SmartShunts in DC meter mode): voltage, current, energy. Types: source, load, system | 100 |
+| `victron_gx_info` | GX device identity: serial number, relay states, system time | 100 |
+| `victron_digital_inputs` | Digital input state (open/closed), input type (door, bilge, alarm, generator), pulse count | 100 |
+| `victron_gps_status` | GPS position: latitude, longitude, altitude, course, speed, fix status, satellite count | 100 |
+| `victron_meteo_status` | IMT Solar irradiance sensors: irradiance (W/m²), wind speed, cell/external temperatures | 100 |
+| `victron_generator_status` | GX generator auto start/stop: runtime, start condition, quiet hours, service countdown, alarms | 100 |
+
 ### Utility Tools
 
 | Tool | Description |
 |------|-------------|
 | `victron_discover` | Scan unit IDs to find all connected devices and their types |
+| `victron_read_category` | Read all registers for any device category by service name (partial match supported) |
 | `victron_read_register` | Read raw register(s) by address — advanced/debugging |
 | `victron_list_registers` | List all available registers for a device category |
 
@@ -376,7 +397,7 @@ Note: Since Venus OS 2.60, unit IDs are assigned dynamically. Always verify with
 
 ## Register Map
 
-The complete register map is derived from Victron's official CCGX Modbus TCP register list v3.60 (Rev 50). It covers 32 device categories:
+The complete register map is derived from Victron's official CCGX Modbus TCP register list v3.60 (Rev 50). It covers 33 device categories:
 
 <details>
 <summary>All supported device categories (click to expand)</summary>
@@ -391,13 +412,14 @@ The complete register map is derived from Victron's official CCGX Modbus TCP reg
 | Genset | com.victronenergy.genset | 45 |
 | Multi RS | com.victronenergy.multi | 105 |
 | AC System | com.victronenergy.acsystem | 42 |
+| EVCS (direct) | victron.evcs | 42 |
 | Settings | com.victronenergy.settings | 34 |
 | Grid Meter | com.victronenergy.grid | 32 |
 | DC Genset | com.victronenergy.dcgenset | 26 |
 | PV Inverter | com.victronenergy.pvinverter | 24 |
 | AC Load | com.victronenergy.acload | 22 |
 | Alternator | com.victronenergy.alternator | 20 |
-| EV Charger | com.victronenergy.evcharger | 17 |
+| EV Charger (via GX) | com.victronenergy.evcharger | 17 |
 | Charger | com.victronenergy.charger | 16 |
 | DC System | com.victronenergy.dcsystem | 12 |
 | Fuel Cell | com.victronenergy.fuelcell | 11 |
@@ -426,37 +448,50 @@ victron-tcp/
 │   ├── index.ts              # Entry point (stdio transport)
 │   ├── server.ts             # MCP server setup
 │   ├── modbus/
-│   │   ├── client.ts         # Modbus TCP client wrapper
-│   │   └── types.ts          # Register definition types
-│   ├── registers/            # Typed register maps (from Excel)
-│   │   ├── index.ts          # Re-exports all categories
-│   │   ├── system.ts         # 53 system registers
-│   │   ├── battery.ts        # 108 battery registers
-│   │   ├── solar.ts          # 55 solar charger registers
-│   │   ├── vebus.ts          # 94 VE.Bus registers
-│   │   ├── grid.ts           # 32 grid meter registers
-│   │   ├── tank.ts           # 6 tank registers
-│   │   ├── temperature.ts    # 9 temperature registers
-│   │   ├── inverter.ts       # 51 inverter registers
-│   │   ├── pvinverter.ts     # 24 PV inverter registers
-│   │   ├── genset.ts         # 45 genset registers
-│   │   ├── settings.ts       # 34 settings registers
-│   │   ├── evcs.ts           # 42 EVCS direct registers
-│   │   └── other.ts          # 21 additional services
-│   └── tools/                # MCP tool implementations
-│       ├── index.ts          # Registers all tools
-│       ├── helpers.ts         # Shared formatting and error handling
-│       ├── system.ts         # System overview
-│       ├── battery.ts        # Battery monitoring
-│       ├── solar.ts          # Solar charger
-│       ├── grid.ts           # Grid meter
-│       ├── vebus.ts          # VE.Bus inverter/charger
-│       ├── tanks.ts          # Tank levels
-│       ├── temperature.ts    # Temperature sensors
-│       ├── inverter.ts       # Standalone inverters
-│       ├── evcs.ts           # EV Charging Station (direct)
-│       ├── discover.ts       # Device discovery
-│       └── raw.ts            # Raw register read + list
+│   │   ├── client.ts         # Modbus TCP client + withModbusClient() wrapper
+│   │   ├── decoders.ts       # Data decoding, batch grouping, error wrapping
+│   │   └── types.ts          # RegisterDefinition, RegisterCategory interfaces
+│   ├── registers/
+│   │   ├── index.ts          # Named exports for all 33 categories
+│   │   └── loader.ts         # Loads JSON register databases at import time
+│   └── tools/                # MCP tool implementations (one file per device type)
+│       ├── index.ts          # registerAllTools() — wires all 27 tools
+│       ├── helpers.ts        # Shared schemas, formatResults(), errorResult()
+│       ├── system.ts         # victron_system_overview
+│       ├── battery.ts        # victron_battery_status
+│       ├── solar.ts          # victron_solar_status
+│       ├── grid.ts           # victron_grid_status
+│       ├── vebus.ts          # victron_vebus_status
+│       ├── tanks.ts          # victron_tank_levels
+│       ├── temperature.ts    # victron_temperature
+│       ├── inverter.ts       # victron_inverter_status
+│       ├── evcs.ts           # victron_evcs_status
+│       ├── multi.ts          # victron_multi_status
+│       ├── pvinverter.ts     # victron_pvinverter_status
+│       ├── genset.ts         # victron_genset_status
+│       ├── dcgenset.ts       # victron_dcgenset_status
+│       ├── alternator.ts     # victron_alternator_status
+│       ├── charger.ts        # victron_charger_status
+│       ├── dcdc.ts           # victron_dcdc_status
+│       ├── acload.ts         # victron_acload_status
+│       ├── dcenergy.ts       # victron_dcenergy_status
+│       ├── gx-info.ts        # victron_gx_info
+│       ├── digital-inputs.ts # victron_digital_inputs
+│       ├── gps.ts            # victron_gps_status
+│       ├── meteo.ts          # victron_meteo_status
+│       ├── generator.ts      # victron_generator_status
+│       ├── discover.ts       # victron_discover
+│       ├── category.ts       # victron_read_category
+│       └── raw.ts            # victron_read_register + victron_list_registers
+├── data/
+│   ├── ccgx-registers.json   # 859 registers across 32 CCGX categories
+│   ├── evcs-registers.json   # 42 EVCS direct connection registers
+│   ├── enum-overrides.json   # Human-readable labels for enum values
+│   └── ess-control-registers.json  # Reserved for Phase 2 write support
+├── tests/                    # Vitest test suite
+├── scripts/
+│   ├── convert-excel.ts      # Convert Victron Excel spreadsheet → JSON
+│   └── modbus-simulator.ts   # Local Modbus TCP simulator for testing
 ├── server.json               # MCP Registry metadata
 └── dist/                     # Compiled output
 ```
@@ -533,13 +568,13 @@ Not yet. Phase 1 is read-only — all tools are annotated with `readOnlyHint: tr
 <details>
 <summary><strong>Does this work with the Victron EV Charging Station (EVCS)?</strong></summary>
 
-Yes, partially. The GX device proxies 17 EV charger registers (power, status, charge mode, current) accessible via `victron_read_register` or `victron_list_registers` with category "evcharger". For the full 115+ EVCS registers, you'd need to connect directly to the EVCS device's own Modbus TCP server (unit ID 1, addresses 5000–5140) — that's a separate interface not proxied through the GX.
+Yes, fully. Two options: (1) Use `victron_evcs_status` to connect directly to the EVCS device's own Modbus TCP server (42 registers — power per phase, status, session energy, mode, temperatures, error codes). (2) Read the 17 GX-proxied registers via `victron_read_category` with category "evcharger" if the EVCS is connected through a GX device.
 </details>
 
 <details>
 <summary><strong>How many registers does this cover?</strong></summary>
 
-859 registers across 32 device categories — that's 99.9% of the official CCGX Modbus TCP register list v3.60 (Rev 50). Every service from `com.victronenergy.system` to `com.victronenergy.pump` is included.
+901 registers across 33 device categories — the complete official CCGX Modbus TCP register list v3.60 (Rev 50) with 859 registers, plus 42 registers for direct EV Charging Station connections. Every service from `com.victronenergy.system` to `com.victronenergy.pump` is included.
 </details>
 
 <details>

@@ -3,7 +3,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { withModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
 import type { RegisterDefinition } from '../modbus/types.js';
-import { errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { hostSchema, portSchema, unitIdSchema, addressSchema, countSchema, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
 
 export function registerRawTools(server: McpServer): void {
   server.registerTool(
@@ -12,11 +12,11 @@ export function registerRawTools(server: McpServer): void {
       title: 'Read Raw Register',
       description: 'Read raw Modbus register(s). Advanced tool for reading specific register addresses with explicit data type and scale factor. Useful for registers not covered by other tools or for debugging.',
       inputSchema: {
-        host: z.string().describe('GX device IP address or hostname'),
-        port: z.number().default(502).describe('Modbus TCP port'),
-        unitId: z.number().describe('Modbus unit ID of the target device'),
-        address: z.number().describe('Starting register address'),
-        count: z.number().default(1).describe('Number of registers (words) to read'),
+        host: hostSchema,
+        port: portSchema,
+        unitId: unitIdSchema,
+        address: addressSchema,
+        count: countSchema,
         dataType: z.enum(['uint16', 'int16', 'uint32', 'int32', 'uint64', 'string']).default('uint16').describe('How to interpret the register data'),
         scaleFactor: z.number().default(1).describe('Scale factor to apply (value = raw / scaleFactor)'),
       },
