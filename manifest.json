@@ -3,8 +3,8 @@
   "name": "victron-tcp",
   "display_name": "Victron TCP",
   "version": "1.0.0",
-  "description": "Connect to Victron Energy GX devices via Modbus TCP — read real-time solar, battery, grid, and inverter data from your local network.",
-  "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP. Get direct, low-latency access to 900+ registers across 33 device categories — no cloud required. Built from the official CCGX Modbus TCP register list (Rev 50).",
+  "description": "Connect to Victron Energy GX devices via Modbus TCP or MQTT — read real-time solar, battery, grid, and inverter data from your local network.",
+  "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP or MQTT. Get direct, low-latency access to 900+ registers across 33 device categories — no cloud required. Supports dual transport: Modbus TCP for raw register access, MQTT for pre-scaled values with auto-discovery. Built from the official CCGX Modbus TCP register list (Rev 50).",
   "author": {
     "name": "Lubos Strejcek"
   },
@@ -17,6 +17,7 @@
   "keywords": [
     "victron",
     "modbus",
+    "mqtt",
     "solar",
     "battery",
     "inverter",
@@ -125,8 +126,12 @@
       "description": "GX generator auto start/stop: runtime, start condition, quiet hours, alarms"
     },
     {
+      "name": "victron_mqtt_discover",
+      "description": "Auto-discover portal ID, list all MQTT services and device instances, output ready-to-paste config"
+    },
+    {
       "name": "victron_discover",
-      "description": "Scan unit IDs to find all connected devices and their types"
+      "description": "Scan Modbus unit IDs to find all connected devices and their types"
     },
     {
       "name": "victron_read_category",

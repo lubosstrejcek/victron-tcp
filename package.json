@@ -1,7 +1,7 @@
 {
   "name": "victron-tcp",
   "version": "1.0.0",
-  "description": "MCP server for Victron Energy GX devices via Modbus TCP",
+  "description": "MCP server for Victron Energy GX devices via Modbus TCP or MQTT",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
