@@ -147,7 +147,7 @@ Set these to skip repetitive parameters:
 ## Roadmap
 
 - [ ] **Phase 2**: Write support — ESS mode control, grid setpoint, charge current limits, relay control
-- [ ] **Phase 3**: Resources — real-time monitoring via MCP resources with SSE subscriptions
+- [ ] **Phase 3**: Resources — expose live device data as MCP resources with subscription notifications for real-time updates
 - [x] Claude Desktop Extension packaging (`.mcpb`)
 - [x] NPM package publishing (`npx victron-tcp`)
 
