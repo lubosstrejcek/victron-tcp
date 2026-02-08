@@ -152,6 +152,14 @@
       "description": "GX generator auto start/stop: runtime, start condition, quiet hours, alarms"
     },
     {
+      "name": "victron_network_scan",
+      "description": "Scan the local network (subnet) to find Victron GX devices by probing Modbus TCP and MQTT ports"
+    },
+    {
+      "name": "victron_setup",
+      "description": "Full system setup: test both transports, discover all devices/services, generate ready-to-use MCP config"
+    },
+    {
       "name": "victron_mqtt_discover",
       "description": "Auto-discover portal ID, list all MQTT services and device instances, output ready-to-paste config"
     },

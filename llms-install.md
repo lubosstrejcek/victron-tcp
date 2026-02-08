@@ -75,15 +75,21 @@ Set these to avoid repeating parameters on every tool call:
 
 After installation, test with one of these prompts:
 
-**MQTT (recommended):**
+**Don't know the GX device IP?**
+> "Use victron_network_scan to find my Victron GX device on the network"
+
+**Know the IP — full setup:**
+> "Use victron_setup to configure the Victron MCP server for my GX at 192.168.1.50"
+
+**MQTT discovery only:**
 > "Use victron_mqtt_discover to find services on my GX at 192.168.1.50"
 
-**Modbus TCP:**
+**Modbus discovery only:**
 > "Use victron_discover to scan for devices at 192.168.1.50"
 
 Replace `192.168.1.50` with your GX device's IP address.
 
-## Available Tools (28 total)
+## Available Tools (30 total)
 
 ### Core Monitoring
 - `victron_system_overview` — Battery SOC, PV power, grid power, consumption
@@ -112,9 +118,13 @@ Replace `192.168.1.50` with your GX device's IP address.
 - `victron_meteo_status` — Meteo/irradiance sensors
 - `victron_generator_status` — Generator auto start/stop
 
-### Discovery & Utility
+### Discovery & Setup
+- `victron_network_scan` — Scan local network to find GX devices (no IP needed)
+- `victron_setup` — Full system setup: test transports, discover devices, generate config
 - `victron_mqtt_discover` — Auto-discover MQTT services and portal ID
 - `victron_discover` — Scan Modbus unit IDs
+
+### Utility
 - `victron_read_category` — Read any device category by name
 - `victron_read_register` — Raw register access (Modbus only)
 - `victron_list_registers` — List registers by category

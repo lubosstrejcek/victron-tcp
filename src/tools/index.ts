@@ -26,6 +26,8 @@ import { registerMultiTools } from './multi.js';
 import { registerDcenergyTools } from './dcenergy.js';
 import { registerDcgensetTools } from './dcgenset.js';
 import { registerMqttDiscoverTools } from './mqtt-discover.js';
+import { registerNetworkScanTools } from './network-scan.js';
+import { registerSetupTools } from './setup.js';
 
 export function registerAllTools(server: McpServer): void {
   registerSystemTools(server);
@@ -55,4 +57,6 @@ export function registerAllTools(server: McpServer): void {
   registerDcenergyTools(server);
   registerDcgensetTools(server);
   registerMqttDiscoverTools(server);
+  registerNetworkScanTools(server);
+  registerSetupTools(server);
 }
