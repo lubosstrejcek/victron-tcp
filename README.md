@@ -8,10 +8,12 @@ Built from the official [CCGX Modbus TCP register list](https://www.victronenerg
 
 ## Features
 
-- **28 specialized tools** for reading Victron device data
+- **30 specialized tools** for reading Victron device data
 - **Dual transport** — Modbus TCP (port 502) or MQTT (port 1883), selectable per request or via environment variables
 - **900+ registers** from the complete Modbus TCP register map
 - **33 device categories** — system, battery, solar, inverter, grid, genset, alternator, charger, DC-DC, tank, temperature, GPS, meteo, and more
+- **Network discovery** — scan the local network to find GX devices automatically, no IP address needed
+- **One-shot setup** — `victron_setup` probes both transports, discovers all devices/services, and generates ready-to-use config
 - **MQTT auto-discovery** — detect portal ID, list all services with device instances, and get ready-to-paste config
 - **Device discovery** — automatically find all connected devices and their unit IDs (Modbus) or service instances (MQTT)
 - **Generic category reader** — read any device category by service name, even those without a dedicated tool
@@ -234,12 +236,19 @@ The server uses stdio transport. The JSON format is the same — `mcpServers` �
 | `victron_meteo_status` | IMT Solar irradiance sensors: irradiance (W/m²), wind speed, cell/external temperatures | 100 |
 | `victron_generator_status` | GX generator auto start/stop: runtime, start condition, quiet hours, service countdown, alarms | 100 |
 
-### Discovery & Utility Tools
+### Discovery & Setup Tools
 
 | Tool | Description |
 |------|-------------|
+| `victron_network_scan` | Scan the local network (subnet) to find Victron GX devices by probing Modbus TCP and MQTT ports |
+| `victron_setup` | Full system setup: test both transports, discover all devices/services, recommend transport, generate ready-to-use MCP config |
 | `victron_mqtt_discover` | Auto-discover portal ID, list all MQTT services and device instances, output ready-to-paste config |
 | `victron_discover` | Scan Modbus unit IDs to find all connected devices and their types |
+
+### Utility Tools
+
+| Tool | Description |
+|------|-------------|
 | `victron_read_category` | Read all registers for any device category by service name (partial match supported) |
 | `victron_read_register` | Read raw register(s) by address — advanced/debugging (Modbus only) |
 | `victron_list_registers` | List all available registers for a device category |
@@ -253,7 +262,7 @@ All tools include [MCP tool annotations](https://modelcontextprotocol.io/specifi
 | `readOnlyHint` | `true` | Tools only read data, never modify device state |
 | `destructiveHint` | `false` | No risk of data loss or system changes |
 | `idempotentHint` | `true` | Safe to call repeatedly with same parameters |
-| `openWorldHint` | `false` | Operates on local network only (except `victron_discover` which scans the LAN and `victron_evcs_status` which connects to EVCS devices) |
+| `openWorldHint` | `false` | Operates on local network only (except discovery tools and `victron_evcs_status` which scan the LAN or connect to other devices) |
 
 ### Common Parameters
 
@@ -289,7 +298,38 @@ Tool arguments always override environment variables.
 
 ## Usage Examples
 
-### Example 1: Discover your system
+### Example 1: Find your GX device on the network
+
+**Prompt:**
+```
+I just set up my Victron system. Can you find it on my network?
+```
+
+**What the AI will do:**
+1. Call `victron_network_scan` to scan the local subnet
+2. Probe ports 502 (Modbus TCP) and 1883 (MQTT) on each IP
+3. Verify found devices by reading a Modbus system register
+4. Return a table of discovered hosts with available transports
+
+---
+
+### Example 2: First-time setup
+
+**Prompt:**
+```
+Set up the Victron MCP server for my GX device at 192.168.1.50.
+```
+
+**What the AI will do:**
+1. Call `victron_setup` with host `192.168.1.50`
+2. Test both Modbus TCP and MQTT connectivity
+3. If MQTT is available: discover portal ID and all services
+4. If Modbus is available: scan all unit IDs for connected devices
+5. Recommend the best transport and output ready-to-paste MCP server config
+
+---
+
+### Example 3: Discover your system (Modbus)
 
 **Prompt:**
 ```
@@ -303,7 +343,7 @@ What Victron devices are connected to my GX at 192.168.1.50?
 
 ---
 
-### Example 2: Full system overview
+### Example 4: Full system overview
 
 **Prompt:**
 ```
@@ -316,7 +356,7 @@ Show me the current state of my solar system at 192.168.1.50 — battery, solar,
 
 ---
 
-### Example 3: Monitor battery health
+### Example 5: Monitor battery health
 
 **Prompt:**
 ```
@@ -331,7 +371,7 @@ I want SOC, voltage, temperature, and time-to-go.
 
 ---
 
-### Example 4: Check solar production
+### Example 6: Check solar production
 
 **Prompt:**
 ```
@@ -346,7 +386,7 @@ GX at 192.168.1.50, solar charger unit 226.
 
 ---
 
-### Example 5: Multi-phase grid analysis
+### Example 7: Multi-phase grid analysis
 
 **Prompt:**
 ```
@@ -361,7 +401,7 @@ GX at 192.168.1.50, grid meter unit 30.
 
 ---
 
-### Example 6: Monitor all tanks
+### Example 8: Monitor all tanks
 
 **Prompt:**
 ```
@@ -376,7 +416,7 @@ and a fuel tank on unit 21. GX at 192.168.1.50.
 
 ---
 
-### Example 7: Inverter/charger status (Multi or Quattro)
+### Example 9: Inverter/charger status (Multi or Quattro)
 
 **Prompt:**
 ```
@@ -391,7 +431,7 @@ and any active alarms. GX at 192.168.1.50, VE.Bus unit 227.
 
 ---
 
-### Example 8: Read a specific register by address
+### Example 10: Read a specific register by address
 
 **Prompt:**
 ```
@@ -405,7 +445,7 @@ It's a uint16 with scale factor 10.
 
 ---
 
-### Example 9: Explore available registers
+### Example 11: Explore available registers
 
 **Prompt:**
 ```
@@ -418,7 +458,7 @@ What registers are available for the solar charger? I want to know what data I c
 
 ---
 
-### Example 10: Daily energy report
+### Example 12: Daily energy report
 
 **Prompt:**
 ```
@@ -434,7 +474,7 @@ Solar charger is unit 226, grid meter is unit 30, VE.Bus is unit 227.
 4. Call `victron_vebus_status` (unit 227) for inverter/charger energy data
 5. Compile all data into a comprehensive daily energy report
 
-### Example 11: EV Charging Station status
+### Example 13: EV Charging Station status
 
 **Prompt:**
 ```
@@ -449,7 +489,7 @@ Is it charging? How much power is it using? What's the session energy so far?
 
 ---
 
-### Example 12: Discover MQTT services
+### Example 14: Discover MQTT services
 
 **Prompt:**
 ```
@@ -464,7 +504,7 @@ Discover what services are available via MQTT on my GX at 192.168.1.50.
 
 ---
 
-### Example 13: Read data via MQTT
+### Example 15: Read data via MQTT
 
 **Prompt:**
 ```
@@ -486,6 +526,8 @@ Show me battery status via MQTT. GX at 192.168.1.50, portal ID ca0f0e2e2261.
 | **Setup** | Must enable on GX | Enabled by default |
 | **Device addressing** | Unit ID (0–247) | Service type + device instance |
 | **Discovery** | `victron_discover` (scans unit IDs) | `victron_mqtt_discover` (instant) |
+| **Network scan** | `victron_network_scan` (finds GX devices on LAN) | `victron_network_scan` (finds GX devices on LAN) |
+| **Setup wizard** | `victron_setup` (full config generation) | `victron_setup` (full config generation) |
 | **Data format** | Raw registers with scale factors | Pre-scaled JSON values |
 | **Best for** | Direct register access, raw reads | Easy setup, no unit ID hunting |
 | **Limitations** | Must enable Modbus TCP on GX, unit IDs are dynamic | Requires portal ID (auto-discovered) |
@@ -494,13 +536,17 @@ Both transports return identical output. You can switch between them by changing
 
 ## Finding Unit IDs
 
-Unit IDs identify specific devices on the Modbus bus. There are two ways to find them:
+Unit IDs identify specific devices on the Modbus bus. There are three ways to find them:
 
-### 1. Use the discover tool
+### 1. Use the setup tool (recommended)
 
-The `victron_discover` tool scans unit IDs 0-247 and reports what it finds. This is the easiest method.
+Run `victron_setup` with your GX device IP — it tests both transports, scans all unit IDs, discovers MQTT services, and generates a complete config. If you don't know the IP, run `victron_network_scan` first.
 
-### 2. Check the GX device
+### 2. Use the discover tool
+
+The `victron_discover` tool scans unit IDs 0-247 and reports what it finds.
+
+### 3. Check the GX device
 
 On the GX device, go to:
 - **Settings → Integrations → Modbus TCP server → Available services**
@@ -582,8 +628,10 @@ victron-tcp/
 │   │   ├── index.ts          # Named exports for all 33 categories
 │   │   └── loader.ts         # Loads JSON register databases at import time
 │   └── tools/                # MCP tool implementations (one file per device type)
-│       ├── index.ts          # registerAllTools() — wires all 28 tools
+│       ├── index.ts          # registerAllTools() — wires all 30 tools
 │       ├── helpers.ts        # Shared schemas, transport params, formatResults(), errorResult()
+│       ├── network-scan.ts   # victron_network_scan (subnet scanning)
+│       ├── setup.ts          # victron_setup (full system setup wizard)
 │       ├── mqtt-discover.ts  # victron_mqtt_discover
 │       ├── system.ts         # victron_system_overview
 │       ├── battery.ts        # victron_battery_status
@@ -705,7 +753,7 @@ On the GX device, go to **Settings → Services → Modbus TCP** and enable it. 
 <details>
 <summary><strong>How do I find the IP address of my GX device?</strong></summary>
 
-Check your router's DHCP client list, or look on the GX device itself under **Settings → Ethernet** or **Settings → WiFi**. You can also try `ping cerbo.local` or `ping venus.local` if mDNS is supported on your network.
+Use `victron_network_scan` to automatically scan your local network for GX devices. It probes for Modbus TCP and MQTT ports and verifies Victron devices. Alternatively, check your router's DHCP client list, look on the GX device under **Settings → Ethernet** or **Settings → WiFi**, or try `ping venus.local` if mDNS is supported.
 </details>
 
 <details>
@@ -717,7 +765,7 @@ Unit IDs are Modbus addresses that identify specific devices on the GX bus. Unit
 <details>
 <summary><strong>Should I use Modbus TCP or MQTT?</strong></summary>
 
-Both transports return identical data. **MQTT** is easier to set up — it's enabled by default, doesn't require unit IDs, and auto-discovers devices. **Modbus TCP** gives you raw register access and works with the `victron_read_register` tool for advanced debugging. If you're unsure, start with MQTT and `victron_mqtt_discover`.
+Both transports return identical data. **MQTT** is easier to set up — it's enabled by default, doesn't require unit IDs, and auto-discovers devices. **Modbus TCP** gives you raw register access and works with the `victron_read_register` tool for advanced debugging. If you're unsure, run `victron_setup` — it tests both transports and recommends the best one for your system.
 </details>
 
 <details>
