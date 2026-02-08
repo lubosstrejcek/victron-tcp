@@ -140,7 +140,8 @@ Set these to skip repetitive parameters:
 |-------|---------|
 | **[Setup](docs/setup.md)** | Client configuration, transport comparison, finding unit IDs, supported devices |
 | **[Examples](docs/examples.md)** | 15 real-world prompts with step-by-step AI behavior |
-| **[Troubleshooting](docs/troubleshooting.md)** | Error solutions and FAQ |
+| **[Troubleshooting](docs/troubleshooting.md)** | Common errors and debugging |
+| **[FAQ](docs/faq.md)** | Frequently asked questions |
 | **[Architecture](docs/architecture.md)** | Code structure, how it works, register map |
 
 ## Roadmap
