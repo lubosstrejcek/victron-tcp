@@ -2,14 +2,14 @@
 
 # Victron TCP — MCP Server
 
-An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects to Victron Energy GX devices via **Modbus TCP** or **MQTT** on your local network. Get direct, low-latency access to real-time solar, battery, grid, and inverter data — no cloud required.
+An [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server that connects to Victron Energy GX devices on your local network via **MQTT** (recommended) or **Modbus TCP**. Get direct, low-latency access to real-time solar, battery, grid, and inverter data — no cloud required.
 
-Built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50, 900+ registers across 33 device categories).
+900+ registers across 33 device categories, built from the official [CCGX Modbus TCP register list](https://www.victronenergy.com/support-and-downloads/technical-information) (Rev 50). MQTT transport uses the Venus OS built-in broker for zero-config auto-discovery.
 
 ## Features
 
 - **30 specialized tools** for reading Victron device data
-- **Dual transport** — Modbus TCP (port 502) or MQTT (port 1883)
+- **Dual transport** — MQTT (port 1883, zero-config) or Modbus TCP (port 502, raw register access)
 - **900+ registers** across 33 device categories
 - **Network discovery** — scan the local network to find GX devices, no IP needed
 - **One-shot setup** — `victron_setup` probes both transports, discovers everything, generates ready-to-use config
@@ -140,13 +140,14 @@ Set these to skip repetitive parameters:
 |-------|---------|
 | **[Setup](docs/setup.md)** | Client configuration, transport comparison, finding unit IDs, supported devices |
 | **[Examples](docs/examples.md)** | 15 real-world prompts with step-by-step AI behavior |
-| **[Troubleshooting](docs/troubleshooting.md)** | Error solutions and FAQ |
+| **[Troubleshooting](docs/troubleshooting.md)** | Common errors and debugging |
+| **[FAQ](docs/faq.md)** | Frequently asked questions |
 | **[Architecture](docs/architecture.md)** | Code structure, how it works, register map |
 
 ## Roadmap
 
 - [ ] **Phase 2**: Write support — ESS mode control, grid setpoint, charge current limits, relay control
-- [ ] **Phase 3**: Resources — real-time monitoring via MCP resources with SSE subscriptions
+- [ ] **Phase 3**: Resources — expose live device data as MCP resources with subscription notifications for real-time updates
 - [x] Claude Desktop Extension packaging (`.mcpb`)
 - [x] NPM package publishing (`npx victron-tcp`)
 
