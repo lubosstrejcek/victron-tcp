@@ -136,18 +136,76 @@ export class VictronModbusClient {
   }
 }
 
+const POOL_TTL = 30_000;
+
+interface PoolEntry {
+  client: VictronModbusClient;
+  timer: ReturnType<typeof setTimeout>;
+  busy: boolean;
+}
+
+const modbusPool = new Map<string, PoolEntry>();
+
+function poolKey(host: string, port: number): string {
+  return `${host}:${port}`;
+}
+
 export async function withModbusClient<T>(
   host: string,
   port: number,
   unitId: number,
   fn: (client: VictronModbusClient) => Promise<T>,
 ): Promise<T> {
+  const key = poolKey(host, port);
+  let entry = modbusPool.get(key);
+
+  if (entry && !entry.busy) {
+    clearTimeout(entry.timer);
+    entry.busy = true;
+    entry.client.setUnitId(unitId);
+    try {
+      return await fn(entry.client);
+    } catch (error) {
+      await entry.client.close();
+      modbusPool.delete(key);
+      throw error;
+    } finally {
+      entry = modbusPool.get(key);
+      if (entry) {
+        entry.busy = false;
+        entry.timer = setTimeout(() => {
+          entry!.client.close();
+          modbusPool.delete(key);
+        }, POOL_TTL);
+      }
+    }
+  }
+
   const client = new VictronModbusClient();
+  await client.connect(host, port);
+  client.setUnitId(unitId);
+
+  const newEntry: PoolEntry = {
+    client,
+    timer: setTimeout(() => {
+      client.close();
+      modbusPool.delete(key);
+    }, POOL_TTL),
+    busy: true,
+  };
+  modbusPool.set(key, newEntry);
+
   try {
-    await client.connect(host, port);
-    client.setUnitId(unitId);
     return await fn(client);
-  } finally {
+  } catch (error) {
+    clearTimeout(newEntry.timer);
     await client.close();
+    modbusPool.delete(key);
+    throw error;
+  } finally {
+    const current = modbusPool.get(key);
+    if (current) {
+      current.busy = false;
+    }
   }
 }

@@ -95,8 +95,37 @@ export function formatResults(title: string, results: RegisterReadResult[]): Cal
   return { content: [{ type: 'text', text: lines.join('\n') }] };
 }
 
+function enrichErrorMessage(message: string): string {
+  if (message.includes('ECONNREFUSED')) {
+    const portMatch = message.match(/:(\d+)/);
+    const port = portMatch?.[1];
+    if (port === '502') {
+      return `${message}\n\nEnsure Modbus TCP is enabled on the GX device: Settings → Services → Modbus TCP.`;
+    }
+    if (port === '1883') {
+      return `${message}\n\nMQTT should be enabled by default on Venus OS. Check that the GX device is reachable and no firewall is blocking port 1883.`;
+    }
+    return `${message}\n\nConnection refused. Verify the host IP and that the target service is running.`;
+  }
+
+  if (message.includes('EHOSTUNREACH') || message.includes('ENETUNREACH') || message.includes('EHOSTDOWN')) {
+    return `${message}\n\nHost unreachable. Verify the IP address and that this machine is on the same network/VLAN as the GX device.`;
+  }
+
+  if (message.includes('ETIMEDOUT') || message.includes('Connection timeout') || message.includes('Timed Out')) {
+    return `${message}\n\nConnection timed out. The device may be off, on a different subnet, or blocked by a firewall.`;
+  }
+
+  if (message.includes('Portal ID discovery timeout')) {
+    return `${message}\n\nNo MQTT data received. Verify the host has an MQTT broker running (default on Venus OS) and the port is correct.`;
+  }
+
+  return message;
+}
+
 export function errorResult(error: unknown): CallToolResult {
-  const message = error instanceof Error ? error.message : String(error);
+  const raw = error instanceof Error ? error.message : String(error);
+  const message = enrichErrorMessage(raw);
   return {
     content: [{ type: 'text', text: `Error: ${message}` }],
     isError: true,
@@ -115,4 +144,11 @@ export const DISCOVERY_ANNOTATIONS = {
   destructiveHint: false,
   idempotentHint: true,
   openWorldHint: true,
+} as const;
+
+export const WRITE_ANNOTATIONS = {
+  readOnlyHint: false,
+  destructiveHint: true,
+  idempotentHint: false,
+  openWorldHint: false,
 } as const;

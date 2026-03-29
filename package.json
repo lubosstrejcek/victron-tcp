@@ -10,8 +10,9 @@
   "files": [
     "dist",
     "data",
+    "docs/register-list.md",
+    "docs/vrm-api-openapi.yaml",
     "server.json",
-    "manifest.json",
     "LICENSE",
     "README.md"
   ],
@@ -22,6 +23,7 @@
     "convert": "tsx scripts/convert-excel.ts",
     "simulate": "tsx scripts/modbus-simulator.ts",
     "test": "vitest run",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -47,15 +49,15 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@modelcontextprotocol/sdk": "^1.28.0",
     "modbus-serial": "^8.0.23",
     "mqtt": "^5.15.0",
-    "zod": "^3.24.0"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^25.5.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.7.0",
+    "typescript": "^6.0.2",
     "vitest": "^4.0.18"
   }
 }

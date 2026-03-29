@@ -8,7 +8,7 @@ export function registerEvcsTools(server: McpServer): void {
     'victron_evcs_status',
     {
       title: 'EV Charging Station (Direct)',
-      description: 'Get EV Charging Station status by connecting directly to the EVCS device (not through the GX). Reads charger status, power per phase, charging current, session energy, mode, phase configuration, temperatures, and errors. The host parameter should be the EVCS IP address (not the GX). For EV charger data proxied through the GX device, use victron_read_register with the evcharger category registers instead.',
+      description: 'Get EV Charging Station status by connecting directly to the EVCS device (not through the GX). Reads charger status, power per phase, charging current, session energy, mode, phase configuration, temperatures, and errors. The host parameter should be the EVCS IP address (not the GX). For EV charger data proxied through the GX device, use victron_read_category with category "evcharger" instead.',
       inputSchema: {
         host: hostSchema.describe('EVCS device IP address (connect directly to the EVCS, not the GX)'),
         port: portSchema,

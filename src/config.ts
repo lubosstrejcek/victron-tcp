@@ -43,4 +43,13 @@ export function loadConfig(): Config {
   };
 }
 
-export const config = loadConfig();
+let _config: Config | undefined;
+
+export const config: Config = new Proxy({} as Config, {
+  get(_target, prop: string) {
+    if (!_config) {
+      _config = loadConfig();
+    }
+    return _config[prop as keyof Config];
+  },
+});

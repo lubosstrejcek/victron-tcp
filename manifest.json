@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "victron-tcp",
   "display_name": "Victron TCP",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Connect to Victron Energy GX devices via Modbus TCP or MQTT — read real-time solar, battery, grid, and inverter data from your local network.",
   "long_description": "An MCP server that connects to Victron Energy GX devices (Ekrano, Cerbo, Venus GX, etc.) via Modbus TCP or MQTT. Get direct, low-latency access to 900+ registers across 33 device categories — no cloud required. Supports dual transport: Modbus TCP for raw register access, MQTT for pre-scaled values with auto-discovery. Built from the official CCGX Modbus TCP register list (Rev 50).",
   "author": {
@@ -178,6 +178,14 @@
     {
       "name": "victron_list_registers",
       "description": "List all available registers for a device category"
+    },
+    {
+      "name": "victron_search_docs",
+      "description": "Search local offline Victron documentation (registers + VRM API) — use before going online"
+    },
+    {
+      "name": "victron_check_online",
+      "description": "Get URLs for latest Victron documentation when local docs don't have the answer"
     }
   ]
 }

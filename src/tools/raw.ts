@@ -10,7 +10,7 @@ export function registerRawTools(server: McpServer): void {
     'victron_read_register',
     {
       title: 'Read Raw Register',
-      description: 'Read raw Modbus register(s). Advanced tool for reading specific register addresses with explicit data type and scale factor. Useful for registers not covered by other tools or for debugging.',
+      description: 'Read raw Modbus register(s). Modbus TCP only — not available via MQTT. Advanced tool for reading specific register addresses with explicit data type and scale factor. Use victron_search_docs or victron_list_registers first to find the correct address, data type, and scale factor for the register you want to read.',
       inputSchema: {
         host: hostSchema,
         port: portSchema,
@@ -61,9 +61,23 @@ export function registerRawTools(server: McpServer): void {
     'victron_list_registers',
     {
       title: 'List Registers',
-      description: 'List available Modbus registers for a given device category. Shows register addresses, names, data types, and units. Useful for finding specific registers to read.',
+      description: 'List available Modbus registers for a given device category. Shows register addresses, names, data types, and units. For free-text search across all docs use victron_search_docs instead.',
       inputSchema: {
         category: z.string().describe('Device category to list registers for (e.g. "system", "battery", "solar", "vebus", "grid", "tank", "temperature", "inverter", "pvinverter", "genset", "settings", "evcharger", "multi", "alternator", "dcload", "dcsystem", "dcdc", "acsystem")'),
+      },
+      outputSchema: {
+        service: z.string(),
+        description: z.string(),
+        defaultUnitId: z.number(),
+        registerCount: z.number(),
+        registers: z.array(z.object({
+          address: z.number(),
+          description: z.string(),
+          dataType: z.string(),
+          scaleFactor: z.number(),
+          unit: z.string(),
+          writable: z.boolean(),
+        })),
       },
       annotations: {
         readOnlyHint: true,
@@ -106,7 +120,25 @@ export function registerRawTools(server: McpServer): void {
         lines.push(`| ${reg.address} | ${reg.description} | ${reg.dataType} | ${reg.scaleFactor} | ${reg.unit} | ${writable} |`);
       }
 
-      return { content: [{ type: 'text', text: lines.join('\n') }] };
+      const structuredContent = {
+        service: found.service,
+        description: found.description,
+        defaultUnitId: found.defaultUnitId,
+        registerCount: found.registers.length,
+        registers: found.registers.map(reg => ({
+          address: reg.address,
+          description: reg.description,
+          dataType: reg.dataType,
+          scaleFactor: reg.scaleFactor,
+          unit: reg.unit,
+          writable: reg.writable,
+        })),
+      };
+
+      return {
+        content: [{ type: 'text', text: lines.join('\n') }],
+        structuredContent,
+      };
     },
   );
 }

@@ -4,7 +4,19 @@
 
 This MCP server uses **stdio transport** and requires **Node.js 18+**.
 
-### npx (recommended — no install needed)
+### Claude Code (one-liner)
+
+```bash
+claude mcp add-json victron-tcp '{"type":"stdio","command":"npx","args":["-y","victron-tcp"]}'
+```
+
+With environment variables pre-configured:
+
+```bash
+claude mcp add-json victron-tcp '{"type":"stdio","command":"npx","args":["-y","victron-tcp"],"env":{"VICTRON_HOST":"192.168.1.50","VICTRON_TRANSPORT":"mqtt","VICTRON_PORTAL_ID":"your-portal-id"}}'
+```
+
+### npx with JSON config (Claude Desktop / Cursor / Windsurf)
 
 ```json
 {
@@ -60,11 +72,11 @@ This server connects directly to hardware on the local network via Modbus TCP (p
 
 ## Environment Variables
 
-Set these to avoid repeating parameters on every tool call:
+All optional. Set these to avoid repeating parameters on every tool call:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `VICTRON_HOST` | GX device IP or hostname | `192.168.1.50` |
+| Variable | Description | Default | Example |
+|----------|-------------|---------|---------|
+| `VICTRON_HOST` | GX device IP or hostname | _(none — pass per call)_ | `192.168.1.50` |
 | `VICTRON_TRANSPORT` | `modbus` or `mqtt` | `mqtt` |
 | `VICTRON_PORTAL_ID` | Portal ID for MQTT | `ca0f0e2e2261` |
 | `VICTRON_MODBUS_PORT` | Modbus TCP port | `502` |
@@ -89,7 +101,51 @@ After installation, test with one of these prompts:
 
 Replace `192.168.1.50` with your GX device's IP address.
 
-## Available Tools (30 total)
+## Capabilities
+
+- **32 tools** — device monitoring, discovery, documentation search
+- **24 prompts** — guided workflows for reporting, optimization, troubleshooting, commissioning
+- **3 resources** — register list (943 registers), unit ID mapping, VRM API spec (47 endpoints)
+
+## Prompts (24 total)
+
+### Reporting
+- `hourly-snapshot` — Quick power flow snapshot
+- `daily-report` — Production, consumption, self-consumption ratio
+- `weekly-review` — Trends, battery health, load patterns
+- `monthly-analysis` — Energy balance, cost savings, seasonal comparison (accepts electricityPrice, feedInTariff)
+
+### Optimization
+- `energy-optimizer` — AI-driven optimization with selectable goal (self-consumption, cost-savings, battery-longevity, backup-ready, balanced)
+- `ess-tuning` — ESS mode, grid setpoint, Dynamic ESS review
+- `storm-prep` — Pre-outage battery/ESS readiness check
+
+### Discovery
+- `setup-guide` — First-time setup wizard
+- `find-devices` — Network scan + full device discovery
+- `identify-device` — Identify device by unit ID or service type
+- `system-topology` — Map AC/DC buses and energy flow paths
+- `device-inventory` — Full device table for docs/support
+- `register-explorer` — Browse registers, explain types/scales
+- `firmware-check` — Firmware versions across all devices
+
+### Monitoring
+- `diagnose-system` — Full health check + alarms
+- `solar-performance` — PV yield, tracker comparison, shading
+- `troubleshoot` — Guided debugging with error lookup (accepts issue description)
+- `tank-monitor` — Fuel/water/waste levels
+- `generator-management` — Auto-start, runtime, quiet hours
+
+### Installer
+- `commissioning` — New system checklist with pass/fail
+- `site-audit` — Communication, alarms, measurements audit
+
+### Integration
+- `nodered-check` — Node-RED MQTT topics and flow debugging
+- `vrm-api-guide` — VRM cloud API auth + endpoints (accepts siteId)
+- `mqtt-debug` — Broker connectivity, topic tracing
+
+## Available Tools (32 total)
 
 ### Core Monitoring
 - `victron_system_overview` — Battery SOC, PV power, grid power, consumption
@@ -128,3 +184,5 @@ Replace `192.168.1.50` with your GX device's IP address.
 - `victron_read_category` — Read any device category by name
 - `victron_read_register` — Raw register access (Modbus only)
 - `victron_list_registers` — List registers by category
+- `victron_search_docs` — Search local offline docs (registers + VRM API)
+- `victron_check_online` — Get URLs for latest Victron docs online

@@ -3,7 +3,7 @@
   "name": "io.github.lubosstrejcek/victron-tcp",
   "title": "Victron TCP",
   "description": "MCP server for Victron Energy GX devices via Modbus TCP or MQTT — read real-time solar, battery, grid, and inverter data from your local network.",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "homepage": "https://github.com/lubosstrejcek/victron-tcp",
   "repository": {
     "type": "git",
@@ -16,7 +16,15 @@
       "registryType": "npm",
       "identifier": "victron-tcp",
       "runtime": "node",
-      "transportType": "stdio"
+      "transportType": "stdio",
+      "environmentVariables": [
+        { "name": "VICTRON_HOST", "description": "GX device IP or hostname. Optional — if not set, pass host per tool call or use victron_network_scan to find it.", "required": false },
+        { "name": "VICTRON_TRANSPORT", "description": "Transport protocol: modbus or mqtt (default: modbus)", "required": false },
+        { "name": "VICTRON_PORTAL_ID", "description": "Venus OS portal ID for MQTT topics", "required": false },
+        { "name": "VICTRON_MODBUS_PORT", "description": "Modbus TCP port (default: 502)", "required": false },
+        { "name": "VICTRON_MQTT_PORT", "description": "MQTT broker port (default: 1883)", "required": false },
+        { "name": "VICTRON_UNIT_ID", "description": "Default Modbus unit ID (default: 100)", "required": false }
+      ]
     }
   ]
 }

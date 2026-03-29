@@ -4,6 +4,12 @@ import { VictronModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
 import { hostSchema, portSchema, unitIdSchema, errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
 
+const deviceSchema = z.object({
+  unitId: z.number(),
+  service: z.string(),
+  description: z.string(),
+});
+
 const PROBE_REGISTERS: Record<string, { address: number; words: number }> = {
   'com.victronenergy.system': { address: 800, words: 6 },
   'com.victronenergy.vebus': { address: 3, words: 1 },
@@ -26,17 +32,45 @@ const PROBE_REGISTERS: Record<string, { address: number; words: number }> = {
   'com.victronenergy.acsystem': { address: 4900, words: 1 },
 };
 
+// Common Victron unit IDs: system=100, vebus=227-246, battery=225-226+247,
+// solar=226-240, grid=30-31, tank=20-29, temp=24-29, inverter=20-29+239-246
+// Probe these first for fast results, then fill remaining range.
+const COMMON_UNIT_IDS = [100, 247, 246, 245, 244, 239, 238, 227, 226, 225, 30, 31, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+
+function buildScanOrder(start: number, end: number): number[] {
+  const seen = new Set<number>();
+  const order: number[] = [];
+
+  for (const id of COMMON_UNIT_IDS) {
+    if (id >= start && id <= end && !seen.has(id)) {
+      order.push(id);
+      seen.add(id);
+    }
+  }
+
+  for (let id = start; id <= end; id++) {
+    if (!seen.has(id)) {
+      order.push(id);
+    }
+  }
+
+  return order;
+}
+
 export function registerDiscoverTools(server: McpServer): void {
   server.registerTool(
     'victron_discover',
     {
       title: 'Discover Devices',
-      description: 'Discover connected Victron devices by probing unit IDs. Scans a range of unit IDs to find active devices and identify their service type. This is the first tool you should use to find what devices are available and their unit IDs.',
+      description: 'Discover connected Victron devices via Modbus TCP by probing unit IDs. Scans a range of unit IDs to find active devices and identify their service type. Modbus only — for MQTT discovery use victron_mqtt_discover instead. This is the first tool you should use with Modbus transport to find what devices are available and their unit IDs.',
       inputSchema: {
         host: hostSchema,
         port: portSchema,
         startUnitId: unitIdSchema.default(0).describe('Start of unit ID range to scan (default: 0)'),
         endUnitId: unitIdSchema.default(247).describe('End of unit ID range to scan (default: 247)'),
+      },
+      outputSchema: {
+        devices: z.array(deviceSchema),
       },
       annotations: DISCOVERY_ANNOTATIONS,
     },
@@ -47,7 +81,9 @@ export function registerDiscoverTools(server: McpServer): void {
       try {
         await client.connect(host, port);
 
-        for (let unitId = startUnitId; unitId <= endUnitId; unitId++) {
+        const scanOrder = buildScanOrder(startUnitId, endUnitId);
+
+        for (const unitId of scanOrder) {
           client.setUnitId(unitId);
 
           for (const [service, probe] of Object.entries(PROBE_REGISTERS)) {
@@ -91,7 +127,10 @@ export function registerDiscoverTools(server: McpServer): void {
       lines.push('For example: `victron_battery_status` with the battery unit ID.');
       lines.push('\nFor categories without a dedicated tool (digital inputs, genset, PV inverter, settings, GPS, etc.), use `victron_read_category` with the service name.');
 
-      return { content: [{ type: 'text', text: lines.join('\n') }] };
+      return {
+        content: [{ type: 'text', text: lines.join('\n') }],
+        structuredContent: { devices: found },
+      };
     },
   );
 }

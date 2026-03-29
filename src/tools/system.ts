@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { systemRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
@@ -20,6 +21,16 @@ export function registerSystemTools(server: McpServer): void {
         host: hostSchema,
         port: portSchema,
         ...transportInputSchema,
+      },
+      outputSchema: {
+        readings: z.array(z.object({
+          group: z.string(),
+          name: z.string(),
+          description: z.string(),
+          value: z.union([z.number(), z.string()]),
+          unit: z.string(),
+          enumLabel: z.string().optional(),
+        })),
       },
       annotations: READ_ONLY_ANNOTATIONS,
     },
@@ -51,6 +62,7 @@ export function registerSystemTools(server: McpServer): void {
         }
 
         const lines: string[] = ['# System Overview\n'];
+        const readings: Array<{ group: string; name: string; description: string; value: number | string; unit: string; enumLabel?: string }> = [];
 
         const group = (label: string, addresses: number[]): void => {
           const items = addresses
@@ -61,6 +73,14 @@ export function registerSystemTools(server: McpServer): void {
           for (const item of items) {
             const val = item.enumLabel ?? `${item.value}${item.unit ? ' ' + item.unit : ''}`;
             lines.push(`- **${item.description}**: ${val}`);
+            readings.push({
+              group: label,
+              name: item.name,
+              description: item.description,
+              value: item.value,
+              unit: item.unit,
+              ...(item.enumLabel ? { enumLabel: item.enumLabel } : {}),
+            });
           }
           lines.push('');
         };
@@ -75,7 +95,10 @@ export function registerSystemTools(server: McpServer): void {
         group('DC System', [855, 860, 865, 866]);
         group('Dynamic ESS', [5400, 5401, 5402, 5404, 5406, 5407]);
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: { readings },
+        };
       } catch (error) {
         return errorResult(error);
       }

@@ -278,17 +278,83 @@ export class VictronMqttClient {
   }
 }
 
+const MQTT_POOL_TTL = 30_000;
+
+interface MqttPoolEntry {
+  client: VictronMqttClient;
+  timer: ReturnType<typeof setTimeout>;
+  busy: boolean;
+  portalId: string;
+}
+
+const mqttPool = new Map<string, MqttPoolEntry>();
+
+function mqttPoolKey(host: string, port: number): string {
+  return `${host}:${port}`;
+}
+
 export async function withMqttClient<T>(
   host: string,
   port: number,
   portalId: string,
   fn: (client: VictronMqttClient) => Promise<T>,
 ): Promise<T> {
+  const key = mqttPoolKey(host, port);
+  let entry = mqttPool.get(key);
+
+  if (entry && !entry.busy && entry.portalId === portalId) {
+    clearTimeout(entry.timer);
+    entry.busy = true;
+    try {
+      return await fn(entry.client);
+    } catch (error) {
+      await entry.client.close();
+      mqttPool.delete(key);
+      throw error;
+    } finally {
+      entry = mqttPool.get(key);
+      if (entry) {
+        entry.busy = false;
+        entry.timer = setTimeout(() => {
+          entry!.client.close();
+          mqttPool.delete(key);
+        }, MQTT_POOL_TTL);
+      }
+    }
+  }
+
+  // Close stale entry with different portalId
+  if (entry) {
+    clearTimeout(entry.timer);
+    await entry.client.close();
+    mqttPool.delete(key);
+  }
+
   const client = new VictronMqttClient(portalId);
+  await client.connect(host, port);
+
+  const newEntry: MqttPoolEntry = {
+    client,
+    timer: setTimeout(() => {
+      client.close();
+      mqttPool.delete(key);
+    }, MQTT_POOL_TTL),
+    busy: true,
+    portalId,
+  };
+  mqttPool.set(key, newEntry);
+
   try {
-    await client.connect(host, port);
     return await fn(client);
-  } finally {
+  } catch (error) {
+    clearTimeout(newEntry.timer);
     await client.close();
+    mqttPool.delete(key);
+    throw error;
+  } finally {
+    const current = mqttPool.get(key);
+    if (current) {
+      current.busy = false;
+    }
   }
 }
