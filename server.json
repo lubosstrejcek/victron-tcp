@@ -3,7 +3,7 @@
   "name": "io.github.lubosstrejcek/victron-tcp",
   "title": "Victron TCP",
   "description": "MCP server for Victron Energy GX devices via Modbus TCP or MQTT — read real-time solar, battery, grid, and inverter data from your local network.",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "homepage": "https://github.com/lubosstrejcek/victron-tcp",
   "repository": {
     "type": "git",
