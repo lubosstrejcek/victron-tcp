@@ -203,7 +203,9 @@ All optional. Set them to avoid repeating parameters on every tool call.
 
 ### MCP Connector (API usage)
 
-For the [MCP Connector API](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector), defer rarely-used tools to reduce token overhead:
+> **Note:** The [MCP Connector API](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector) only accepts remote MCP servers exposed over HTTPS (Streamable HTTP or SSE). This package ships a **stdio** server and is not directly reachable by the Connector — it is intended for local clients (Claude Code, Claude Desktop, Cursor, Windsurf). To use it with the Connector, you would need to run your own HTTPS gateway that bridges to this stdio server, and accept the security trade-off of exposing local Victron control to the internet.
+
+If you are running such a gateway, defer rarely-used tools to reduce token overhead:
 
 ```json
 {

@@ -77,8 +77,8 @@ All optional. Set these to avoid repeating parameters on every tool call:
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
 | `VICTRON_HOST` | GX device IP or hostname | _(none — pass per call)_ | `192.168.1.50` |
-| `VICTRON_TRANSPORT` | `modbus` or `mqtt` | `mqtt` |
-| `VICTRON_PORTAL_ID` | Portal ID for MQTT | `ca0f0e2e2261` |
+| `VICTRON_TRANSPORT` | `modbus` or `mqtt` | `modbus` |
+| `VICTRON_PORTAL_ID` | Portal ID for MQTT | _(auto-discover via `victron_mqtt_discover`)_ |
 | `VICTRON_MODBUS_PORT` | Modbus TCP port | `502` |
 | `VICTRON_MQTT_PORT` | MQTT broker port | `1883` |
 | `VICTRON_UNIT_ID` | Default Modbus unit ID | `100` |
