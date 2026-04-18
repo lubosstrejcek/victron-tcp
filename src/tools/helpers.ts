@@ -92,7 +92,10 @@ export function formatResults(title: string, results: RegisterReadResult[]): Cal
     lines.push('No data available. The device may be disconnected or the unit ID may be incorrect.');
   }
 
-  return { content: [{ type: 'text', text: lines.join('\n') }] };
+  return {
+    content: [{ type: 'text', text: lines.join('\n') }],
+    structuredContent: { readings: results },
+  };
 }
 
 function enrichErrorMessage(message: string): string {

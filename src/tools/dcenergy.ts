@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { dcsourceRegisters, dcloadRegisters, dcsystemRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import { hostSchema, portSchema, transportInputSchema, buildConnectionParams, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 const categoryMap = {
   source: { registers: dcsourceRegisters, title: 'DC Source' },
@@ -22,6 +23,7 @@ export function registerDcenergyTools(server: McpServer): void {
         type: z.enum(['source', 'load', 'system']).describe('DC energy meter type: source, load, or system'),
         ...transportInputSchema,
       },
+      outputSchema: outputSchemas.readings,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, type, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {

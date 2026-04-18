@@ -4,6 +4,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { errorResult, READ_ONLY_ANNOTATIONS, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -19,11 +20,6 @@ const DOC_FILES: DocFile[] = [
     name: 'register-list',
     description: 'CCGX Modbus TCP Register List (Rev 3.71) — 900+ registers, addresses, types, scale factors',
     path: '../../docs/register-list.md',
-  },
-  {
-    name: 'vrm-api',
-    description: 'VRM cloud API OpenAPI 3.1 spec — 47 endpoints for auth, installations, widgets, stats',
-    path: '../../docs/vrm-api-openapi.yaml',
   },
 ];
 
@@ -57,12 +53,13 @@ export function registerDocsTools(server: McpServer): void {
     'victron_search_docs',
     {
       title: 'Search Documentation',
-      description: 'Search the local offline Victron documentation: register list (900+ registers with addresses, types, scale factors) and VRM API spec (47 endpoints). Use this BEFORE making online requests — the local docs cover most questions about registers, unit IDs, data types, API endpoints, and device categories.',
+      description: 'Search the local offline Victron register list (900+ registers with addresses, types, scale factors). Use this BEFORE making online requests — the local docs cover most questions about registers, unit IDs, data types, and device categories. For VRM cloud API search, use the victron-vrm-mcp sibling package.',
       inputSchema: {
-        query: z.string().min(1).describe('Search term (e.g. "battery voltage", "SOC", "/auth/login", "temperature", "tank level")'),
-        source: z.enum(['all', 'registers', 'vrm-api']).default('all').describe('Which docs to search: "all" (default), "registers" (Modbus register list), "vrm-api" (VRM cloud API)'),
+        query: z.string().min(1).describe('Search term (e.g. "battery voltage", "SOC", "temperature", "tank level")'),
+        source: z.enum(['all', 'registers']).default('all').describe('Which docs to search: "all" or "registers" — both equivalent now that the register list is the only bundled source.'),
         maxResults: z.number().int().min(1).max(50).default(10).describe('Maximum number of matching sections to return'),
       },
+      outputSchema: outputSchemas.docs,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ query, source, maxResults }) => {
@@ -71,7 +68,7 @@ export function registerDocsTools(server: McpServer): void {
 
         const docsToSearch = source === 'all'
           ? DOC_FILES
-          : DOC_FILES.filter(d => d.name === source || (source === 'registers' && d.name === 'register-list'));
+          : DOC_FILES.filter(d => source === 'registers' && d.name === 'register-list');
 
         for (const doc of docsToSearch) {
           const matches = searchInDoc(doc, query);
@@ -86,6 +83,7 @@ export function registerDocsTools(server: McpServer): void {
               type: 'text',
               text: `No results found for "${query}" in local docs. Try victron_check_online for the latest Victron documentation.`,
             }],
+            structuredContent: { query, matches: [] },
           };
         }
 
@@ -103,7 +101,10 @@ export function registerDocsTools(server: McpServer): void {
           }
         }
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: { query, matches: results },
+        };
       } catch (error) {
         return errorResult(error);
       }
@@ -114,12 +115,13 @@ export function registerDocsTools(server: McpServer): void {
     'victron_check_online',
     {
       title: 'Check Online Docs',
-      description: 'Fetch the latest Victron documentation from online sources. Use this only when victron_search_docs does not have the answer — for example, when checking for newer register list revisions, firmware changes, or VRM API updates. Requires internet access.',
+      description: 'Get URLs for the latest Victron local-access documentation sources. Use this only when victron_search_docs does not have the answer — for example, when checking for newer register list revisions or firmware changes. For VRM cloud API docs, use the victron-vrm-mcp sibling package.',
       inputSchema: {
-        source: z.enum(['modbus-faq', 'vrm-api-docs', 'venus-os-mqtt']).describe(
-          'Which online source to fetch: "modbus-faq" (Victron Modbus TCP FAQ), "vrm-api-docs" (VRM API documentation page), "venus-os-mqtt" (Venus OS MQTT documentation)',
+        source: z.enum(['modbus-faq', 'venus-os-mqtt']).describe(
+          'Which online source to fetch: "modbus-faq" (Victron Modbus TCP FAQ), "venus-os-mqtt" (Venus OS MQTT documentation)',
         ),
       },
+      outputSchema: outputSchemas.onlineSource,
       annotations: DISCOVERY_ANNOTATIONS,
     },
     async ({ source }) => {
@@ -127,10 +129,6 @@ export function registerDocsTools(server: McpServer): void {
         'modbus-faq': {
           url: 'https://www.victronenergy.com/live/ccgx:modbustcp_faq',
           label: 'Victron Modbus TCP FAQ',
-        },
-        'vrm-api-docs': {
-          url: 'https://vrm-api-docs.victronenergy.com/',
-          label: 'VRM API Documentation',
         },
         'venus-os-mqtt': {
           url: 'https://github.com/victronenergy/dbus-mqtt',
@@ -154,9 +152,9 @@ export function registerDocsTools(server: McpServer): void {
             '',
             '**Bundled doc versions:**',
             '- Register list: CCGX Modbus TCP Rev 3.71',
-            '- VRM API: OpenAPI 3.1, 47 endpoints',
           ].join('\n'),
         }],
+        structuredContent: { url: target.url, label: target.label },
       };
     },
   );

@@ -177,8 +177,7 @@ export function registerAllPrompts(server: McpServer): void {
             '4. Run victron_system_overview — current state as context',
             '',
             'Note: Modbus registers provide current state and limited history (today/yesterday yield).',
-            'For full 7-day history, the VRM API (/installations/{id}/stats) provides daily breakdowns.',
-            'Use victron_search_docs with "stats" in "vrm-api" source for the endpoint details.',
+            'For full 7-day history, use the victron-vrm-mcp sibling package (VRM cloud API).',
             '',
             '**Weekly review:**',
             '',
@@ -238,10 +237,9 @@ export function registerAllPrompts(server: McpServer): void {
               '2. Run victron_battery_status — charged/discharged energy (kWh), cycle history, health (%)',
               '3. Run victron_grid_status — energy counters (total imported/exported kWh)',
               '4. Run victron_system_overview — current state + Dynamic ESS',
-              '5. For full monthly data, suggest using VRM API: victron_search_docs query "overallstats" source "vrm-api"',
+              '5. For full monthly data, use the victron-vrm-mcp sibling package (VRM cloud API).',
               '',
               'Note: Modbus provides cumulative counters — monthly totals need baseline tracking.',
-              'The VRM API /installations/{id}/stats endpoint can provide daily/monthly breakdowns.',
               '',
               '**Monthly analysis:**',
               '',
@@ -751,62 +749,6 @@ export function registerAllPrompts(server: McpServer): void {
     },
   );
 
-  server.registerPrompt(
-    'vrm-api-guide',
-    {
-      title: 'VRM API Guide',
-      description: 'Guide to using the Victron Remote Monitoring (VRM) cloud API: authentication, key endpoints, and comparing local vs cloud data.',
-      argsSchema: {
-        ...hostArg,
-        siteId: z.string().optional().describe('VRM site/installation ID (numeric)'),
-      },
-    },
-    async ({ host, siteId }) => {
-      const siteHint = siteId ? ` (site ID: ${siteId})` : '';
-      return {
-        messages: [{
-          role: 'user',
-          content: {
-            type: 'text',
-            text: [
-              `Guide me through the VRM API for the Victron system${hint(host)}${siteHint}.`,
-              '',
-              'The VRM API is at https://vrmapi.victronenergy.com/v2',
-              '',
-              '**Step 1 — Authentication**',
-              '1. Use victron_search_docs with query "auth/login" to find the login endpoint',
-              '2. POST /auth/login with { "username": "email", "password": "pass" } returns a Bearer token',
-              '3. Use the token in x-authorization header: "Bearer <token>"',
-              '4. For long-lived access: create an access token via /users/{idUser}/accesstokens (Token <value> format)',
-              '',
-              '**Step 2 — Find your installation**',
-              '5. GET /users/{idUser}/installations to list all sites',
-              '6. Each site has an idSite used in subsequent calls',
-              '',
-              '**Step 3 — Key endpoints**',
-              '7. Use victron_search_docs with query "installations" source "vrm-api" to see all available endpoints',
-              '8. Most useful:',
-              '   - /installations/{idSite}/system-overview — live system state',
-              '   - /installations/{idSite}/stats — historical stats (energy, power)',
-              '   - /installations/{idSite}/overallstats — lifetime statistics',
-              '   - /installations/{idSite}/diagnostics — device diagnostics',
-              '   - /installations/{idSite}/alarms — active and historical alarms',
-              '   - /installations/{idSite}/widgets/BatterySummary — battery details',
-              '   - /installations/{idSite}/widgets/SolarChargerSummary — solar details',
-              '',
-              '**Step 4 — Compare local vs cloud**',
-              siteId
-                ? `9. Run victron_system_overview for local data, then compare with VRM /installations/${siteId}/system-overview`
-                : '9. Run victron_system_overview locally to compare with VRM cloud data',
-              '10. Differences may indicate communication delays or VRM portal connectivity issues',
-              '',
-              '**Rate limits:** Max 200 requests per rolling window, ~3 req/s sustained.',
-            ].join('\n'),
-          },
-        }],
-      };
-    },
-  );
 
   server.registerPrompt(
     'mqtt-debug',

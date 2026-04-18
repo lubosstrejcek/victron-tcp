@@ -5,6 +5,7 @@ import * as dns from 'node:dns/promises';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { VictronModbusClient } from '../modbus/client.js';
 import { errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 const PROBE_TIMEOUT = 1500;
 const BATCH_SIZE = 30;
@@ -77,6 +78,7 @@ export function registerNetworkScanTools(server: McpServer): void {
           'TCP probe timeout per host in milliseconds (default: 1500)',
         ),
       },
+      outputSchema: outputSchemas.discovery,
       annotations: DISCOVERY_ANNOTATIONS,
     },
     async ({ subnet, timeout }) => {
@@ -173,6 +175,7 @@ export function registerNetworkScanTools(server: McpServer): void {
                 '- If the device is on a different VLAN/subnet, specify it with the `subnet` parameter',
               ].join('\n'),
             }],
+            structuredContent: { foundHosts: [], scannedSubnets: subnets },
           };
         }
 
@@ -207,7 +210,10 @@ export function registerNetworkScanTools(server: McpServer): void {
           lines.push('but may not be Victron GX devices. Try `victron_setup` with the most likely IP to investigate.');
         }
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: { foundHosts: results },
+        };
       } catch (error) {
         return errorResult(error);
       }

@@ -11,7 +11,6 @@
     "dist",
     "data",
     "docs/register-list.md",
-    "docs/vrm-api-openapi.yaml",
     "server.json",
     "LICENSE",
     "README.md"
@@ -49,7 +48,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.28.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "modbus-serial": "^8.0.23",
     "mqtt": "^5.15.0",
     "zod": "^4.3.6"
