@@ -232,6 +232,24 @@ If you really need the Connector API to reach *this* package (e.g. to use raw re
 
 ---
 
+## Debugging
+
+The [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) is the fastest way to poke at the server interactively.
+
+```bash
+# Inspect a locally-built server
+npm run inspect
+
+# Inspect the published npm package as users would run it
+npm run inspect:npm
+```
+
+Both open a browser-based UI where you can call tools, view structured content, and watch the notification stream. Logs go to **stderr** (stdout is reserved for the JSON-RPC stream on stdio transport — never write to stdout).
+
+For Claude Desktop specifically, MCP server logs land in `~/Library/Logs/Claude/mcp-server-victron-tcp.log` (macOS) or `%APPDATA%\Claude\logs\mcp-server-victron-tcp.log` (Windows). See the spec's [debugging guide](https://modelcontextprotocol.io/docs/tools/debugging) for a full walkthrough.
+
+---
+
 ## Documentation
 
 | Guide | Content |
