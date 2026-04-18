@@ -2,6 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { gpsRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import { hostSchema, portSchema, transportInputSchema, buildConnectionParams, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 export function registerGpsTools(server: McpServer): void {
   server.registerTool(
@@ -14,6 +15,7 @@ export function registerGpsTools(server: McpServer): void {
         port: portSchema,
         ...transportInputSchema,
       },
+      outputSchema: outputSchemas.readings,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {

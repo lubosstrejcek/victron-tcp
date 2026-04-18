@@ -4,6 +4,7 @@ import { withModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
 import type { RegisterDefinition } from '../modbus/types.js';
 import { hostSchema, portSchema, unitIdSchema, addressSchema, countSchema, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 export function registerRawTools(server: McpServer): void {
   server.registerTool(
@@ -20,6 +21,7 @@ export function registerRawTools(server: McpServer): void {
         dataType: z.enum(['uint16', 'int16', 'uint32', 'int32', 'uint64', 'string']).default('uint16').describe('How to interpret the register data'),
         scaleFactor: z.number().default(1).describe('Scale factor to apply (value = raw / scaleFactor)'),
       },
+      outputSchema: outputSchemas.rawRegister,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, unitId, address, count, dataType, scaleFactor }) => {

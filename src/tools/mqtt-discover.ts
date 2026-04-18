@@ -3,6 +3,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { VictronMqttClient, withMqttClient } from '../mqtt/client.js';
 import { errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
 import { config } from '../config.js';
+import { outputSchemas } from './output_schemas.js';
 
 const SERVICE_TO_TOOL: Record<string, string> = {
   battery: 'victron_battery_status',
@@ -37,6 +38,7 @@ export function registerMqttDiscoverTools(server: McpServer): void {
         mqttHost: z.string().min(1).describe('MQTT broker host (usually the GX device IP)'),
         mqttPort: z.number().int().min(1).max(65535).default(1883).describe('MQTT broker port'),
       },
+      outputSchema: outputSchemas.discovery,
       annotations: DISCOVERY_ANNOTATIONS,
     },
     async ({ mqttHost, mqttPort }) => {
@@ -109,7 +111,13 @@ export function registerMqttDiscoverTools(server: McpServer): void {
         lines.push('With this config, all tools work without extra parameters.');
         lines.push('You can still override per-call with `transport`, `portalId`, `deviceInstance`, etc.');
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: {
+            portalId,
+            services: services.map((s) => ({ serviceType: s.serviceType, deviceInstance: s.deviceInstance })),
+          },
+        };
       } catch (error) {
         return errorResult(error);
       }

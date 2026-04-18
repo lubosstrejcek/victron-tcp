@@ -2,6 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { batteryRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import { hostSchema, portSchema, unitIdSchema, transportInputSchema, buildConnectionParams, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 export function registerBatteryTools(server: McpServer): void {
   server.registerTool(
@@ -15,6 +16,7 @@ export function registerBatteryTools(server: McpServer): void {
         unitId: unitIdSchema.default(247).describe('Modbus unit ID for the battery monitor'),
         ...transportInputSchema,
       },
+      outputSchema: outputSchemas.readings,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, unitId, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {

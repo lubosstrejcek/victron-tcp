@@ -4,7 +4,32 @@
 
 Connect AI assistants to Victron Energy systems. Read real-time solar, battery, grid, and inverter data from your local network — no cloud required.
 
-> 32 tools | 24 prompts | 3 resources | 900+ registers | Modbus TCP + MQTT
+> 32 tools | 23 prompts | 2 resources | 900+ registers | Modbus TCP + MQTT
+
+---
+
+## Which package do I want?
+
+This is the **local / LAN** half of a pair. The remote / cloud half is **[`victron-vrm-mcp`](https://github.com/lubosstrejcek/victron-vrm-mcp)**.
+
+| | **`victron-tcp`** (this repo) | **[`victron-vrm-mcp`](https://github.com/lubosstrejcek/victron-vrm-mcp)** |
+|---|---|---|
+| Transport | stdio (local subprocess) | Streamable HTTP (remote) |
+| Data source | Modbus TCP + MQTT on your LAN | VRM cloud API |
+| Needs access to the GX on your LAN | **Yes** | No |
+| Works when you're away from the boat / house | No | **Yes** |
+| Works when the internet is down | **Yes** | No |
+| Latency | Real-time (~50 ms) | ~15 min (VRM sampling) |
+| Raw register access | **Yes** (900+ registers) | No |
+| Write coverage (planned) | Broad — anything D-Bus exposes | Narrow — only what VRM sanctions remotely (Dynamic ESS, clear-alarm, tags, …) |
+| MCP Connector API compatible | No (stdio) | **Yes** (HTTPS) |
+| Clients | Claude Code, Claude Desktop, Cursor, Windsurf | Anthropic Messages API + anything that speaks MCP over HTTP |
+| Auth | None locally (trusts LAN) | Per-request VRM personal access token |
+
+**Use this package when:** you're on the same LAN as a GX device and want real-time, low-latency read access with raw-register support.
+**Use `victron-vrm-mcp` when:** you need remote access, you're building an API-backed app via the MCP Connector, or you don't want to expose anything on your LAN.
+
+You can use **both** simultaneously — they serve different use cases and carry different risk profiles.
 
 ---
 
@@ -105,7 +130,6 @@ It will scan your network, test connectivity, and generate the config for you.
 | Prompt | What it does |
 |--------|-------------|
 | `nodered-check` | Node-RED on Venus OS — MQTT topics, flow debugging |
-| `vrm-api-guide` | VRM cloud API — auth, endpoints, local vs cloud comparison |
 | `mqtt-debug` | Broker connectivity, topic tracing, keepalive debugging |
 
 ---
@@ -182,7 +206,6 @@ It will scan your network, test connectivity, and generate the config for you.
 |-----|---------|
 | `victron://register-list` | CCGX Modbus TCP register list (Rev 3.71) — 943 registers |
 | `victron://unit-id-mapping` | Device type to unit ID mapping |
-| `victron://vrm-api` | VRM cloud API OpenAPI 3.1 spec — 47 endpoints |
 
 ---
 
@@ -201,26 +224,11 @@ All optional. Set them to avoid repeating parameters on every tool call.
 | `VICTRON_MQTT_PORT` | `1883` | MQTT broker port |
 | `VICTRON_UNIT_ID` | `100` | Default Modbus unit ID |
 
-### MCP Connector (API usage)
+### Remote usage (MCP Connector API)
 
-For the [MCP Connector API](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector), defer rarely-used tools to reduce token overhead:
+This package speaks **stdio**, which the [Anthropic MCP Connector API](https://platform.claude.com/docs/en/agents-and-tools/mcp-connector) cannot reach directly (Connector needs HTTPS). For cloud-backed remote access, use the sibling package [`victron-vrm-mcp`](https://github.com/lubosstrejcek/victron-vrm-mcp).
 
-```json
-{
-  "type": "mcp_toolset",
-  "mcp_server_name": "victron-tcp",
-  "default_config": { "defer_loading": true },
-  "configs": {
-    "victron_system_overview": { "defer_loading": false },
-    "victron_battery_status": { "defer_loading": false },
-    "victron_solar_status": { "defer_loading": false },
-    "victron_grid_status": { "defer_loading": false },
-    "victron_setup": { "defer_loading": false },
-    "victron_discover": { "defer_loading": false },
-    "victron_search_docs": { "defer_loading": false }
-  }
-}
-```
+If you really need the Connector API to reach *this* package (e.g. to use raw register reads remotely), you'd put it behind your own HTTPS gateway that speaks Streamable HTTP upstream and spawns `victron-tcp` downstream — not recommended for typical use.
 
 ---
 
@@ -239,10 +247,11 @@ For the [MCP Connector API](https://platform.claude.com/docs/en/agents-and-tools
 
 ## Roadmap
 
-- [ ] **Write support** — ESS mode control, grid setpoint, charge current limits, relay control
-- [x] MCP Resources — register list, unit ID mapping, VRM API spec
-- [x] MCP Prompts — 24 guided workflows
+- [ ] **Write support** — ESS mode control, grid setpoint, charge current limits, relay control (via MQTT `W/` topics)
+- [x] MCP Resources — register list + unit ID mapping (VRM API spec moved to [`victron-vrm-mcp`](https://github.com/lubosstrejcek/victron-vrm-mcp))
+- [x] MCP Prompts — 23 guided workflows
 - [x] NPM package (`npx victron-tcp`)
+- [x] Sibling package for VRM cloud access — [`victron-vrm-mcp`](https://github.com/lubosstrejcek/victron-vrm-mcp)
 
 ## References
 

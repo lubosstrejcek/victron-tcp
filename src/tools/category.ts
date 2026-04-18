@@ -3,6 +3,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { allCategories } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import { hostSchema, portSchema, unitIdSchema, transportInputSchema, buildConnectionParams, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 export function registerCategoryTools(server: McpServer): void {
   server.registerTool(
@@ -17,6 +18,7 @@ export function registerCategoryTools(server: McpServer): void {
         unitId: unitIdSchema.optional().describe('Modbus unit ID. If omitted, uses the default unit ID for the category.'),
         ...transportInputSchema,
       },
+      outputSchema: outputSchemas.category,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, category, unitId, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {

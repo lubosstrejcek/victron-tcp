@@ -3,6 +3,7 @@ import { systemRegisters } from '../registers/index.js';
 import { readDeviceRegisters } from '../transport.js';
 import type { RegisterDefinition, RegisterReadResult } from '../modbus/types.js';
 import { hostSchema, portSchema, transportInputSchema, buildConnectionParams, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 function findRegisters(addresses: number[]): RegisterDefinition[] {
   return addresses
@@ -21,6 +22,7 @@ export function registerGxInfoTools(server: McpServer): void {
         port: portSchema,
         ...transportInputSchema,
       },
+      outputSchema: outputSchemas.readings,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, transport, mqttHost, mqttPort, portalId, deviceInstance }) => {

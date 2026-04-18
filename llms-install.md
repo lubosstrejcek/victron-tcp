@@ -105,7 +105,7 @@ Replace `192.168.1.50` with your GX device's IP address.
 
 - **32 tools** — device monitoring, discovery, documentation search
 - **24 prompts** — guided workflows for reporting, optimization, troubleshooting, commissioning
-- **3 resources** — register list (943 registers), unit ID mapping, VRM API spec (47 endpoints)
+- **2 resources** — register list (943 registers), unit ID mapping. For VRM API access, use the [victron-vrm-mcp](https://github.com/lubosstrejcek/victron-vrm-mcp) sibling package.
 
 ## Prompts (24 total)
 
@@ -142,7 +142,6 @@ Replace `192.168.1.50` with your GX device's IP address.
 
 ### Integration
 - `nodered-check` — Node-RED MQTT topics and flow debugging
-- `vrm-api-guide` — VRM cloud API auth + endpoints (accepts siteId)
 - `mqtt-debug` — Broker connectivity, topic tracing
 
 ## Available Tools (32 total)

@@ -5,6 +5,7 @@ import { VictronModbusClient } from '../modbus/client.js';
 import { VictronMqttClient, withMqttClient } from '../mqtt/client.js';
 import { allCategories } from '../registers/index.js';
 import { errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 const PROBE_TIMEOUT = 2000;
 
@@ -114,6 +115,7 @@ export function registerSetupTools(server: McpServer): void {
         modbusPort: z.number().int().min(1).max(65535).default(502).describe('Modbus TCP port (default: 502)'),
         mqttPort: z.number().int().min(1).max(65535).default(1883).describe('MQTT broker port (default: 1883)'),
       },
+      outputSchema: outputSchemas.discovery,
       annotations: DISCOVERY_ANNOTATIONS,
     },
     async ({ host, modbusPort, mqttPort }) => {
@@ -142,7 +144,10 @@ export function registerSetupTools(server: McpServer): void {
           lines.push('- Enable Modbus TCP: Settings → Services → Modbus TCP');
           lines.push('- MQTT is enabled by default on Venus OS');
           lines.push('- Check firewall rules between this machine and the GX device');
-          return { content: [{ type: 'text', text: lines.join('\n') }] };
+          return {
+            content: [{ type: 'text', text: lines.join('\n') }],
+            structuredContent: { host, reachable: false, modbus: modbusAvailable, mqtt: mqttAvailable },
+          };
         }
 
         // Phase 2: MQTT discovery
@@ -288,7 +293,18 @@ export function registerSetupTools(server: McpServer): void {
         lines.push('With this configuration all tools work without extra parameters.');
         lines.push('You can still override per-call with `transport`, `host`, `unitId`, `portalId`, etc.');
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: {
+            host,
+            reachable: true,
+            modbus: modbusAvailable,
+            mqtt: mqttAvailable,
+            portalId,
+            services: mqttServices,
+            modbusDevices,
+          },
+        };
       } catch (error) {
         return errorResult(error);
       }

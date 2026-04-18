@@ -2,6 +2,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { withModbusClient } from '../modbus/client.js';
 import { evcsRegisters } from '../registers/index.js';
 import { hostSchema, portSchema, unitIdSchema, formatResults, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { outputSchemas } from './output_schemas.js';
 
 export function registerEvcsTools(server: McpServer): void {
   server.registerTool(
@@ -14,6 +15,7 @@ export function registerEvcsTools(server: McpServer): void {
         port: portSchema,
         unitId: unitIdSchema.default(1).describe('Modbus unit ID (default: 1 for EVCS)'),
       },
+      outputSchema: outputSchemas.readings,
       annotations: READ_ONLY_ANNOTATIONS,
     },
     async ({ host, port, unitId }) => {

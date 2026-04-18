@@ -66,15 +66,17 @@ describe('MCP Server', () => {
       await client.close();
     });
 
-    it('outputSchema tools have correct schema', async () => {
+    it('every tool declares outputSchema', async () => {
       const client = await createTestClient();
       const { tools } = await client.listTools();
 
       const withOutput = tools.filter(t => t.outputSchema);
-      expect(withOutput.length).toBe(3);
+      expect(withOutput.length).toBe(tools.length);
 
-      const names = withOutput.map(t => t.name).sort();
-      expect(names).toEqual(['victron_discover', 'victron_list_registers', 'victron_system_overview']);
+      for (const tool of withOutput) {
+        const schema = tool.outputSchema as { type?: string; properties?: Record<string, unknown> };
+        expect(schema.type === 'object' || schema.properties !== undefined).toBe(true);
+      }
 
       await client.close();
     });
@@ -92,10 +94,10 @@ describe('MCP Server', () => {
   });
 
   describe('prompts', () => {
-    it('lists all 24 prompts', async () => {
+    it('lists all 23 prompts', async () => {
       const client = await createTestClient();
       const { prompts } = await client.listPrompts();
-      expect(prompts).toHaveLength(24);
+      expect(prompts).toHaveLength(23);
       await client.close();
     });
 
@@ -110,7 +112,7 @@ describe('MCP Server', () => {
         'generator-management', 'hourly-snapshot', 'identify-device',
         'monthly-analysis', 'mqtt-debug', 'nodered-check', 'register-explorer',
         'setup-guide', 'site-audit', 'solar-performance', 'storm-prep',
-        'system-topology', 'tank-monitor', 'troubleshoot', 'vrm-api-guide',
+        'system-topology', 'tank-monitor', 'troubleshoot',
         'weekly-review',
       ]);
 
@@ -151,10 +153,10 @@ describe('MCP Server', () => {
   });
 
   describe('resources', () => {
-    it('lists all 3 resources', async () => {
+    it('lists all 2 resources', async () => {
       const client = await createTestClient();
       const { resources } = await client.listResources();
-      expect(resources).toHaveLength(3);
+      expect(resources).toHaveLength(2);
       await client.close();
     });
 
@@ -183,17 +185,6 @@ describe('MCP Server', () => {
       await client.close();
     });
 
-    it('vrm-api resource contains OpenAPI spec', async () => {
-      const client = await createTestClient();
-      const result = await client.readResource({ uri: 'victron://vrm-api' });
-
-      const text = result.contents[0].text!;
-      expect(text).toContain('openapi: 3.1.0');
-      expect(text).toContain('VRM API');
-      expect(text).toContain('/auth/login');
-
-      await client.close();
-    });
   });
 
   describe('tool execution', () => {
@@ -245,21 +236,6 @@ describe('MCP Server', () => {
       const text = (result.content[0] as { type: 'text'; text: string }).text;
       expect(text).toContain('State of charge');
       expect(text).toContain('register-list');
-
-      await client.close();
-    });
-
-    it('victron_search_docs finds VRM API endpoints', async () => {
-      const client = await createTestClient();
-      const result = await client.callTool({
-        name: 'victron_search_docs',
-        arguments: { query: 'login', source: 'vrm-api', maxResults: 3 },
-      });
-
-      expect(result.isError).toBeFalsy();
-      const text = (result.content[0] as { type: 'text'; text: string }).text;
-      expect(text).toContain('login');
-      expect(text).toContain('vrm-api');
 
       await client.close();
     });

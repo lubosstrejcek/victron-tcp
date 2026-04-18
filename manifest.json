@@ -181,7 +181,7 @@
     },
     {
       "name": "victron_search_docs",
-      "description": "Search local offline Victron documentation (registers + VRM API) — use before going online"
+      "description": "Search local offline Victron register list — use before going online. For VRM cloud API search, use the victron-vrm-mcp sibling package."
     },
     {
       "name": "victron_check_online",
