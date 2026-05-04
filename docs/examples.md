@@ -192,11 +192,11 @@ Solar charger is unit 226, grid meter is unit 30, VE.Bus is unit 227.
 
 **Prompt:**
 ```
-Show me battery status via MQTT. GX at 192.168.1.50, portal ID ca0f0e2e2261.
+Show me battery status via MQTT. GX at 192.168.1.50, portal ID <your-portal-id>.
 ```
 
 **What the AI will do:**
-1. Call `victron_battery_status` with `transport: "mqtt"`, host `192.168.1.50`, portalId `ca0f0e2e2261`
+1. Call `victron_battery_status` with `transport: "mqtt"`, host `192.168.1.50`, portalId `<your-portal-id>`
 2. Subscribe to MQTT topics for battery data, collect pre-scaled values
 3. Return the same formatted output as Modbus
 

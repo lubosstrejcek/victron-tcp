@@ -48,7 +48,7 @@
       "type": "string",
       "title": "Transport",
       "description": "Connection protocol: modbus (port 502) or mqtt (port 1883, enabled by default on Venus OS)",
-      "default": "mqtt",
+      "default": "modbus",
       "required": false
     },
     "portal_id": {
