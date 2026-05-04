@@ -33,7 +33,7 @@ Both transports return identical data. **MQTT** is easier to set up — it's ena
 <details>
 <summary><strong>What is a portal ID and how do I find it?</strong></summary>
 
-The portal ID is a unique identifier for your Venus OS installation (e.g., `ca0f0e2e2261`). It's used as the root of all MQTT topics. Run `victron_mqtt_discover` to auto-detect it, or find it on the GX device under **Settings → VRM online portal → VRM Portal ID**.
+The portal ID is a unique identifier for your Venus OS installation (a 12-character hex string, like a MAC address). It's used as the root of all MQTT topics. Run `victron_mqtt_discover` to auto-detect it, or find it on the GX device under **Settings → VRM online portal → VRM Portal ID**.
 </details>
 
 <details>

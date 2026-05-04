@@ -42,7 +42,7 @@ With pre-configured environment:
 claude mcp add --transport stdio \
   -e VICTRON_HOST=192.168.1.50 \
   -e VICTRON_TRANSPORT=mqtt \
-  -e VICTRON_PORTAL_ID=ca0f0e2e2261 \
+  -e VICTRON_PORTAL_ID=<your-portal-id> \
   victron-tcp -- npx victron-tcp
 ```
 
@@ -143,10 +143,10 @@ Set these to avoid repeating parameters on every tool call:
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `VICTRON_HOST` | Default host for all connections | `192.168.1.50` |
-| `VICTRON_TRANSPORT` | Default transport (`modbus` or `mqtt`) | `mqtt` |
+| `VICTRON_TRANSPORT` | Default transport (`modbus` or `mqtt`) | `modbus` |
 | `VICTRON_MODBUS_PORT` | Default Modbus TCP port | `502` |
 | `VICTRON_MQTT_PORT` | Default MQTT broker port | `1883` |
-| `VICTRON_PORTAL_ID` | Default portal ID for MQTT | `ca0f0e2e2261` |
+| `VICTRON_PORTAL_ID` | Default portal ID for MQTT | _(auto-discover via `victron_mqtt_discover`)_ |
 | `VICTRON_UNIT_ID` | Default Modbus unit ID | `100` |
 
 Tool arguments always override environment variables.
