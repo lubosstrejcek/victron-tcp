@@ -46,6 +46,8 @@ export function isDisconnected(value: number, dataType: string): boolean {
       return value === 0xFFFFFFFF;
     case 'int32':
       return value === 0x7FFFFFFF;
+    case 'uint64':
+      return value === 0xFFFFFFFFFFFFFFFF;
     default:
       return false;
   }

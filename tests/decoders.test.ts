@@ -118,8 +118,13 @@ describe('isDisconnected', () => {
     expect(isDisconnected(100, 'int32')).toBe(false);
   });
 
-  it('returns false for unknown types', () => {
+  it('detects uint64 disconnected (0xFFFFFFFFFFFFFFFF)', () => {
+    expect(isDisconnected(0xFFFFFFFFFFFFFFFF, 'uint64')).toBe(true);
     expect(isDisconnected(0xFFFF, 'uint64')).toBe(false);
+    expect(isDisconnected(1718000000, 'uint64')).toBe(false);
+  });
+
+  it('returns false for unknown types', () => {
     expect(isDisconnected(0xFFFF, 'string')).toBe(false);
   });
 });
