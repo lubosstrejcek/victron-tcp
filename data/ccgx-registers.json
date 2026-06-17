@@ -409,16 +409,6 @@
           "dbusPath": "/Dc/Vebus/Power"
         },
         {
-          "address": 867,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 868,
           "name": "inverterChargerCurrent",
           "description": "Inverter/Charger current",
@@ -2964,40 +2954,6 @@
           }
         },
         {
-          "address": 327,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": "",
-          "enumValues": {
-            "0": "Open",
-            "14": "Standby"
-          }
-        },
-        {
-          "address": 328,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 329,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 330,
           "name": "consumedAmphours",
           "description": "Consumed Amphours",
@@ -3735,26 +3691,6 @@
           "dbusPath": "/Alarms/Alarm"
         },
         {
-          "address": 782,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 783,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 784,
           "name": "yieldToday",
           "description": "Yield today",
@@ -3908,46 +3844,6 @@
           "unit": "",
           "writable": false,
           "dbusPath": "/Pv/3/V"
-        },
-        {
-          "address": 3704,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 3705,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 3706,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 3707,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         },
         {
           "address": 3708,
@@ -6506,26 +6402,6 @@
           "dbusPath": "/Ac/Frequency"
         },
         {
-          "address": 3210,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 3211,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 3212,
           "name": "generatorModel",
           "description": "Generator model",
@@ -6784,16 +6660,6 @@
           "unit": "",
           "writable": false,
           "dbusPath": "/Engine/OilTemperature"
-        },
-        {
-          "address": 3229,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         },
         {
           "address": 3230,
@@ -7803,16 +7669,6 @@
           "unit": "",
           "writable": false,
           "dbusPath": "/Ac/Frequency"
-        },
-        {
-          "address": 3923,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         },
         {
           "address": 3924,
@@ -9917,46 +9773,6 @@
           }
         },
         {
-          "address": 4616,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4617,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4618,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4619,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 4620,
           "name": "shortCircuitAlarm",
           "description": "Short Circuit Alarm",
@@ -9970,96 +9786,6 @@
             "1": "Warning",
             "2": "Alarm"
           }
-        },
-        {
-          "address": 4621,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4622,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4623,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4624,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4625,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4626,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4627,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4628,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4629,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         },
         {
           "address": 4630,
@@ -10554,46 +10280,6 @@
           "dbusPath": "/Ess/ActiveSocLimit"
         },
         {
-          "address": 4926,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4927,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4928,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4929,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 4930,
           "name": "gridLostAlarm",
           "description": "Grid Lost Alarm",
@@ -10622,86 +10308,6 @@
             "1": "Warning",
             "2": "Alarm"
           }
-        },
-        {
-          "address": 4932,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4933,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4934,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4935,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4936,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4937,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4938,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
-          "address": 4939,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         },
         {
           "address": 4940,
@@ -11114,16 +10720,6 @@
           "dbusPath": "/Vebus/Devices/0/Restore/Notify"
         },
         {
-          "address": 5803,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
-        },
-        {
           "address": 5810,
           "name": "indexOfConfigurationToRestoreStartingWith0",
           "description": "Index of configuration to restore, starting with 0",
@@ -11152,16 +10748,6 @@
           "unit": "",
           "writable": false,
           "dbusPath": "/Vebus/Devices/1/Restore/Notify"
-        },
-        {
-          "address": 5813,
-          "name": "reserved",
-          "description": "RESERVED",
-          "dataType": "uint16",
-          "scaleFactor": 1,
-          "unit": "",
-          "writable": false,
-          "dbusPath": ""
         }
       ]
     }

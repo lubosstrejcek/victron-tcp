@@ -2,6 +2,11 @@
 
 Source: Victron Energy official register list
 
+> This is the complete official reference, including `RESERVED` placeholder rows
+> and remarks. The server's runtime register database (`data/*.json`) is a
+> cleaned subset of this list — `RESERVED` rows are dropped and a few
+> Type-column typos are normalized — so its register count is slightly lower.
+
 | Service | Description | Address | Type | Scale | Range | dbus-path | Writable | Unit | Remarks |
 |---------|-------------|---------|------|-------|-------|-----------|----------|------|---------|
 | com.victronenergy.system | Serial (System) | 800 | string[6] | 1 | 12 characters | /Serial | no |  | System value -> MAC address of CCGX (represented as string) |

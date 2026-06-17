@@ -52,7 +52,7 @@ victron-tcp/
 │       ├── category.ts       # victron_read_category
 │       └── raw.ts            # victron_read_register + victron_list_registers (Modbus only)
 ├── data/
-│   ├── ccgx-registers.json   # 931 registers across 33 CCGX categories (Rev 3.71)
+│   ├── ccgx-registers.json   # 890 registers across 33 CCGX categories (Rev 3.71)
 │   ├── evcs-registers.json   # 42 EVCS direct connection registers
 │   ├── enum-overrides.json   # Human-readable labels for enum values
 │   └── ess-control-registers.json  # Reserved for Phase 2 write support
@@ -97,24 +97,24 @@ All tools include [MCP tool annotations](https://modelcontextprotocol.io/specifi
 
 ## Register Map
 
-The runtime register database (`data/*.json`, what the tools read) holds 973 registers across 34 device categories: 931 from the official CCGX Modbus TCP register list (Rev 3.71) plus 42 EVCS direct-connection registers. Regenerate it with `npm run convert <ccgx-xlsx> [evcs-xlsx]` when Victron publishes a new list; the converter normalizes the spreadsheet's occasional Type-column typos and drops `RESERVED` placeholder rows.
+The runtime register database (`data/*.json`, what the tools read) holds 932 registers across 34 device categories: 890 from the official CCGX Modbus TCP register list (Rev 3.71) plus 42 EVCS direct-connection registers. Regenerate it with `npm run convert <ccgx-xlsx> [evcs-xlsx]` when Victron publishes a new list; the converter normalizes the spreadsheet's occasional Type-column typos and drops `RESERVED` placeholder rows.
 
 | Category | Service | Registers |
 |----------|---------|-----------|
 | VE.Bus | com.victronenergy.vebus | 118 |
-| Multi RS | com.victronenergy.multi | 118 |
-| Battery | com.victronenergy.battery | 105 |
-| System | com.victronenergy.system | 73 |
-| Solar Charger | com.victronenergy.solarcharger | 60 |
+| Multi RS | com.victronenergy.multi | 105 |
+| Battery | com.victronenergy.battery | 102 |
+| System | com.victronenergy.system | 72 |
 | Inverter | com.victronenergy.inverter | 55 |
-| Genset | com.victronenergy.genset | 42 |
-| AC System | com.victronenergy.acsystem | 42 |
+| Solar Charger | com.victronenergy.solarcharger | 54 |
 | EVCS (direct) | victron.evcs | 42 |
+| Genset | com.victronenergy.genset | 39 |
 | Settings | com.victronenergy.settings | 34 |
 | Grid Meter | com.victronenergy.grid | 32 |
+| AC System | com.victronenergy.acsystem | 30 |
 | DC Genset | com.victronenergy.dcgenset | 25 |
 | PV Inverter | com.victronenergy.pvinverter | 24 |
-| AC Load | com.victronenergy.acload | 22 |
+| AC Load | com.victronenergy.acload | 21 |
 | Alternator | com.victronenergy.alternator | 20 |
 | EV Charger (via GX) | com.victronenergy.evcharger | 17 |
 | Charger | com.victronenergy.charger | 16 |
@@ -125,11 +125,11 @@ The runtime register database (`data/*.json`, what the tools read) holds 973 reg
 | DC Source | com.victronenergy.dcsource | 11 |
 | DC Load | com.victronenergy.dcload | 11 |
 | DC-DC | com.victronenergy.dcdc | 11 |
-| Platform | com.victronenergy.platform | 8 |
 | GPS | com.victronenergy.gps | 7 |
 | Motor Drive | com.victronenergy.motordrive | 6 |
 | Tank | com.victronenergy.tank | 6 |
 | Heat Pump | com.victronenergy.heatpump | 6 |
+| Platform | com.victronenergy.platform | 6 |
 | Meteo | com.victronenergy.meteo | 5 |
 | Digital Input | com.victronenergy.digitalinput | 4 |
 | Hub-4 | com.victronenergy.hub4 | 2 |

@@ -16,10 +16,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 - Regenerated the runtime register database from the official **CCGX Modbus TCP
-  register list Rev 3.71** (931 CCGX registers across 33 categories, plus 42 EVCS
+  register list Rev 3.71** (890 CCGX registers across 33 categories, plus 42 EVCS
   direct-connection registers), adding the `com.victronenergy.platform` category.
   The Excel converter now normalizes Type-column typos and skips `RESERVED`
-  placeholder rows.
+  placeholder rows (matched in both the dbus-path and description columns).
+- **Disconnected-sensor detection** now also covers `uint64` registers
+  (`0xFFFFFFFFFFFFFFFF` → "Not available").
 - **MQTT reads** now return as soon as Venus OS publishes
   `N/<portalId>/full_publish_completed`, instead of always waiting out the read
   timeout when a device does not expose some of the requested registers.

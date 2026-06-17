@@ -183,8 +183,10 @@ function processExcel(excelPath: string, sheetName: string): JsonCategory[] {
     const dbusPath = String(row['dbus-obj-path'] ?? row['DBus path'] ?? row['dbusPath'] ?? '').trim();
     const rangeStr = String(row['Range'] ?? row['range'] ?? '');
 
-    // Skip explicit placeholder rows (no usable register behind them).
-    if (dbusPath === 'RESERVED') continue;
+    // Skip explicit placeholder rows (no usable register behind them). The
+    // "RESERVED" marker lives in the dbus-path column on some sheets and in the
+    // description column (with an empty dbus-path) on others.
+    if (dbusPath === 'RESERVED' || description.toLowerCase() === 'reserved') continue;
 
     const dataType = DATA_TYPE_MAP[typeStr] ?? typeStr;
     const scaleFactor = parseFloat(scaleStr) || 1;
