@@ -59,6 +59,9 @@ const DATA_TYPE_MAP: Record<string, string> = {
   'uint32': 'uint32',
   'int32': 'int32',
   'uint64': 'uint64',
+  // Typos in the official spreadsheet's Type column (seen in Rev 3.71).
+  'unit32': 'uint32',
+  'in16': 'int16',
   'string[6]': 'string',
   'string[7]': 'string',
   'string[8]': 'string',
@@ -136,7 +139,9 @@ function loadEnumOverrides(): Record<string, Record<string, string>> {
 }
 
 function processExcel(excelPath: string, sheetName: string): JsonCategory[] {
-  const workbook = XLSX.readFile(excelPath);
+  // Read the bytes ourselves rather than XLSX.readFile(): the SheetJS ESM
+  // build does not wire up Node fs, so readFile() throws "Cannot access file".
+  const workbook = XLSX.read(readFileSync(excelPath), { type: 'buffer' });
   const sheet = workbook.Sheets[sheetName];
 
   if (!sheet) {
@@ -144,7 +149,21 @@ function processExcel(excelPath: string, sheetName: string): JsonCategory[] {
     throw new Error(`Sheet "${sheetName}" not found. Available: ${available}`);
   }
 
-  const rows: Record<string, unknown>[] = XLSX.utils.sheet_to_json(sheet);
+  // Locate the header row dynamically. Newer register lists (3.71+) prepend a
+  // NOTE banner above the column headers, so the header is not always row 0.
+  const matrix = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1 });
+  const headerRow = matrix.findIndex((row) =>
+    Array.isArray(row) &&
+    row.some((cell) => {
+      const v = String(cell ?? '').trim();
+      return v === 'dbus-service-name' || v === 'Service';
+    }),
+  );
+
+  const rows: Record<string, unknown>[] = XLSX.utils.sheet_to_json(
+    sheet,
+    headerRow > 0 ? { range: headerRow } : undefined,
+  );
   const categories = new Map<string, JsonCategory>();
   const enumOverrides = loadEnumOverrides();
 
@@ -164,11 +183,16 @@ function processExcel(excelPath: string, sheetName: string): JsonCategory[] {
     const dbusPath = String(row['dbus-obj-path'] ?? row['DBus path'] ?? row['dbusPath'] ?? '').trim();
     const rangeStr = String(row['Range'] ?? row['range'] ?? '');
 
+    // Skip explicit placeholder rows (no usable register behind them).
+    if (dbusPath === 'RESERVED') continue;
+
     const dataType = DATA_TYPE_MAP[typeStr] ?? typeStr;
     const scaleFactor = parseFloat(scaleStr) || 1;
     const writable = writableStr === 'yes' || writableStr === 'true' || writableStr === '1';
     const words = parseStringWords(typeStr);
-    const name = toCamelCase(description) || `register${address}`;
+    // Some rows ship a blank description cell; fall back to the dbus path.
+    const label = description || dbusPath;
+    const name = toCamelCase(label) || `register${address}`;
 
     if (!categories.has(service)) {
       categories.set(service, {
@@ -182,7 +206,7 @@ function processExcel(excelPath: string, sheetName: string): JsonCategory[] {
     const reg: JsonRegister = {
       address,
       name,
-      description,
+      description: label,
       dataType,
       scaleFactor,
       unit: unitStr,

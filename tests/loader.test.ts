@@ -6,7 +6,8 @@ const VALID_DATA_TYPES: DataType[] = ['uint16', 'int16', 'uint32', 'int32', 'uin
 
 describe('register loader', () => {
   it('loads all categories', () => {
-    expect(allCategories.length).toBe(33);
+    // 33 CCGX categories (Rev 3.71) + 1 EVCS direct-connection category.
+    expect(allCategories.length).toBe(34);
   });
 
   it('loads total registers', () => {

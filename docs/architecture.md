@@ -17,7 +17,7 @@ victron-tcp/
 │   │   ├── client.ts         # VictronMqttClient + withMqttClient() wrapper
 │   │   └── decoders.ts       # MQTT topic building, payload parsing, value conversion
 │   ├── registers/
-│   │   ├── index.ts          # Named exports for all 33 categories
+│   │   ├── index.ts          # Named per-category exports (e.g. batteryRegisters)
 │   │   └── loader.ts         # Loads JSON register databases at import time
 │   └── tools/                # MCP tool implementations (one file per device type)
 │       ├── index.ts          # registerAllTools() — wires all 32 tools
@@ -52,7 +52,7 @@ victron-tcp/
 │       ├── category.ts       # victron_read_category
 │       └── raw.ts            # victron_read_register + victron_list_registers (Modbus only)
 ├── data/
-│   ├── ccgx-registers.json   # 859 registers across 32 CCGX categories
+│   ├── ccgx-registers.json   # 931 registers across 33 CCGX categories (Rev 3.71)
 │   ├── evcs-registers.json   # 42 EVCS direct connection registers
 │   ├── enum-overrides.json   # Human-readable labels for enum values
 │   └── ess-control-registers.json  # Reserved for Phase 2 write support
@@ -97,42 +97,41 @@ All tools include [MCP tool annotations](https://modelcontextprotocol.io/specifi
 
 ## Register Map
 
-The runtime register database (`data/*.json`, what the tools read) holds 901 registers across 33 device categories: 859 from the official CCGX Modbus TCP register list (v3.60) plus 42 EVCS direct-connection registers.
-
-> Note: the bundled `docs/register-list.md` reference — served as the `victron://register-list` resource — is a newer Rev 3.71 export (~942 rows). The runtime JSON has not yet been regenerated from it. Run `npm run convert` against the matching spreadsheet to bring them into sync.
+The runtime register database (`data/*.json`, what the tools read) holds 973 registers across 34 device categories: 931 from the official CCGX Modbus TCP register list (Rev 3.71) plus 42 EVCS direct-connection registers. Regenerate it with `npm run convert <ccgx-xlsx> [evcs-xlsx]` when Victron publishes a new list; the converter normalizes the spreadsheet's occasional Type-column typos and drops `RESERVED` placeholder rows.
 
 | Category | Service | Registers |
 |----------|---------|-----------|
-| System | com.victronenergy.system | 53 |
-| Battery | com.victronenergy.battery | 108 |
-| VE.Bus | com.victronenergy.vebus | 94 |
-| Solar Charger | com.victronenergy.solarcharger | 55 |
-| Inverter | com.victronenergy.inverter | 51 |
-| Genset | com.victronenergy.genset | 45 |
-| Multi RS | com.victronenergy.multi | 105 |
+| VE.Bus | com.victronenergy.vebus | 118 |
+| Multi RS | com.victronenergy.multi | 118 |
+| Battery | com.victronenergy.battery | 105 |
+| System | com.victronenergy.system | 73 |
+| Solar Charger | com.victronenergy.solarcharger | 60 |
+| Inverter | com.victronenergy.inverter | 55 |
+| Genset | com.victronenergy.genset | 42 |
 | AC System | com.victronenergy.acsystem | 42 |
 | EVCS (direct) | victron.evcs | 42 |
 | Settings | com.victronenergy.settings | 34 |
 | Grid Meter | com.victronenergy.grid | 32 |
-| DC Genset | com.victronenergy.dcgenset | 26 |
+| DC Genset | com.victronenergy.dcgenset | 25 |
 | PV Inverter | com.victronenergy.pvinverter | 24 |
 | AC Load | com.victronenergy.acload | 22 |
 | Alternator | com.victronenergy.alternator | 20 |
 | EV Charger (via GX) | com.victronenergy.evcharger | 17 |
 | Charger | com.victronenergy.charger | 16 |
+| Temperature | com.victronenergy.temperature | 14 |
 | DC System | com.victronenergy.dcsystem | 12 |
+| Generator | com.victronenergy.generator | 11 |
 | Fuel Cell | com.victronenergy.fuelcell | 11 |
 | DC Source | com.victronenergy.dcsource | 11 |
 | DC Load | com.victronenergy.dcload | 11 |
 | DC-DC | com.victronenergy.dcdc | 11 |
-| Generator | com.victronenergy.generator | 11 |
-| Temperature | com.victronenergy.temperature | 9 |
+| Platform | com.victronenergy.platform | 8 |
 | GPS | com.victronenergy.gps | 7 |
-| Tank | com.victronenergy.tank | 6 |
 | Motor Drive | com.victronenergy.motordrive | 6 |
+| Tank | com.victronenergy.tank | 6 |
 | Heat Pump | com.victronenergy.heatpump | 6 |
 | Meteo | com.victronenergy.meteo | 5 |
 | Digital Input | com.victronenergy.digitalinput | 4 |
-| Pulse Meter | com.victronenergy.pulsemeter | 2 |
 | Hub-4 | com.victronenergy.hub4 | 2 |
+| Pulse Meter | com.victronenergy.pulsemeter | 2 |
 | Pump | com.victronenergy.pump | 1 |
