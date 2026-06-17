@@ -8,13 +8,15 @@ An MCP server (stdio transport) that exposes a Victron Energy GX device to AI as
 
 ## Commands
 
+After a fresh clone there is no `node_modules` — run `npm install` first or `tsc`/`vitest` fail with "command not found".
+
 ```bash
 npm run build      # tsc → dist/
 npm run dev        # tsc --watch
 npm start          # run compiled server (node dist/index.js)
 npm test           # vitest run (whole suite)
 npm run simulate   # local Modbus TCP simulator — test tools without real hardware
-npm run convert    # regenerate data/*.json from the Victron Excel register list
+npm run convert <ccgx-xlsx> [evcs-xlsx]   # regenerate data/*.json from the Victron Excel register list
 npm run inspect     # MCP Inspector against locally-built server
 npm run inspect:npm # MCP Inspector against the published npm package
 ```
@@ -44,6 +46,8 @@ tool (src/tools/*.ts)
 **Tools are one-file-per-device-type** under `src/tools/`. Each exports a `registerXxxTools(server)` function; all are wired together in `src/tools/index.ts` → `registerAllTools()`. `src/server.ts` calls that plus `registerAllPrompts` and `registerAllResources`. Adding a device tool means: (1) ensure its category exists in `data/*.json` and is exported from `src/registers/index.ts`, (2) create `src/tools/<name>.ts` following the existing pattern (see `battery.ts` as the canonical template), (3) wire it into `registerAllTools()`.
 
 **Registers are data, not code.** `data/ccgx-registers.json` (CCGX official list) and `data/evcs-registers.json` are loaded at import time by `src/registers/loader.ts` into `allCategories`. `src/registers/index.ts` exposes one named export per category (e.g. `batteryRegisters`) via lookup by D-Bus service string. To change which fields a tool reads, edit the JSON (or regenerate via `npm run convert`), not the tool.
+
+Regenerating runtime data via `npm run convert` has sharp edges: `xlsx` is not a declared dependency — install the SheetJS **CDN** build ad-hoc (`npm i --no-save https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz`; npm's `xlsx@0.18.5` lacks top-level `readFile` under ESM). SheetJS can only read a spreadsheet inside the repo dir (not `/tmp`). The converter normalizes Type-column typos and skips `RESERVED` rows; if a Victron sheet adds a category, update the loader test's category count.
 
 **Config (`src/config.ts`)** centralizes all `process.env` access behind a lazily-loaded `config` Proxy. Read configuration through `config`, never `process.env` directly in tools. Tool-call arguments always override env defaults inside `buildConnectionParams`.
 
