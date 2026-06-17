@@ -7,7 +7,6 @@ const mqtt = require('mqtt');
 
 const CONNECT_TIMEOUT = 5000;
 const READ_TIMEOUT = 8000;
-const KEEPALIVE_INTERVAL = 3000;
 
 interface MqttMessage {
   topic: string;
@@ -21,6 +20,11 @@ export class VictronMqttClient {
 
   constructor(portalId: string) {
     this.portalId = portalId;
+  }
+
+  // Venus OS signals the end of a keepalive-triggered full republish here.
+  private get completionTopic(): string {
+    return `N/${this.portalId}/full_publish_completed`;
   }
 
   async connect(host: string, port: number = 1883): Promise<void> {
@@ -69,6 +73,16 @@ export class VictronMqttClient {
       const expectedCount = registers.length;
 
       const onMessage = (topic: string, payload: Buffer): void => {
+        // The full-republish completion signal means no more data is coming for
+        // the registers this device doesn't have — return with whatever arrived
+        // instead of waiting out READ_TIMEOUT.
+        if (topic === this.completionTopic) {
+          clearTimeout(timer);
+          cleanup();
+          resolve(buildResults());
+          return;
+        }
+
         const value = parseMqttPayload(payload);
         this.messages.set(topic, value);
 
@@ -91,6 +105,7 @@ export class VictronMqttClient {
       const cleanup = (): void => {
         this.client.removeListener('message', onMessage);
         this.client.removeListener('error', onError);
+        this.client.unsubscribe(this.completionTopic);
         for (const topic of topicToReg.keys()) {
           this.client.unsubscribe(topic);
         }
@@ -107,6 +122,7 @@ export class VictronMqttClient {
       this.client.on('message', onMessage);
       this.client.on('error', onError);
 
+      this.client.subscribe(this.completionTopic);
       for (const topic of topicToReg.keys()) {
         this.client.subscribe(topic);
       }
@@ -120,6 +136,9 @@ export class VictronMqttClient {
     registers: RegisterDefinition[],
   ): Promise<RegisterReadResult[]> {
     const serviceType = serviceTypeFromService(service);
+    // MQTT subscribe-side wildcards (+ / #) are standard and supported. This is
+    // distinct from Victron's R/ read *request* topics, which do not accept
+    // wildcards — do not "simplify" this into an R/ request.
     const topicPattern = `N/${this.portalId}/${serviceType}/+/#`;
 
     const pathToReg = new Map<string, RegisterDefinition>();
@@ -137,6 +156,13 @@ export class VictronMqttClient {
       }, READ_TIMEOUT);
 
       const onMessage = (topic: string, payload: Buffer): void => {
+        if (topic === this.completionTopic) {
+          clearTimeout(timer);
+          cleanup();
+          resolve(buildResults());
+          return;
+        }
+
         const value = parseMqttPayload(payload);
         const parts = topic.split('/');
         if (parts.length < 4) return;
@@ -162,6 +188,7 @@ export class VictronMqttClient {
         this.client.removeListener('message', onMessage);
         this.client.removeListener('error', onError);
         this.client.unsubscribe(topicPattern);
+        this.client.unsubscribe(this.completionTopic);
       };
 
       const buildResults = (): RegisterReadResult[] => {
@@ -174,6 +201,7 @@ export class VictronMqttClient {
       this.client.on('message', onMessage);
       this.client.on('error', onError);
       this.client.subscribe(topicPattern);
+      this.client.subscribe(this.completionTopic);
       this.publishKeepalive();
     });
   }
@@ -189,6 +217,14 @@ export class VictronMqttClient {
       }, READ_TIMEOUT);
 
       const onMessage = (topic: string): void => {
+        // Once the full republish completes we have seen every service.
+        if (topic === this.completionTopic) {
+          clearTimeout(timer);
+          cleanup();
+          resolve(buildResult());
+          return;
+        }
+
         const parts = topic.split('/');
         if (parts.length < 4) return;
 
@@ -210,6 +246,7 @@ export class VictronMqttClient {
         this.client.removeListener('message', onMessage);
         this.client.removeListener('error', onError);
         this.client.unsubscribe(topicPattern);
+        this.client.unsubscribe(this.completionTopic);
       };
 
       const buildResult = (): Array<{ serviceType: string; deviceInstance: string }> => {
@@ -225,11 +262,16 @@ export class VictronMqttClient {
       this.client.on('message', onMessage);
       this.client.on('error', onError);
       this.client.subscribe(topicPattern);
+      this.client.subscribe(this.completionTopic);
       this.publishKeepalive();
     });
   }
 
   private publishKeepalive(): void {
+    // Empty payload requests a full republish. Venus OS does not retain value
+    // topics, so every read must trigger a republish to receive current data;
+    // this also makes the broker emit `full_publish_completed` each time, which
+    // the read loops use to return as soon as the dump is done.
     this.client.publish(`R/${this.portalId}/keepalive`, '');
   }
 
