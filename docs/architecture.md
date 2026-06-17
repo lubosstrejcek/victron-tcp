@@ -20,7 +20,7 @@ victron-tcp/
 │   │   ├── index.ts          # Named exports for all 33 categories
 │   │   └── loader.ts         # Loads JSON register databases at import time
 │   └── tools/                # MCP tool implementations (one file per device type)
-│       ├── index.ts          # registerAllTools() — wires all 30 tools
+│       ├── index.ts          # registerAllTools() — wires all 32 tools
 │       ├── helpers.ts        # Shared schemas, transport params, formatResults(), errorResult()
 │       ├── network-scan.ts   # victron_network_scan (subnet scanning)
 │       ├── setup.ts          # victron_setup (full system setup wizard)
@@ -97,7 +97,9 @@ All tools include [MCP tool annotations](https://modelcontextprotocol.io/specifi
 
 ## Register Map
 
-901 registers across 33 device categories — the complete official CCGX Modbus TCP register list v3.60 (Rev 50).
+The runtime register database (`data/*.json`, what the tools read) holds 901 registers across 33 device categories: 859 from the official CCGX Modbus TCP register list (v3.60) plus 42 EVCS direct-connection registers.
+
+> Note: the bundled `docs/register-list.md` reference — served as the `victron://register-list` resource — is a newer Rev 3.71 export (~942 rows). The runtime JSON has not yet been regenerated from it. Run `npm run convert` against the matching spreadsheet to bring them into sync.
 
 | Category | Service | Registers |
 |----------|---------|-----------|
