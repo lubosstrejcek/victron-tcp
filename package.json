@@ -24,6 +24,8 @@
     "test": "vitest run",
     "inspect": "npx -y @modelcontextprotocol/inspector node dist/index.js",
     "inspect:npm": "npx -y @modelcontextprotocol/inspector npx -y victron-tcp",
+    "inspect:cli": "npx -y @modelcontextprotocol/inspector --cli node dist/index.js --method tools/list",
+    "smoke": "tsx scripts/smoke.ts",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
