@@ -46,6 +46,12 @@ describe('decodeNumeric', () => {
     expect(decodeNumeric([0x0001, 0x0000], 'uint32')).toBe(65536);
   });
 
+  it('decodes uint32 with the high bit set (no signed overflow)', () => {
+    expect(decodeNumeric([0x8000, 0x0000], 'uint32')).toBe(2147483648);
+    expect(decodeNumeric([0xFFFF, 0x0001], 'uint32')).toBe(4294901761);
+    expect(decodeNumeric([0xFFFF, 0xFFFF], 'uint32')).toBe(4294967295);
+  });
+
   it('decodes int32 positive', () => {
     expect(decodeNumeric([0, 100], 'int32')).toBe(100);
     expect(decodeNumeric([0x7FFF, 0xFFFF], 'int32')).toBe(2147483647);
@@ -98,6 +104,8 @@ describe('isDisconnected', () => {
   it('detects int16 disconnected (0x7FFF)', () => {
     expect(isDisconnected(0x7FFF, 'int16')).toBe(true);
     expect(isDisconnected(100, 'int16')).toBe(false);
+    // -1 is a legitimate reading (e.g. -1 W), not a disconnected sentinel.
+    expect(isDisconnected(-1, 'int16')).toBe(false);
   });
 
   it('detects uint32 disconnected (0xFFFFFFFF)', () => {
@@ -125,6 +133,21 @@ describe('decodeValue', () => {
   it('returns "Not available" for disconnected values', () => {
     const reg = makeReg({ dataType: 'uint16', scaleFactor: 1 });
     expect(decodeValue([0xFFFF], reg)).toBe('Not available');
+  });
+
+  it('returns "Not available" for a disconnected uint32 (full pipeline)', () => {
+    const reg = makeReg({ dataType: 'uint32', scaleFactor: 1 });
+    expect(decodeValue([0xFFFF, 0xFFFF], reg)).toBe('Not available');
+  });
+
+  it('decodes a large uint32 through the scale factor without going negative', () => {
+    const reg = makeReg({ dataType: 'uint32', scaleFactor: 1 });
+    expect(decodeValue([0x8000, 0x0000], reg)).toBe(2147483648);
+  });
+
+  it('keeps a legitimate int16 -1 reading (not flagged as disconnected)', () => {
+    const reg = makeReg({ dataType: 'int16', scaleFactor: 1 });
+    expect(decodeValue([0xFFFF], reg)).toBe(-1);
   });
 
   it('applies scale factor', () => {

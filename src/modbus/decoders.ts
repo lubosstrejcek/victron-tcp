@@ -13,9 +13,11 @@ export function decodeNumeric(raw: number[], dataType: string): number {
       return val >= 0x8000 ? val - 0x10000 : val;
     }
     case 'uint32':
-      return (raw[0] << 16) + raw[1];
+      // Multiply, don't shift: JS bitwise ops are signed 32-bit, so `<<` would
+      // turn any value >= 2^31 negative (and break the 0xFFFFFFFF sentinel).
+      return (raw[0] * 0x10000) + raw[1];
     case 'int32': {
-      const val = (raw[0] << 16) + raw[1];
+      const val = (raw[0] * 0x10000) + raw[1];
       return val >= 0x80000000 ? val - 0x100000000 : val;
     }
     case 'uint64':
@@ -39,7 +41,7 @@ export function isDisconnected(value: number, dataType: string): boolean {
     case 'uint16':
       return value === 0xFFFF;
     case 'int16':
-      return value === 0x7FFF || value === -32768 + 0x7FFF;
+      return value === 0x7FFF;
     case 'uint32':
       return value === 0xFFFFFFFF;
     case 'int32':
