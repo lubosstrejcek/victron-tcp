@@ -268,7 +268,12 @@ export interface SimulatorServer {
 export function createSimulatorServer(port: number): Promise<SimulatorServer> {
   const unitRegisters = buildUnitRegisters();
 
+  const sockets = new Set<net.Socket>();
+
   const server = net.createServer((socket) => {
+    sockets.add(socket);
+    socket.on('close', () => sockets.delete(socket));
+
     let buffer = Buffer.alloc(0);
 
     socket.on('data', (chunk) => {
@@ -325,6 +330,10 @@ export function createSimulatorServer(port: number): Promise<SimulatorServer> {
       resolve({
         server,
         stop: () => new Promise<void>((res, rej) => {
+          // Destroy any open client sockets first; server.close() otherwise
+          // waits indefinitely for pooled connections to end on their own.
+          for (const socket of sockets) socket.destroy();
+          sockets.clear();
           server.close((err) => {
             if (err) {
               rej(err);

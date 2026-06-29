@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { VictronModbusClient } from '../src/modbus/client.js';
 import { batteryRegisters, systemRegisters, digitalinputRegisters, pvinverterRegisters, acloadRegisters, gpsRegisters, meteoRegisters, alternatorRegisters, chargerRegisters, dcdcRegisters, gensetRegisters, generatorRegisters, multiRegisters, dcsourceRegisters, dcgensetRegisters, allCategories } from '../src/registers/index.js';
 import { createSimulatorServer, type SimulatorServer } from '../scripts/modbus-simulator.js';
+import { createServer } from '../src/server.js';
 
 const TEST_PORT = 15502;
 let simulator: SimulatorServer;
@@ -377,6 +380,54 @@ describe('DC genset registers', () => {
     const startResult = results.find(r => r.name === 'startGenerator');
     expect(startResult).toBeDefined();
     expect(startResult!.enumLabel).toBeDefined();
+
+    await client.close();
+  });
+});
+
+// Regression: tools that declare an outputSchema must return structuredContent,
+// otherwise the MCP SDK rejects the call with -32602. victron_gx_info and
+// victron_read_register previously returned text-only content and always failed.
+describe('MCP tool structuredContent (regression)', () => {
+  async function createToolClient(): Promise<Client> {
+    const server = createServer();
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: 'test-client', version: '1.0.0' });
+    await Promise.all([
+      client.connect(clientTransport),
+      server.connect(serverTransport),
+    ]);
+    return client;
+  }
+
+  it('victron_read_register returns structuredContent matching its schema', async () => {
+    const client = await createToolClient();
+    const result = await client.callTool({
+      name: 'victron_read_register',
+      arguments: { host: '127.0.0.1', port: TEST_PORT, unitId: 100, address: 800 },
+    });
+
+    expect(result.isError).toBeFalsy();
+    const sc = result.structuredContent as Record<string, unknown> | undefined;
+    expect(sc).toBeDefined();
+    expect(sc!.address).toBe(800);
+    expect(sc).toHaveProperty('value');
+
+    await client.close();
+  });
+
+  it('victron_gx_info returns structuredContent with a readings array', async () => {
+    const client = await createToolClient();
+    const result = await client.callTool({
+      name: 'victron_gx_info',
+      arguments: { host: '127.0.0.1', port: TEST_PORT },
+    });
+
+    expect(result.isError).toBeFalsy();
+    const sc = result.structuredContent as { readings?: unknown[] } | undefined;
+    expect(sc).toBeDefined();
+    expect(Array.isArray(sc!.readings)).toBe(true);
+    expect(sc!.readings!.length).toBeGreaterThan(0);
 
     await client.close();
   });
