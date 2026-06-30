@@ -52,7 +52,14 @@ export function registerRawTools(server: McpServer): void {
           `- **Decoded Value**: ${result.value}`,
         ];
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: {
+            address,
+            value: result.value,
+            raw: result.rawValue,
+          },
+        };
       } catch (error) {
         return errorResult(error);
       }

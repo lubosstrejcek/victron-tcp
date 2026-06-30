@@ -63,7 +63,10 @@ export function registerGxInfoTools(server: McpServer): void {
         group('Relays', [806, 807]);
         group('System Time', [830]);
 
-        return { content: [{ type: 'text', text: lines.join('\n') }] };
+        return {
+          content: [{ type: 'text', text: lines.join('\n') }],
+          structuredContent: { readings: results.filter((r): r is RegisterReadResult => r != null) },
+        };
       } catch (error) {
         return errorResult(error);
       }
