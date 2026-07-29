@@ -17,9 +17,13 @@ npm start          # run compiled server (node dist/index.js)
 npm test           # vitest run (whole suite)
 npm run simulate   # local Modbus TCP simulator — test tools without real hardware
 npm run convert <ccgx-xlsx> [evcs-xlsx]   # regenerate data/*.json from the Victron Excel register list
+npm run smoke      # tsx scripts/smoke.ts — boots the stdio server and does a real
+                   # end-to-end Modbus read AND MQTT read against the simulator
 npm run inspect     # MCP Inspector against locally-built server
 npm run inspect:npm # MCP Inspector against the published npm package
 ```
+
+**CI (`.github/workflows/ci.yml`) runs `npm ci → build → test → smoke` on Node 24.** `npm test` alone will not catch a broken stdio handshake or transport regression — run `npm run smoke` before pushing. `engines` still declares `>=18.0.0`, so 18 remains the supported floor even though CI pins 24.
 
 Run a single test file or test:
 ```bash
@@ -55,7 +59,8 @@ Regenerating runtime data via `npm run convert` has sharp edges: `xlsx` is not a
 
 - **stdout is reserved for the JSON-RPC stream.** All logging goes to **stderr** via `src/logger.ts` (`log.info/warn/error`). Never `console.log` or write to stdout. The logger redacts sensitive keys (token, password, secret, …) from context.
 - **Modbus batching uses `maxGap = 0`** (`src/modbus/decoders.ts` `groupIntoBatches`). The Victron FAQ warns that including a non-existent register in a batch read fails the *entire* request, so only truly consecutive registers are batched. Do not "optimize" by allowing gaps.
-- **Disconnected-sensor sentinels** (`0xFFFF` for uint16, `0x7FFF` for int16, etc.) decode to the string `"Not available"` and are filtered out of formatted output — don't treat them as real values.
+- **Disconnected-sensor sentinels** (`0xFFFF` uint16, `0x7FFF` int16, `0xFFFFFFFFFFFFFFFF` uint64, etc. — see `isDisconnected` in `src/modbus/decoders.ts`) decode to the string `"Not available"` and are filtered out of formatted output — don't treat them as real values.
+- **Tools must return `structuredContent`, not just text.** `gx_info`, `read_register` and the discovery tools all emit it (`src/tools/helpers.ts` and per-tool files); a tool returning only formatted text is a regression.
 - **All current tools are read-only**, declared via `READ_ONLY_ANNOTATIONS` in `helpers.ts`. Write support is a planned Phase 2 (MQTT `W/` topics); `WRITE_ANNOTATIONS` and `data/ess-control-registers.json` are placeholders for it. Discovery tools and `victron_evcs_status` use `openWorldHint: true`; `evcs`, `discover`, and raw register tools are **Modbus-only**.
 - Device-status tools return `{ readings: [...] }` (`outputSchemas.readings` in `src/tools/output_schemas.ts`); discovery/doc tools have their own output shapes. Reuse these shared shapes rather than inlining new ones.
 
