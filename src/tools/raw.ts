@@ -3,7 +3,8 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { withModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
 import type { RegisterDefinition } from '../modbus/types.js';
-import { hostSchema, portSchema, unitIdSchema, addressSchema, countSchema, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { hostSchema, portSchema, unitIdSchema, addressSchema, countSchema, requireHost, errorResult, READ_ONLY_ANNOTATIONS } from './helpers.js';
+import { config } from '../config.js';
 import { outputSchemas } from './output_schemas.js';
 
 export function registerRawTools(server: McpServer): void {
@@ -15,7 +16,7 @@ export function registerRawTools(server: McpServer): void {
       inputSchema: {
         host: hostSchema,
         port: portSchema,
-        unitId: unitIdSchema,
+        unitId: unitIdSchema.optional().describe('Modbus unit ID. Defaults to VICTRON_UNIT_ID env var or 100.'),
         address: addressSchema,
         count: countSchema,
         dataType: z.enum(['uint16', 'int16', 'uint32', 'int32', 'uint64', 'string']).default('uint16').describe('How to interpret the register data'),
@@ -38,14 +39,15 @@ export function registerRawTools(server: McpServer): void {
           words: count,
         };
 
-        const result = await withModbusClient(host, port, unitId, async (client) => {
+        const effectiveUnitId = unitId ?? config.unitId ?? 100;
+        const result = await withModbusClient(requireHost(host), port ?? config.modbusPort, effectiveUnitId, async (client) => {
           return client.readRegister(reg);
         });
 
         const lines = [
           '# Raw Register Read\n',
           `- **Address**: ${address}`,
-          `- **Unit ID**: ${unitId}`,
+          `- **Unit ID**: ${effectiveUnitId}`,
           `- **Data Type**: ${dataType}`,
           `- **Scale Factor**: ${scaleFactor}`,
           `- **Raw Value**: ${JSON.stringify(result.rawValue)}`,

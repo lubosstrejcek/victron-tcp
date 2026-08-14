@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **`VICTRON_HOST` and related env vars now work as documented defaults** (#44).
+  `host` (and `port`) were required at the tool input-schema level, so calls
+  omitting them were rejected by schema validation before the env-var fallback
+  in `buildConnectionParams` could run. `host`, `port`, and (for
+  `victron_read_register`) `unitId` are now optional, falling back to
+  `VICTRON_HOST`, `VICTRON_MODBUS_PORT`, and `VICTRON_UNIT_ID`; explicit tool
+  arguments still override env vars. Omitting the host with no env var set now
+  returns an actionable error instead of a raw validation failure.
+  `victron_evcs_status` intentionally still requires an explicit `host`, since
+  it connects to the EVCS directly rather than the GX device that
+  `VICTRON_HOST` points at.
+
 ## [1.4.0] - 2026-06-17
 
 ### Fixed

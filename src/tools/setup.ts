@@ -4,7 +4,7 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { VictronModbusClient } from '../modbus/client.js';
 import { VictronMqttClient, withMqttClient } from '../mqtt/client.js';
 import { allCategories } from '../registers/index.js';
-import { errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { requireHost, errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
 import { outputSchemas } from './output_schemas.js';
 
 const PROBE_TIMEOUT = 2000;
@@ -111,15 +111,16 @@ export function registerSetupTools(server: McpServer): void {
       description:
         'Complete system setup and discovery for a Victron GX device. Tests both Modbus TCP and MQTT connectivity, discovers all connected devices and services, recommends the best transport, and generates ready-to-use MCP server configuration. Use this as the first step after finding a device with victron_network_scan, or directly if you already know the host IP.',
       inputSchema: {
-        host: z.string().min(1).describe('GX device IP address or hostname'),
+        host: z.string().min(1).optional().describe('GX device IP address or hostname. Defaults to VICTRON_HOST env var.'),
         modbusPort: z.number().int().min(1).max(65535).default(502).describe('Modbus TCP port (default: 502)'),
         mqttPort: z.number().int().min(1).max(65535).default(1883).describe('MQTT broker port (default: 1883)'),
       },
       outputSchema: outputSchemas.discovery,
       annotations: DISCOVERY_ANNOTATIONS,
     },
-    async ({ host, modbusPort, mqttPort }) => {
+    async ({ host: hostInput, modbusPort, mqttPort }) => {
       try {
+        const host = requireHost(hostInput);
         const lines: string[] = ['# Victron System Setup\n'];
         lines.push(`**Host:** \`${host}\`\n`);
 

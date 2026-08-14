@@ -2,7 +2,8 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { VictronModbusClient } from '../modbus/client.js';
 import { allCategories } from '../registers/index.js';
-import { hostSchema, portSchema, unitIdSchema, errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { hostSchema, portSchema, unitIdSchema, requireHost, errorResult, DISCOVERY_ANNOTATIONS } from './helpers.js';
+import { config } from '../config.js';
 
 const deviceSchema = z.object({
   unitId: z.number(),
@@ -79,7 +80,7 @@ export function registerDiscoverTools(server: McpServer): void {
       const found: Array<{ unitId: number; service: string; description: string }> = [];
 
       try {
-        await client.connect(host, port);
+        await client.connect(requireHost(host), port ?? config.modbusPort);
 
         const scanOrder = buildScanOrder(startUnitId, endUnitId);
 

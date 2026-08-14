@@ -35,7 +35,7 @@ export function registerMqttDiscoverTools(server: McpServer): void {
       title: 'MQTT Discovery',
       description: 'Discover Venus OS devices via MQTT. Auto-discovers the portalId, lists all available services, maps them to tools, and outputs a ready-to-use MCP server config. Run this first when setting up MQTT transport.',
       inputSchema: {
-        mqttHost: z.string().min(1).describe('MQTT broker host (usually the GX device IP)'),
+        mqttHost: z.string().min(1).optional().describe('MQTT broker host (usually the GX device IP). Defaults to VICTRON_HOST env var.'),
         mqttPort: z.number().int().min(1).max(65535).default(1883).describe('MQTT broker port'),
       },
       outputSchema: outputSchemas.discovery,
