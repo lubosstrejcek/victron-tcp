@@ -4,8 +4,8 @@ import type { RegisterReadResult } from '../modbus/types.js';
 import type { ConnectionParams } from '../transport.js';
 import { config } from '../config.js';
 
-export const hostSchema = z.string().min(1).describe('GX device IP address or hostname');
-export const portSchema = z.number().int().min(1).max(65535).default(502).describe('Modbus TCP port');
+export const hostSchema = z.string().min(1).optional().describe('GX device IP address or hostname. Defaults to VICTRON_HOST env var.');
+export const portSchema = z.number().int().min(1).max(65535).optional().describe('Modbus TCP port. Defaults to VICTRON_MODBUS_PORT env var or 502.');
 export const unitIdSchema = z.number().int().min(0).max(247).describe('Modbus unit ID');
 export const addressSchema = z.number().int().min(0).max(65535).describe('Starting register address');
 export const countSchema = z.number().int().min(1).max(125).default(1).describe('Number of registers (words) to read');
@@ -33,6 +33,15 @@ export const transportInputSchema = {
   portalId: portalIdSchema,
   deviceInstance: deviceInstanceSchema,
 };
+
+// For tools that talk Modbus directly instead of going through buildConnectionParams.
+export function requireHost(host?: string): string {
+  const resolved = host ?? config.host;
+  if (!resolved) {
+    throw new Error('Host is required. Provide host or set VICTRON_HOST env var.');
+  }
+  return resolved;
+}
 
 export function buildConnectionParams(input: {
   transport?: string;

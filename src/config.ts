@@ -45,6 +45,11 @@ export function loadConfig(): Config {
 
 let _config: Config | undefined;
 
+// Test-only: clears the cached config so tests can vary process.env between cases.
+export function resetConfigForTesting(): void {
+  _config = undefined;
+}
+
 export const config: Config = new Proxy({} as Config, {
   get(_target, prop: string) {
     if (!_config) {
