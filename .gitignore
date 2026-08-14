@@ -1,6 +1,7 @@
 node_modules/
 dist/
 *.tsbuildinfo
+coverage/
 
 # Source Excel files (large binaries, not needed at runtime)
 *.xlsx
