@@ -6,7 +6,18 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-08-14
+
 ### Fixed
+- **`victron_gx_info` and `victron_read_register` are usable again** (#31, thanks
+  [@agaleraib](https://github.com/agaleraib)). Both declare an `outputSchema` but
+  returned only text content, so the MCP SDK rejected every call with `-32602`
+  ("has an output schema but no structured content was provided") — the two tools
+  were completely broken in 1.4.0. They now attach `structuredContent` matching
+  their declared schema (`{ readings: [...] }` and `{ address, value, raw }`
+  respectively), mirroring `formatResults()` and `victron_list_registers`. Covered
+  by a regression test that drives both tools through an in-memory MCP client
+  against the simulator.
 - **`VICTRON_HOST` and related env vars now work as documented defaults** (#44).
   `host` (and `port`) were required at the tool input-schema level, so calls
   omitting them were rejected by schema validation before the env-var fallback
@@ -18,6 +29,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   `victron_evcs_status` intentionally still requires an explicit `host`, since
   it connects to the EVCS directly rather than the GX device that
   `VICTRON_HOST` points at.
+
+### Changed
+- **`@modelcontextprotocol/sdk` 1.29.0 → 1.30.0**, plus routine transitive
+  dependency updates (all dev-only or indirect) clearing every open `npm audit`
+  advisory — the package now audits at zero.
 
 ## [1.4.0] - 2026-06-17
 
